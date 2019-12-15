@@ -7,5 +7,6 @@ namespace EEVA.Web.Models
 {
     public class ExamViewModel
     {
+        public int ID { get; set; }
     }
 }
