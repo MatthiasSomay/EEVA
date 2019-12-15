@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="models\" />
     <Folder Include="managers\" />
   </ItemGroup>
 
