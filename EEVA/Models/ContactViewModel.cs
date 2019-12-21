@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EEVA.Domain.models
+namespace EEVA.Web.Models
 {
-    public class Contact
+    public class ContactViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Subtitle
+        {
+            get { return $"Details van {FirstName} {LastName}"; }
+        }
+
         public int Id { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
         public String Email { get; set; }
         public String PhoneNumber { get; set; }
     }
-}
+    }
+

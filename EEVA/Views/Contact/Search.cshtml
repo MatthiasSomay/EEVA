@@ -1,0 +1,39 @@
+﻿@model EEVA.Web.Models.ContactSearchViewModel
+
+
+
+<h1>@Model.Subtitle</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Query.Keyword" class="control-label"></label>
+                <input asp-for="Query.Keyword" class="form-control" id="keywordInput" />
+                <span asp-validation-for="Query.Keyword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="searchButton" type="submit" value="Search" class="btn btn-primary" />
+                <a asp-action="Create" class="btn btn-primary">Create</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<table class="table" id="contacts">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>PhoneNumber</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
