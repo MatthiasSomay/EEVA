@@ -9,8 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
-using EEVA.Domain.Models.DataManager;
+using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
+using EEVA.Domain.DataManager;
 
 namespace EEVA
 {
@@ -27,6 +28,7 @@ namespace EEVA
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EEVAContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
+            services.AddScoped<IDataRepository<Exam>, ExamManager>();
             services.AddControllersWithViews();
         }
 

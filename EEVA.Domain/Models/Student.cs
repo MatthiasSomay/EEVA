@@ -8,5 +8,10 @@ namespace EEVA.Domain.Models
         {
 
         }
+
+        public Student()
+        {
+
+        }
     }
 }

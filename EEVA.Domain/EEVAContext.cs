@@ -4,6 +4,7 @@ using System.Text;
 using EEVA.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace EEVA.Domain
 {
     public class EEVAContext : DbContext
@@ -13,7 +14,7 @@ namespace EEVA.Domain
 
         }
 
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Exam> Exams { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -21,9 +22,11 @@ namespace EEVA.Domain
         public DbSet<StudentExam> StudentExams { get; set; }
         public DbSet<StudentExamAnswer> StudentExamAnswers { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<Answer>();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

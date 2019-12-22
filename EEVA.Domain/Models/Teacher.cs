@@ -9,5 +9,10 @@ namespace EEVA.Domain.Models
         public Teacher(string firstName, string lastName, string email, string phone) : base(firstName, lastName, email, phone)
         {
         }
+
+        public Teacher()
+        {
+
+        }
     }
 }
