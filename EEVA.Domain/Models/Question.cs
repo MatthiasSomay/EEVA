@@ -10,6 +10,5 @@ namespace EEVA.Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string QuestionPhrase { get; set; }
-        public List<Answer> Answers { get; set; }
     }
 }

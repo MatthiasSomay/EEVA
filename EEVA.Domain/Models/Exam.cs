@@ -12,15 +12,17 @@ namespace EEVA.Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public Course Course { get; set; }
+        public Teacher Teacher { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public List<Question> ExamQuestions { get; set; }
         public List<StudentExam> StudentExams { get; set; }
 
-        public Exam(Course course, DateTime date, TimeSpan start, TimeSpan end, List<Question> questions, List<StudentExam> studentExams)
+        public Exam(Course course, Teacher teacher, DateTime date, TimeSpan start, TimeSpan end, List<Question> questions, List<StudentExam> studentExams)
         {
             this.Course = course;
+            this.Teacher = teacher;
             this.Date = date;
             this.StartTime = start;
             this.EndTime = end;
