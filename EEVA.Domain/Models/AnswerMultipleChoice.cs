@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace EEVA.Domain.Models
 {
-    public class AnswerMultipleChoice
+    public class AnswerMultipleChoice : Answer
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public Answer CorrectAnswer { get; set; }
+        public string Answer { get; set; }
+        public bool IsAnswerCorrect { get; set; }
     }
 }
