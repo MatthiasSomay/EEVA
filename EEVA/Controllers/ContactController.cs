@@ -9,6 +9,7 @@ using EEVA.Domain;
 using EEVA.Web.Models;
 using EEVA.Web.Models.WebAPI;
 using EEVA.Domain.Models.DataManager;
+using EEVA.Domain.Models;
 
 namespace EEVA.Web.Controllers
 {
@@ -64,7 +65,7 @@ namespace EEVA.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var customers = _contactManager.SearchContacts(searchQuery.Keyword)
+                var customers = _contactManager.Search(searchQuery.Keyword)
                        .Take(searchQuery.MaxResults)
                        .Select(c => new ContactViewModel()
                        {

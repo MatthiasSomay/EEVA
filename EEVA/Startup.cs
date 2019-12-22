@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using EEVA.Domain.Models.DataManager;
-using EEVA.Domain.models;
+using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
 
 namespace EEVA
