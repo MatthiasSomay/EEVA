@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EEVA.Domain;
-using EEVA.Domain.models;
 using EEVA.Web.Models;
 using EEVA.Web.Models.WebAPI;
 using EEVA.Domain.Models.DataManager;

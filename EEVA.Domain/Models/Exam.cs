@@ -27,5 +27,9 @@ namespace EEVA.Domain.Models
             this.ExamQuestions = questions;
             this.StudentExams = studentExams;
         }
+
+        public Exam()
+        {
+        }
     }
 }

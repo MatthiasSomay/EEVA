@@ -1,4 +1,4 @@
-﻿using EEVA.Domain.models;
+﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace EEVA.Domain.Models.DataManager
             _eevaContext.SaveChanges();
         }
 
-        public Contact Get(long id)
+        public Contact Get(int id)
         {
             return _eevaContext.Contacts.FirstOrDefault(c => c.Id == id);
         }
@@ -53,7 +53,7 @@ namespace EEVA.Domain.Models.DataManager
             _eevaContext.SaveChanges();
         }
 
-        public IList<Contact> SearchContacts(string keyword)
+        public IEnumerable<Contact> Search(string keyword)
         {
             keyword = keyword.ToUpper();
 
@@ -78,6 +78,5 @@ namespace EEVA.Domain.Models.DataManager
             return contacts;
 
         }
-
     }
 }

@@ -18,10 +18,15 @@ namespace EEVA.Domain.Models
 
         public Contact(string firstName, string lastName, string email, string phone)
         {
+           
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Email = email;
             this.PhoneNumber = phone;
+        }
+
+        public Contact()
+        {
         }
     }
 }
