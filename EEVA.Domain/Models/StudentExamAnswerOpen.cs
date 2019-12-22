@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EEVA.Domain.Models
 {
-    public class QuestionMultipleChoice : Question
+    class StudentExamAnswerOpen : StudentExamAnswer
     {
     }
 }
