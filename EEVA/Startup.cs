@@ -28,7 +28,7 @@ namespace EEVA
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EEVAContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
-            services.AddScoped<IDataRepository<Exam>, ExamManager>();
+            services.AddScoped<IDataManager<Exam>, ExamManager>();
             services.AddControllersWithViews();
         }
 

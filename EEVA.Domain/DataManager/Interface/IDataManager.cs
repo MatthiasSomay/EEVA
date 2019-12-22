@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EEVA.Domain.Models.Repository
 {
-    public interface IDataRepository<TEntity>
+    public interface IDataManager<TEntity>
     {
         IEnumerable<TEntity> GetAll();
         TEntity Get(int id);
