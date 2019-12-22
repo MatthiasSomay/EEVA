@@ -1,6 +1,6 @@
 ﻿namespace EEVA.Domain.Models
 {
-    public class Student
+    public class Student : Contact
     {
     }
 }
