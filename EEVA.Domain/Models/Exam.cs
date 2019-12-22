@@ -17,5 +17,15 @@ namespace EEVA.Domain.Models
         public TimeSpan EndTime { get; set; }
         public List<Question> ExamQuestions { get; set; }
         public List<StudentExam> StudentExams { get; set; }
+
+        public Exam(Course course, DateTime date, TimeSpan start, TimeSpan end, List<Question> questions, List<StudentExam> studentExams)
+        {
+            this.Course = course;
+            this.Date = date;
+            this.StartTime = start;
+            this.EndTime = end;
+            this.ExamQuestions = questions;
+            this.StudentExams = studentExams;
+        }
     }
 }

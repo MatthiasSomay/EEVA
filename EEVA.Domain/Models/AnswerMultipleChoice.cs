@@ -1,24 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace EEVA.Domain.Models
 {
-    public abstract class Question
+    public class AnswerMultipleChoice
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string QuestionPhrase { get; set; }
-
-        public Question()
-        {
-
-        }
-
-        public Question(string question)
-        {
-            this.QuestionPhrase = question;
-        }
+        public Answer CorrectAnswer { get; set; }
     }
 }

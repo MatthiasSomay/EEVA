@@ -1,6 +1,12 @@
-﻿namespace EEVA.Domain.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EEVA.Domain.Models
 {
-    public class StudentExamAnswer
+    public abstract class StudentExamAnswer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
     }
 }

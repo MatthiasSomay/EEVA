@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EEVA.Domain.models;
+using EEVA.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EEVA.Domain
@@ -14,25 +14,16 @@ namespace EEVA.Domain
         }
 
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Exam> Exams { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<StudentExam> StudentExams { get; set; }
+        public DbSet<StudentExamAnswer> StudentExamAnswers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Contact>().HasData(new Contact
-            {
-                Id = 1,
-                FirstName = "Uncle",
-                LastName = "Bob",
-                Email = "uncle.bob@gmail.com",
-                PhoneNumber = "999-888-7777"
-
-            }, new Contact
-            {
-                Id = 2,
-                FirstName = "Jan",
-                LastName = "Kirsten",
-                Email = "jan.kirsten@gmail.com",
-                PhoneNumber = "111-222-3333"
-            });
+            
         }
     }
 }
