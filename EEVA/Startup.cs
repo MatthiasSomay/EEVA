@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using EEVA.Domain.Models.DataManager;
-using EEVA.Domain.models;
 using EEVA.Domain.Models.Repository;
 
 namespace EEVA
@@ -28,7 +27,6 @@ namespace EEVA
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EEVAContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
-            services.AddScoped<IDataRepository<Contact>, ContactManager>();
             services.AddControllersWithViews();
         }
 

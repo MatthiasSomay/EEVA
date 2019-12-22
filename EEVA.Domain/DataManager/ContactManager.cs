@@ -63,7 +63,7 @@ namespace EEVA.Domain.Models.DataManager
                 .Where(c => c.FirstName.ToUpper().Contains(keyword)
                             ||
                             c.LastName.ToUpper().Contains(keyword));
-           foreach (var entity in entities)
+           /*foreach (var entity in entities)
             {
                 contacts.Add(new Contact()
                 {
@@ -74,7 +74,7 @@ namespace EEVA.Domain.Models.DataManager
                     PhoneNumber = entity.PhoneNumber
 
                 });
-            }
+            }*/
             return contacts;
 
         }

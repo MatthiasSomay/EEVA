@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEVA.Domain.Models
 {
-    public abstract class Contact
+    public class Contact
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
