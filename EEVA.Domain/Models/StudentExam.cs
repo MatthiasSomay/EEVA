@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEVA.Domain.Models
 {
-    public class StudentExam : Exam
+    public class StudentExam
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,11 +14,14 @@ namespace EEVA.Domain.Models
         public Exam Exam { get; set; }
         public List<StudentExamAnswer> StudentExamAnswers { get; set; }
 
-        public StudentExam(Course course, DateTime date, TimeSpan start, TimeSpan end, List<Question> questions, List<StudentExam> studentExams, Student student, Exam exam, List<StudentExamAnswer> studentExamAnswers) : base(course, date, start, end, questions, studentExams)
+        public StudentExam(int id, Student student, Exam exam, List<StudentExamAnswer> studentExamAnswers)
         {
-            this.Student = student;
-            this.Exam = exam;
-            this.StudentExamAnswers = studentExamAnswers;
+            Id = id;
+            Student = student;
+            Exam = exam;
+            StudentExamAnswers = studentExamAnswers;
         }
+
+        public StudentExam() { }
     }
 }
