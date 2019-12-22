@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEVA.Domain.Models
 {
-    public abstract class Question
+    public class Question
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

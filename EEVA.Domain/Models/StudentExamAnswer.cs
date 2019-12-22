@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEVA.Domain.Models
 {
-    public abstract class StudentExamAnswer
+    public class StudentExamAnswer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

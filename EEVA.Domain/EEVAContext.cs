@@ -14,19 +14,24 @@ namespace EEVA.Domain
 
         }
 
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Exam> Exams { get; set; }
-        public DbSet<Question> Questions { get; set; }
-        public DbSet<Student> Students { get; set; }
         public DbSet<StudentExam> StudentExams { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
         public DbSet<StudentExamAnswer> StudentExamAnswers { get; set; }
-
+               
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Contact>();
+            modelBuilder.Entity<Course>();
+            modelBuilder.Entity<Exam>();
+            modelBuilder.Entity<StudentExam>();
+            modelBuilder.Entity<Question>();
             modelBuilder.Entity<Answer>();
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<StudentExamAnswer>();
         }
     }
 }

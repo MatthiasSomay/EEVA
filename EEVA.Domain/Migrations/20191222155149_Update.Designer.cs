@@ -4,67 +4,22 @@ using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    partial class EEVAContextModelSnapshot : ModelSnapshot
+    [Migration("20191222155149_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("EEVA.Domain.Models.Answer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("Answers");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.Contact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Contacts");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Contact");
-                });
 
             modelBuilder.Entity("EEVA.Domain.Models.Course", b =>
                 {
@@ -140,6 +95,30 @@ namespace EEVA.Domain.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("EEVA.Domain.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Student");
+                });
+
             modelBuilder.Entity("EEVA.Domain.Models.StudentExam", b =>
                 {
                     b.Property<int>("Id")
@@ -159,7 +138,7 @@ namespace EEVA.Domain.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentExams");
+                    b.ToTable("StudentExam");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.StudentExamAnswer", b =>
@@ -176,28 +155,31 @@ namespace EEVA.Domain.Migrations
 
                     b.HasIndex("StudentExamId");
 
-                    b.ToTable("StudentExamAnswers");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.Student", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Contact");
-
-                    b.HasDiscriminator().HasValue("Student");
+                    b.ToTable("StudentExamAnswer");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.Teacher", b =>
                 {
-                    b.HasBaseType("EEVA.Domain.Models.Contact");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasDiscriminator().HasValue("Teacher");
-                });
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("EEVA.Domain.Models.Answer", b =>
-                {
-                    b.HasOne("EEVA.Domain.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.Exam", b =>
