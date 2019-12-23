@@ -21,7 +21,9 @@ namespace EEVA.Domain
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<StudentExamAnswer> StudentExamAnswers { get; set; }
-               
+        public DbSet<AnswerMultipleChoice> AnswerMultipleChoices { get; set; }
+        public DbSet<AnswerOpen> AnswerOpens { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

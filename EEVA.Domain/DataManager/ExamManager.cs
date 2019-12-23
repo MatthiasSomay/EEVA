@@ -9,7 +9,7 @@ namespace EEVA.Domain.DataManager
 {
     public class ExamManager : IDataManager<Exam>
     {
-        readonly EEVAContext _eevaContext;
+        private readonly EEVAContext _eevaContext;
 
         public ExamManager(EEVAContext context)
         {
@@ -44,7 +44,7 @@ namespace EEVA.Domain.DataManager
             List<Exam> exams = new List<Exam>();
 
             IEnumerable<Exam> entities = _eevaContext.Exams
-                .Where(e => e.Course.CourseName.ToUpper().Contains(keyword));
+                .Where(e => e.Course.CourseName.ToUpper().Contains(keyword) || e.Teacher.LastName.ToUpper().Contains(keyword) || e.Teacher.FirstName.ToUpper().Contains(keyword));
             foreach (var entity in entities)
             {
                 exams.Add(new Exam()

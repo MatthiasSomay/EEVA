@@ -11,7 +11,11 @@ namespace EEVA.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Display(Name = "Course Name")]
+        [Required]
         public string CourseName { get; set; }
+        [Display(Name ="Course Year")]
+        [Required]
         public string CourseYear { get; set; }
         public List<Question> Questions { get; set; }
         public List<Exam> Exams { get; set; }

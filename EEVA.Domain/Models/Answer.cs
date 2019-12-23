@@ -8,6 +8,7 @@ namespace EEVA.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public Question Question { get; set; }
     }
 }

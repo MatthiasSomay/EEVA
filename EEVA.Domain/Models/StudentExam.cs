@@ -10,7 +10,9 @@ namespace EEVA.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public Student Student { get; set; }
+        [Required]
         public Exam Exam { get; set; }
         public List<StudentExamAnswer> StudentExamAnswers { get; set; }
 

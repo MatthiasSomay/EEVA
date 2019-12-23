@@ -9,9 +9,18 @@ namespace EEVA.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Display(Name = "First Name")]
+        [Required]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
+        [Required] 
         public string LastName { get; set; }
+        [Display(Name = "Email address")]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+        [Display(Name = "Phonenumber")]
+        [Required]
         public string PhoneNumber { get; set; }
 
         public Contact(string firstName, string lastName, string email, string phone)
