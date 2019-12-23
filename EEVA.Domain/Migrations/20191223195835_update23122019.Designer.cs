@@ -4,14 +4,16 @@ using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    partial class EEVAContextModelSnapshot : ModelSnapshot
+    [Migration("20191223195835_update23122019")]
+    partial class update23122019
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,10 +139,6 @@ namespace EEVA.Domain.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("ExamId")
                         .HasColumnType("int");
 
@@ -155,8 +153,6 @@ namespace EEVA.Domain.Migrations
                     b.HasIndex("ExamId");
 
                     b.ToTable("Questions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Question");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.StudentExam", b =>
@@ -235,20 +231,6 @@ namespace EEVA.Domain.Migrations
                     b.HasDiscriminator().HasValue("Teacher");
                 });
 
-            modelBuilder.Entity("EEVA.Domain.Models.QuestionMultipleChoice", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Question");
-
-                    b.HasDiscriminator().HasValue("QuestionMultipleChoice");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.QuestionOpen", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Question");
-
-                    b.HasDiscriminator().HasValue("QuestionOpen");
-                });
-
             modelBuilder.Entity("EEVA.Domain.Models.Answer", b =>
                 {
                     b.HasOne("EEVA.Domain.Models.Question", "Question")
@@ -263,13 +245,13 @@ namespace EEVA.Domain.Migrations
                     b.HasOne("EEVA.Domain.Models.Course", "Course")
                         .WithMany("Exams")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EEVA.Domain.Models.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -283,19 +265,19 @@ namespace EEVA.Domain.Migrations
                         .WithMany("ExamQuestions")
                         .HasForeignKey("ExamId");
                 });
-
+            
             modelBuilder.Entity("EEVA.Domain.Models.StudentExam", b =>
                 {
                     b.HasOne("EEVA.Domain.Models.Exam", "Exam")
                         .WithMany("StudentExams")
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EEVA.Domain.Models.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

@@ -4,14 +4,16 @@ using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    partial class EEVAContextModelSnapshot : ModelSnapshot
+    [Migration("20191223202616_update23122019c")]
+    partial class update23122019c
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,10 +28,6 @@ namespace EEVA.Domain.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
@@ -38,8 +36,6 @@ namespace EEVA.Domain.Migrations
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Answer");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.Contact", b =>
@@ -137,10 +133,6 @@ namespace EEVA.Domain.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("ExamId")
                         .HasColumnType("int");
 
@@ -155,8 +147,6 @@ namespace EEVA.Domain.Migrations
                     b.HasIndex("ExamId");
 
                     b.ToTable("Questions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Question");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.StudentExam", b =>
@@ -198,29 +188,6 @@ namespace EEVA.Domain.Migrations
                     b.ToTable("StudentExamAnswers");
                 });
 
-            modelBuilder.Entity("EEVA.Domain.Models.AnswerMultipleChoice", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Answer");
-
-                    b.Property<string>("Answer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAnswerCorrect")
-                        .HasColumnType("bit");
-
-                    b.HasDiscriminator().HasValue("AnswerMultipleChoice");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.AnswerOpen", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Answer");
-
-                    b.Property<string>("Keyword")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("AnswerOpen");
-                });
-
             modelBuilder.Entity("EEVA.Domain.Models.Student", b =>
                 {
                     b.HasBaseType("EEVA.Domain.Models.Contact");
@@ -233,20 +200,6 @@ namespace EEVA.Domain.Migrations
                     b.HasBaseType("EEVA.Domain.Models.Contact");
 
                     b.HasDiscriminator().HasValue("Teacher");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.QuestionMultipleChoice", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Question");
-
-                    b.HasDiscriminator().HasValue("QuestionMultipleChoice");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.QuestionOpen", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Question");
-
-                    b.HasDiscriminator().HasValue("QuestionOpen");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.Answer", b =>

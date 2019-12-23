@@ -8,5 +8,11 @@ namespace EEVA.Domain.Models
     {
         public string Answer { get; set; }
         public bool IsAnswerCorrect { get; set; }
+
+        public AnswerMultipleChoice(string answer, bool isAnswerCorrect)
+        {
+            Answer = answer;
+            IsAnswerCorrect = isAnswerCorrect;
+        }
     }
 }

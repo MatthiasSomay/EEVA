@@ -33,29 +33,9 @@ namespace EEVA.Domain.DataManager
             return _eevaContext.Answers.FirstOrDefault(a => a.Id == id);
         }
 
-        public AnswerMultipleChoice GetAnswerMultipleChoice(int id)
-        {
-            return _eevaContext.AnswerMultipleChoices.FirstOrDefault(a => a.Id == id);
-        }
-
-        public AnswerOpen GetAnswerOpen(int id)
-        {
-            return _eevaContext.AnswerOpens.FirstOrDefault(a => a.Id == id);
-        }
-
         public IEnumerable<Answer> GetAll()
         {
             return _eevaContext.Answers.ToList();
-        }
-
-        public IEnumerable<AnswerMultipleChoice> GetAllAnswersMultipleChoice()
-        {
-            return _eevaContext.AnswerMultipleChoices.ToList();
-        }
-
-        public IEnumerable<AnswerOpen> GetAllAnswersOpen()
-        {
-            return _eevaContext.AnswerOpens.ToList();
         }
 
         public IEnumerable<Answer> Search(string keyword)
