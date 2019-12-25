@@ -19,13 +19,13 @@ namespace EEVA.Web.Controllers
             _context = context;
         }
 
-        // GET: Answer
+        // GET: Answers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Answers.ToListAsync());
         }
 
-        // GET: Answer/Details/5
+        // GET: Answers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace EEVA.Web.Controllers
             return View(answer);
         }
 
-        // GET: Answer/Create
+        // GET: Answers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Answer/Create
+        // POST: Answers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace EEVA.Web.Controllers
             return View(answer);
         }
 
-        // GET: Answer/Edit/5
+        // GET: Answers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace EEVA.Web.Controllers
             return View(answer);
         }
 
-        // POST: Answer/Edit/5
+        // POST: Answers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace EEVA.Web.Controllers
             return View(answer);
         }
 
-        // GET: Answer/Delete/5
+        // GET: Answers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace EEVA.Web.Controllers
             return View(answer);
         }
 
-        // POST: Answer/Delete/5
+        // POST: Answers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
