@@ -2,152 +2,99 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using EEVA.Domain;
-using EEVA.Domain.Models;
+using EEVA.Domain.DataManager;
 
 namespace EEVA.Web.Controllers
 {
     public class AnswerController : Controller
     {
-        private readonly EEVAContext _context;
+        private AnswerManager _answerManager;
 
-        public AnswerController(EEVAContext context)
+        public AnswerController()
         {
-            _context = context;
+
         }
-
-        // GET: Answers
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Answers.ToListAsync());
-        }
-
-        // GET: Answers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var answer = await _context.Answers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (answer == null)
-            {
-                return NotFound();
-            }
-
-            return View(answer);
-        }
-
-        // GET: Answers/Create
-        public IActionResult Create()
+        // GET: Answer
+        public ActionResult Index()
         {
             return View();
         }
 
-        // POST: Answers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // GET: Answer/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: Answer/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Answer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Answer answer)
+        public ActionResult Create(IFormCollection collection)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(answer);
-                await _context.SaveChangesAsync();
+                // TODO: Add insert logic here
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(answer);
+            catch
+            {
+                return View();
+            }
         }
 
-        // GET: Answers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Answer/Edit/5
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var answer = await _context.Answers.FindAsync(id);
-            if (answer == null)
-            {
-                return NotFound();
-            }
-            return View(answer);
+            return View();
         }
 
-        // POST: Answers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Answer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Answer answer)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
-            if (id != answer.Id)
+            try
             {
-                return NotFound();
-            }
+                // TODO: Add update logic here
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(answer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AnswerExists(answer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(answer);
+            catch
+            {
+                return View();
+            }
         }
 
-        // GET: Answers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Answer/Delete/5
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var answer = await _context.Answers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (answer == null)
-            {
-                return NotFound();
-            }
-
-            return View(answer);
+            return View();
         }
 
-        // POST: Answers/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Answer/Delete/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var answer = await _context.Answers.FindAsync(id);
-            _context.Answers.Remove(answer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                // TODO: Add delete logic here
 
-        private bool AnswerExists(int id)
-        {
-            return _context.Answers.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
