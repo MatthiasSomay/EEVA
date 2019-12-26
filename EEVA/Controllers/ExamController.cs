@@ -2,152 +2,92 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using EEVA.Domain;
-using EEVA.Domain.Models;
 
 namespace EEVA.Web.Controllers
 {
     public class ExamController : Controller
     {
-        private readonly EEVAContext _context;
-
-        public ExamController(EEVAContext context)
-        {
-            _context = context;
-        }
-
         // GET: Exam
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _context.Exams.ToListAsync());
+            return View();
         }
 
         // GET: Exam/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exam = await _context.Exams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (exam == null)
-            {
-                return NotFound();
-            }
-
-            return View(exam);
+            return View();
         }
 
         // GET: Exam/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
 
         // POST: Exam/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,StartTime,EndTime")] Exam exam)
+        public ActionResult Create(IFormCollection collection)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(exam);
-                await _context.SaveChangesAsync();
+                // TODO: Add insert logic here
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(exam);
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: Exam/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exam = await _context.Exams.FindAsync(id);
-            if (exam == null)
-            {
-                return NotFound();
-            }
-            return View(exam);
+            return View();
         }
 
         // POST: Exam/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,StartTime,EndTime")] Exam exam)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
-            if (id != exam.Id)
+            try
             {
-                return NotFound();
-            }
+                // TODO: Add update logic here
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(exam);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ExamExists(exam.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(exam);
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: Exam/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exam = await _context.Exams
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (exam == null)
-            {
-                return NotFound();
-            }
-
-            return View(exam);
+            return View();
         }
 
         // POST: Exam/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var exam = await _context.Exams.FindAsync(id);
-            _context.Exams.Remove(exam);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                // TODO: Add delete logic here
 
-        private bool ExamExists(int id)
-        {
-            return _context.Exams.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
