@@ -14,5 +14,9 @@ namespace EEVA.Domain.Models
             Answer = answer;
             IsAnswerCorrect = isAnswerCorrect;
         }
+        public AnswerMultipleChoice()
+        {
+
+        }
     }
 }
