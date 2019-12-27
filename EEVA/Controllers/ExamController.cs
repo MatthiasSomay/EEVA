@@ -1,93 +1,160 @@
-﻿using System;
+﻿using EEVA.Domain;
+using EEVA.Domain.DataManager;
+using EEVA.Domain.Models;
+using EEVA.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EEVA.Web.Controllers
 {
     public class ExamController : Controller
     {
-        // GET: Exam
-        public ActionResult Index()
+        private readonly EEVAContext _context;
+        private readonly ExamManager _examManager;
+        private readonly CourseManager _courseManager;
+        private readonly ContactManager _contactManager;
+
+        public ExamController(EEVAContext context)
         {
-            return View();
+            _context = context;
+            _examManager = new ExamManager(context);
+            _courseManager = new CourseManager(context);
+            _contactManager = new ContactManager(context);
+        }
+
+
+        // GET: Exam
+        public IActionResult Index()
+        {
+            return View(_examManager.GetAll());
         }
 
         // GET: Exam/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Exam exam = _examManager.Get(id);
+
+            if (exam == null)
+            {
+                return NotFound();
+            }
+
+            return View(exam);
         }
 
         // GET: Exam/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
-            return View();
-        }
+            ExamViewModel examViewModel = new ExamViewModel();
+            examViewModel.Courses = _courseManager.GetAll();
+            examViewModel.Teachers = _contactManager.GetAllTeachers();
 
+            return View(examViewModel);
+        }
+        
         // POST: Exam/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create([Bind("Id,Date,StartTime,EndTime")] ExamViewModel examViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                Exam exam = new Exam();
+                _examManager.Add(exam);
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(/*exam*/);
         }
 
         // GET: Exam/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var exam = await _context.Exams.FindAsync(id);
+            if (exam == null)
+            {
+                return NotFound();
+            }
+            return View(exam);
         }
 
         // POST: Exam/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,StartTime,EndTime")] Exam exam)
         {
-            try
+            if (id != exam.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(exam);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ExamExists(exam.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(exam);
         }
 
         // GET: Exam/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var exam = await _context.Exams
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (exam == null)
+            {
+                return NotFound();
+            }
+
+            return View(exam);
         }
 
         // POST: Exam/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var exam = await _context.Exams.FindAsync(id);
+            _context.Exams.Remove(exam);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+        private bool ExamExists(int id)
+        {
+            return _context.Exams.Any(e => e.Id == id);
         }
     }
 }

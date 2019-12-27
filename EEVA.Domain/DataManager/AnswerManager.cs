@@ -28,7 +28,7 @@ namespace EEVA.Domain.DataManager
             _eevaContext.SaveChanges();
         }
 
-        public Answer Get(int id)
+        public Answer Get(int? id)
         {
             return _eevaContext.Answers.FirstOrDefault(a => a.Id == id);
         }

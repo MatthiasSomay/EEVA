@@ -9,6 +9,10 @@ namespace EEVA.Domain
 {
     public class EEVAContext : DbContext
     {
+        public EEVAContext()
+        {
+        }
+
         public EEVAContext(DbContextOptions options) : base(options)
         {
 

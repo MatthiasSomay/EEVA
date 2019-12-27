@@ -18,7 +18,33 @@ namespace EEVA.Web.Models
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public List<Question> ExamQuestions { get; set; }
-        public List<StudentExam> StudentExams { get; set; }
+        public IEnumerable<Question> ExamQuestions { get; set; }
+        public IEnumerable<StudentExam> StudentExams { get; set; }
+
+        //Used for Course dropdown in view
+        public IEnumerable<Course> Courses { get; set; }
+
+        //Used for Teacher dropdown in view
+        public IEnumerable<Teacher> Teachers { get; set; }
+
+        //Used for selected value in the Course dropdown
+        public int SelectedValueCourse()
+        {
+            if (Course == null)
+            {
+                return 0;
+            }
+            else return Course.Id;
+        }
+
+        //Used for selected value in the Teacher dropdown
+        public int SelectedValueTeacher()
+        {
+            if (Teacher == null)
+            {
+                return 0;
+            }
+            else return Teacher.Id;
+        }
     }
 }
