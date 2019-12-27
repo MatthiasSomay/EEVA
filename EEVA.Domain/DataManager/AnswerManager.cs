@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-    class AnswerManager : IDataManager<Answer>
+    public class AnswerManager : IDataManager<Answer>
     {
         private readonly EEVAContext _eevaContext;
 
