@@ -16,7 +16,7 @@ namespace EEVA.Web.Models
         public int Id { get; set; }
         public string CourseName { get; set; }
         public string CourseYear { get; set; }
-        public List<Question> Questions { get; set; }
-        public List<Exam> Exams { get; set; }
+        public IEnumerable<Question> Questions { get; set; }
+        public IEnumerable<Exam> Exams { get; set; }
     }
 }

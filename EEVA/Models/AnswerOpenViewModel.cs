@@ -13,6 +13,6 @@ namespace EEVA.Web.Models
             get { return $"Details van '{Question.QuestionPhrase}'"; }
         }
         public Question Question { get; set; }
-        public string Keyword { get; set; }
+        public IEnumerable<string> Keywords { get; set; }
     }
 }

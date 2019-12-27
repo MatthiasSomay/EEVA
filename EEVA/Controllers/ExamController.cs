@@ -2,6 +2,7 @@
 using EEVA.Domain.DataManager;
 using EEVA.Domain.Models;
 using EEVA.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace EEVA.Web.Controllers
         }
 
 
-        // GET: Exam
+        [Authorize(Roles = "Teacher")]
         public IActionResult Index()
         {
             return View(_examManager.GetAll());
