@@ -7,7 +7,7 @@ namespace EEVA.Domain.Models.Repository
     public interface IDataManager<TEntity>
     {
         IEnumerable<TEntity> GetAll();
-        TEntity Get(int id);
+        TEntity Get(int? id);
         void Add(TEntity entity);
         void Update(TEntity dbEntity, TEntity entity);
         void Delete(TEntity entity);

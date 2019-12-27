@@ -7,9 +7,13 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-    class CourseManager : IDataManager<Course>
+   public class CourseManager : IDataManager<Course>
     {
-        private readonly EEVAContext _eevaContext;
+        public EEVAContext _eevaContext { get; set; }
+
+        public CourseManager()
+        {
+        }
 
         public CourseManager(EEVAContext context)
         {
@@ -27,7 +31,7 @@ namespace EEVA.Domain.DataManager
             _eevaContext.SaveChanges();
         }
 
-        public Course Get(int id)
+        public Course Get(int? id)
         {
             return _eevaContext.Courses.FirstOrDefault(c => c.Id == id);
         }

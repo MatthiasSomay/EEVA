@@ -1,20 +1,27 @@
 ﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace EEVA.Domain.DataManager
 {
     public class ExamManager : IDataManager<Exam>
     {
         private readonly EEVAContext _eevaContext;
+        public ExamManager()
+        {
 
+        }
         public ExamManager(EEVAContext context)
         {
             _eevaContext = context;
         }
+
         public void Add(Exam entity)
         {
             _eevaContext.Exams.Add(entity);
@@ -27,7 +34,7 @@ namespace EEVA.Domain.DataManager
             _eevaContext.SaveChanges();
         }
 
-        public Exam Get(int id)
+        public Exam Get(int? id)
         {
             return _eevaContext.Exams.FirstOrDefault(e => e.Id == id);
         }

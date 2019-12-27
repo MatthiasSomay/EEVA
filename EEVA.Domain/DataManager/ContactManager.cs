@@ -7,9 +7,13 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-    class ContactManager : IDataManager<Contact>
+    public class ContactManager : IDataManager<Contact>
     {
         private readonly EEVAContext _eevaContext;
+
+        public ContactManager()
+        {
+        }
 
         public ContactManager(EEVAContext context)
         {
@@ -27,7 +31,7 @@ namespace EEVA.Domain.DataManager
             _eevaContext.SaveChanges();
         }
 
-        public Contact Get(int id)
+        public Contact Get(int? id)
         {
             return _eevaContext.Contacts.FirstOrDefault(c => c.Id == id);
         }
@@ -35,6 +39,12 @@ namespace EEVA.Domain.DataManager
         public IEnumerable<Contact> GetAll()
         {
             return _eevaContext.Contacts.ToList();
+        }
+
+        //Get all Teachers
+        public IEnumerable<Teacher> GetAllTeachers()
+        {
+            return _eevaContext.Contacts.OfType<Teacher>().ToList();
         }
 
         public IEnumerable<Contact> Search(string keyword)
