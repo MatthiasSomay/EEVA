@@ -5,10 +5,7 @@ using EEVA.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace EEVA.Web.Controllers
 {
@@ -126,15 +123,14 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: Exam/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            Exam exam = _examManager.Get(id);
 
-            var exam = await _context.Exams
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (exam == null)
             {
                 return NotFound();
@@ -146,11 +142,10 @@ namespace EEVA.Web.Controllers
         // POST: Exam/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var exam = await _context.Exams.FindAsync(id);
-            _context.Exams.Remove(exam);
-            await _context.SaveChangesAsync();
+            Exam exam = _examManager.Get(id);
+            _examManager.Delete(exam);
             return RedirectToAction(nameof(Index));
         }
 
