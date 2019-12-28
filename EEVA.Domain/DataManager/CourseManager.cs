@@ -63,8 +63,9 @@ namespace EEVA.Domain.DataManager
             return courses;
         }
 
-        public void Update(Course dbEntity, Course entity)
+        public void Update(Course entity)
         {
+            Course dbEntity = Get(entity.Id);
             dbEntity.CourseName = entity.CourseName;
             dbEntity.CourseYear = entity.CourseYear;
             dbEntity.Questions = entity.Questions;

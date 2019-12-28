@@ -41,7 +41,7 @@ namespace EEVA.Domain.DataManager
             throw new NotImplementedException();
         }
 
-        public void Update(StudentExamAnswer dbEntity, StudentExamAnswer entity)
+        public void Update(StudentExamAnswer entity)
         {
             throw new NotImplementedException();
         }

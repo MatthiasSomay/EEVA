@@ -1,5 +1,6 @@
 ﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,9 @@ namespace EEVA.Domain.DataManager
         }
 
         //Get all Teachers
+        //TODO make method generic
         public IEnumerable<Teacher> GetAllTeachers()
-        {
+        {            
             return _eevaContext.Contacts.OfType<Teacher>().ToList();
         }
 
@@ -69,8 +71,9 @@ namespace EEVA.Domain.DataManager
             return contacts;
         }
 
-        public void Update(Contact dbEntity, Contact entity)
+        public void Update(Contact entity)
         {
+            Contact dbEntity = Get(entity.Id);
             dbEntity.FirstName = entity.FirstName;
             dbEntity.LastName = entity.LastName;
             dbEntity.Email = entity.Email;

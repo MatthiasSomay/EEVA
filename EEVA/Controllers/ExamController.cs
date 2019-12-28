@@ -5,6 +5,7 @@ using EEVA.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,49 +55,49 @@ namespace EEVA.Web.Controllers
         // GET: Exam/Create
         public IActionResult Create()
         {
-            ExamViewModel examViewModel = new ExamViewModel();
-            examViewModel.Courses = _courseManager.GetAll();
-            examViewModel.Teachers = _contactManager.GetAllTeachers();
-
-            return View(examViewModel);
+            return View(NewExamViewModel());
         }
-        
+
         // POST: Exam/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Date,StartTime,EndTime")] ExamViewModel examViewModel)
+        public IActionResult Create([Bind("Id,Date,StartTime,EndTime,CourseId,TeacherId")] ExamViewModel examViewModel)
         {
             if (ModelState.IsValid)
             {
-                Exam exam = new Exam();
+                Exam exam = MapToExam(examViewModel);
                 _examManager.Add(exam);
                 return RedirectToAction(nameof(Index));
             }
-            return View(/*exam*/);
+            return View();
         }
 
         // GET: Exam/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var exam = await _context.Exams.FindAsync(id);
+            Exam exam = _examManager.Get(id);
             if (exam == null)
             {
                 return NotFound();
             }
-            return View(exam);
+            else
+            {
+                ExamViewModel examViewModel = MapToExamViewModel(exam);
+                return View(examViewModel);
+            }
         }
 
         // POST: Exam/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,StartTime,EndTime")] Exam exam)
+        public IActionResult Edit(int id, [Bind("Id,Date,StartTime,EndTime,CourseId,TeacherId")] ExamViewModel examViewModel)
         {
-            if (id != exam.Id)
+            if (id != examViewModel.Id)
             {
                 return NotFound();
             }
@@ -105,12 +106,12 @@ namespace EEVA.Web.Controllers
             {
                 try
                 {
-                    _context.Update(exam);
-                    await _context.SaveChangesAsync();
+                    Exam exam = MapToExam(examViewModel);
+                    _examManager.Update(exam);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ExamExists(exam.Id))
+                    if (!ExamExists(examViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -121,7 +122,7 @@ namespace EEVA.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(exam);
+            return View();
         }
 
         // GET: Exam/Delete/5
@@ -156,6 +157,45 @@ namespace EEVA.Web.Controllers
         private bool ExamExists(int id)
         {
             return _context.Exams.Any(e => e.Id == id);
+        }
+
+        //Mapping ExamViewModel to Exam
+        private Exam MapToExam(ExamViewModel examViewModel)
+        {
+            return new Exam(
+                examViewModel.Id,
+                _courseManager.Get(examViewModel.CourseId),
+                (Teacher)_contactManager.Get(examViewModel.TeacherId),
+                examViewModel.Date,
+                examViewModel.StartTime,
+                examViewModel.EndTime);       
+        }
+
+        //Mapping Exam to ExamViewModel
+        private ExamViewModel MapToExamViewModel(Exam exam)
+        {
+            return new ExamViewModel(
+                exam.Id,
+                exam.Course,
+                exam.Teacher,
+                exam.Date,
+                exam.StartTime,
+                exam.EndTime,
+                exam.ExamQuestions,
+                exam.StudentExams,
+                _courseManager.GetAll(),
+                exam.Course.Id,
+                _contactManager.GetAllTeachers(),
+                exam.Teacher.Id
+                );
+        }
+
+        private ExamViewModel NewExamViewModel()
+        {
+            return new ExamViewModel(
+                _courseManager.GetAll(),
+                _contactManager.GetAllTeachers()
+                );
         }
     }
 }

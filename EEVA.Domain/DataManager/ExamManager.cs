@@ -12,7 +12,7 @@ namespace EEVA.Domain.DataManager
 {
     public class ExamManager : IDataManager<Exam>
     {
-        private readonly EEVAContext _eevaContext;
+        public EEVAContext _eevaContext;
         public ExamManager()
         {
 
@@ -69,8 +69,10 @@ namespace EEVA.Domain.DataManager
             return exams;
         }
 
-        public void Update(Exam dbEntity, Exam entity)
+        public void Update(Exam entity)
         {
+            Exam dbEntity = Get(entity.Id);
+
             dbEntity.Course = entity.Course;
             dbEntity.Date = entity.Date;
             dbEntity.StartTime = entity.StartTime;

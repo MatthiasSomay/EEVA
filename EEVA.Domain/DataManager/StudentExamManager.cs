@@ -57,8 +57,9 @@ namespace EEVA.Domain.DataManager
             return studentExams;
         }
 
-        public void Update(StudentExam dbEntity, StudentExam entity)
+        public void Update(StudentExam entity)
         {
+            StudentExam dbEntity = Get(entity.Id);
             dbEntity.Exam = entity.Exam;
             dbEntity.Student = entity.Student;
             dbEntity.StudentExamAnswers = entity.StudentExamAnswers;

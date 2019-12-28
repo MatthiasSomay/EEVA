@@ -28,7 +28,12 @@ namespace EEVA.Controllers
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Exam()
+        {
+            return View();
+        }
+
+        public IActionResult Course()
         {
             return View();
         }
