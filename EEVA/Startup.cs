@@ -64,7 +64,7 @@ namespace EEVA
         {
             
             services.AddDbContext<EEVAContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
-            services.AddDbContext<SecurityContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
+            services.AddDbContext<SecurityContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SecurityContextConnection"]));
             services.AddScoped<IDataManager<Exam>, ExamManager>();
             services.AddControllersWithViews();
             services.AddMvc();
