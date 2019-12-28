@@ -56,8 +56,9 @@ namespace EEVA.Domain.DataManager
             return questions;
         }
 
-        public void Update(Question dbEntity, Question entity)
+        public void Update(Question entity)
         {
+            Question dbEntity = Get(entity.Id);
             dbEntity.QuestionPhrase = entity.QuestionPhrase;
             _eevaContext.SaveChanges();
         }

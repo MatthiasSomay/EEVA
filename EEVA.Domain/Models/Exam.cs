@@ -27,19 +27,30 @@ namespace EEVA.Domain.Models
         public List<Question> ExamQuestions { get; set; }
         public List<StudentExam> StudentExams { get; set; }
 
-        public Exam(Course course, Teacher teacher, DateTime date, TimeSpan start, TimeSpan end, List<Question> questions, List<StudentExam> studentExams)
-        {
-            this.Course = course;
-            this.Teacher = teacher;
-            this.Date = date;
-            this.StartTime = start;
-            this.EndTime = end;
-            this.ExamQuestions = questions;
-            this.StudentExams = studentExams;
-        }
-
         public Exam()
         {
+        }
+
+        public Exam(int id, Course course, Teacher teacher, DateTime date, TimeSpan startTime, TimeSpan endTime)
+        {
+            Id = id;
+            Course = course;
+            Teacher = teacher;
+            Date = date;
+            StartTime = startTime;
+            EndTime = endTime;
+        }
+
+        public Exam(int id, Course course, Teacher teacher, DateTime date, TimeSpan startTime, TimeSpan endTime, List<Question> examQuestions, List<StudentExam> studentExams)
+        {
+            Id = id;
+            Course = course;
+            Teacher = teacher;
+            Date = date;
+            StartTime = startTime;
+            EndTime = endTime;
+            ExamQuestions = examQuestions;
+            StudentExams = studentExams;
         }
     }
 }

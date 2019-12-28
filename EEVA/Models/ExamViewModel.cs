@@ -19,28 +19,37 @@ namespace EEVA.Web.Models
 
         //Used for Course dropdown in view
         public IEnumerable<Course> Courses { get; set; }
+        public int CourseId { get; set; }
 
         //Used for Teacher dropdown in view
         public IEnumerable<Teacher> Teachers { get; set; }
+        public int TeacherId { get; set; }
 
-        //Used for selected value in the Course dropdown
-        public int SelectedValueCourse()
+        public ExamViewModel(int id, Course course, Teacher teacher, DateTime date, TimeSpan startTime, TimeSpan endTime, IEnumerable<Question> examQuestions, IEnumerable<StudentExam> studentExams, IEnumerable<Course> courses, int courseId, IEnumerable<Teacher> teachers, int teacherId)
         {
-            if (Course == null)
-            {
-                return 0;
-            }
-            else return Course.Id;
+            Id = id;
+            Course = course;
+            Teacher = teacher;
+            Date = date;
+            StartTime = startTime;
+            EndTime = endTime;
+            ExamQuestions = examQuestions;
+            StudentExams = studentExams;
+            Courses = courses;
+            CourseId = courseId;
+            Teachers = teachers;
+            TeacherId = teacherId;
         }
 
-        //Used for selected value in the Teacher dropdown
-        public int SelectedValueTeacher()
+        public ExamViewModel(IEnumerable<Course> courses, IEnumerable<Teacher> teachers)
         {
-            if (Teacher == null)
-            {
-                return 0;
-            }
-            else return Teacher.Id;
+            Courses = courses;
+            Teachers = teachers;
+        }
+
+        public ExamViewModel()
+        {
+           
         }
     }
 }
