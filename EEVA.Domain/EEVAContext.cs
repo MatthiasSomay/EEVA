@@ -13,7 +13,7 @@ namespace EEVA.Domain
         {
         }
 
-        public EEVAContext(DbContextOptions options) : base(options)
+        public EEVAContext(DbContextOptions<EEVAContext> options) : base(options)
         {
 
         }

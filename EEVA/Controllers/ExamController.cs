@@ -25,7 +25,7 @@ namespace EEVA.Web.Controllers
         }
 
 
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Admin")]
         public IActionResult Index()
         {
             return View(_examManager.GetAll());
