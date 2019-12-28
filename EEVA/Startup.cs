@@ -13,6 +13,7 @@ using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
 using EEVA.Domain.DataManager;
 using Microsoft.AspNetCore.Identity;
+using EEVA.Web.Data;
 
 namespace EEVA
 {
@@ -63,6 +64,7 @@ namespace EEVA
         {
             
             services.AddDbContext<EEVAContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
+            services.AddDbContext<SecurityContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:EEVA"]));
             services.AddScoped<IDataManager<Exam>, ExamManager>();
             services.AddControllersWithViews();
             services.AddMvc();
