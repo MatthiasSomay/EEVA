@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-    class StudentExamManager : IDataManager<StudentExam>
+    public class StudentExamManager : IDataManager<StudentExam>
     {
         private readonly EEVAContext _eevaContext;
         public StudentExamManager(EEVAContext context)

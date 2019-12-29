@@ -5,6 +5,7 @@ using EEVA.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace EEVA.Web.Controllers
@@ -14,21 +15,29 @@ namespace EEVA.Web.Controllers
         private readonly ExamManager _examManager;
         private readonly CourseManager _courseManager;
         private readonly ContactManager _contactManager;
+        private readonly QuestionManager _questionManager;
 
         public ExamController(EEVAContext context)
         {
             _examManager = new ExamManager(context);
             _courseManager = new CourseManager(context);
             _contactManager = new ContactManager(context);
+            _questionManager = new QuestionManager(context);
         }
 
 
         [Authorize(Roles = "Teacher, Admin")]
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
-
-            IEnumerable<Exam> exams = _examManager.GetAll();
+            ViewData["CurrentFilter"] = searchString;
             List<ExamViewModel> examViewModels = new List<ExamViewModel>();
+            IEnumerable<Exam> exams;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                exams = _examManager.Search(searchString);
+            }
+            else exams = _examManager.GetAll();
 
             foreach (Exam e in exams)
             {
@@ -136,14 +145,14 @@ namespace EEVA.Web.Controllers
             {
                 return NotFound();
             }
-            Exam exam = _examManager.Get(id);
+            ExamViewModel examViewModel = MapToExamViewModel(_examManager.Get(id));
 
-            if (exam == null)
+            if (examViewModel == null)
             {
                 return NotFound();
             }
 
-            return View();
+            return View(examViewModel);
         }
 
         // POST: Exam/Delete/5

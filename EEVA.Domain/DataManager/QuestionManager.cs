@@ -7,10 +7,14 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-    class QuestionManager : IDataManager<Question>
+    public class QuestionManager : IDataManager<Question>
     {
-        private readonly EEVAContext _eevaContext;
+        public EEVAContext _eevaContext;
 
+        public QuestionManager()
+        {
+
+        }
         public QuestionManager(EEVAContext context)
         {
             _eevaContext = context;
