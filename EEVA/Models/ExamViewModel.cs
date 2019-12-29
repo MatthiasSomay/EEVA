@@ -8,10 +8,7 @@ namespace EEVA.Web.Models
 {
     public class ExamViewModel
     {
-        public string Subtitle
-        {
-            get { return $"Details van examen {Course.CourseName} - {Date} '"; }
-        }
+     
         public int Id { get; set; }
         public Course Course { get; set; }
         public Teacher Teacher { get; set; }
