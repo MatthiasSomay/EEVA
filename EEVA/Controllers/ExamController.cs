@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EEVA.Web.Controllers
 {
@@ -27,8 +28,18 @@ namespace EEVA.Web.Controllers
 
 
         [Authorize(Roles = "Teacher, Admin")]
-        public IActionResult Index(string searchString)
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             ViewData["CurrentFilter"] = searchString;
             List<ExamViewModel> examViewModels = new List<ExamViewModel>();
             IEnumerable<Exam> exams;
@@ -44,7 +55,10 @@ namespace EEVA.Web.Controllers
                 examViewModels.Add(MapToExamViewModel(e));
             }
 
-            return View(examViewModels);
+            int pageSize = 8;
+            return View(PaginatedList<ExamViewModel>.Create(examViewModels, pageNumber ?? 1, pageSize));
+
+            //return View(examViewModels);
         }
 
         // GET: Exam/Details/5
