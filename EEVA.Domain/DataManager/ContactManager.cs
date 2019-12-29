@@ -34,41 +34,43 @@ namespace EEVA.Domain.DataManager
 
         public Contact Get(int? id)
         {
-            return _eevaContext.Contacts.FirstOrDefault(c => c.Id == id);
+            Contact contact = _eevaContext.Contacts.FirstOrDefault(c => c.Id == id);
+            contact.FullName = SetFullName(contact);
+            return contact;
         }
 
         public IEnumerable<Contact> GetAll()
         {
-            return _eevaContext.Contacts.ToList();
+            List<Contact> contacts = _eevaContext.Contacts.ToList();
+            foreach (Contact contact in contacts)
+            {
+                contact.FullName = SetFullName(contact);
+            }
+            return contacts;
         }
 
         //Get all Teachers
         //TODO make method generic
         public IEnumerable<Teacher> GetAllTeachers()
-        {            
-            return _eevaContext.Contacts.OfType<Teacher>().ToList();
+        {
+            List<Teacher> teachers = _eevaContext.Contacts.OfType<Teacher>().ToList();
+            foreach (Teacher teacher in teachers)
+            {
+                teacher.FullName = SetFullName(teacher);
+            }
+            return teachers;
+
         }
 
         public IEnumerable<Contact> Search(string keyword)
         {
             keyword = keyword.ToUpper();
-
-            List<Contact> contacts = new List<Contact>();
-
+            
             IEnumerable<Contact> entities = _eevaContext.Contacts
                 .Where(c => c.FirstName.ToUpper().Contains(keyword) || c.LastName.ToUpper().Contains(keyword) || c.Email.ToUpper().Contains(keyword));
-            foreach (var entity in entities)
-            {
-                contacts.Add(new Contact()
-                {
-                    Id = entity.Id,
-                    FirstName = entity.FirstName,
-                    LastName = entity.LastName,
-                    Email = entity.Email,
-                    PhoneNumber = entity.PhoneNumber
-                });
-            }
-            return contacts;
+            
+            return entities.ToList();
+
         }
 
         public void Update(Contact entity)
@@ -79,6 +81,11 @@ namespace EEVA.Domain.DataManager
             dbEntity.Email = entity.Email;
             dbEntity.PhoneNumber = entity.PhoneNumber;
             _eevaContext.SaveChanges();
+        }
+
+        public string SetFullName(Contact contact)
+        {
+            return contact.LastName + " " + contact.FirstName;
         }
     }
 }

@@ -22,18 +22,20 @@ namespace EEVA.Domain.Models
         [Display(Name = "Phonenumber")]
         [Required]
         public string PhoneNumber { get; set; }
+        [NotMapped]
+        public string FullName { get; set; }
 
         public Contact(string firstName, string lastName, string email, string phone)
         {
-           
-            this.FirstName = firstName;
-            this.LastName = lastName;
-            this.Email = email;
-            this.PhoneNumber = phone;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PhoneNumber = phone;
         }
 
         public Contact()
         {
         }
+
     }
 }

@@ -5,20 +5,18 @@ using EEVA.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace EEVA.Web.Controllers
 {
     public class ExamController : Controller
     {
-        private readonly EEVAContext _context;
         private readonly ExamManager _examManager;
         private readonly CourseManager _courseManager;
         private readonly ContactManager _contactManager;
 
         public ExamController(EEVAContext context)
         {
-            _context = context;
             _examManager = new ExamManager(context);
             _courseManager = new CourseManager(context);
             _contactManager = new ContactManager(context);
@@ -28,7 +26,15 @@ namespace EEVA.Web.Controllers
         [Authorize(Roles = "Teacher, Admin")]
         public IActionResult Index()
         {
-            return View(_examManager.GetAll());
+            IEnumerable<Exam> exams = _examManager.GetAll();
+            List<ExamViewModel> examViewModels = new List<ExamViewModel>();
+
+            foreach (Exam e in exams)
+            {
+                examViewModels.Add(MapToExamViewModel(e));
+            }
+
+            return View(examViewModels);
         }
 
         // GET: Exam/Details/5
@@ -39,14 +45,14 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            Exam exam = _examManager.Get(id);
+            ExamViewModel examViewModel = MapToExamViewModel(_examManager.Get(id));
 
-            if (exam == null)
+            if (examViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(exam);
+            return View(examViewModel);
         }
 
         // GET: Exam/Create
@@ -136,7 +142,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            return View(exam);
+            return View();
         }
 
         // POST: Exam/Delete/5
@@ -151,7 +157,11 @@ namespace EEVA.Web.Controllers
 
         private bool ExamExists(int id)
         {
-            return _context.Exams.Any(e => e.Id == id);
+            if (_examManager.Get(id) != null)
+            {
+                return true;
+            }
+            else return false;
         }
 
         //Mapping ExamViewModel to Exam
@@ -179,9 +189,7 @@ namespace EEVA.Web.Controllers
                 exam.ExamQuestions,
                 exam.StudentExams,
                 _courseManager.GetAll(),
-                exam.Course.Id,
-                _contactManager.GetAllTeachers(),
-                exam.Teacher.Id
+                _contactManager.GetAllTeachers()
                 );
         }
 

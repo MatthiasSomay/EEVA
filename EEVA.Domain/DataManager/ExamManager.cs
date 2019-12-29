@@ -1,12 +1,8 @@
 ﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Repository;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EEVA.Domain.DataManager
 {
@@ -36,37 +32,40 @@ namespace EEVA.Domain.DataManager
 
         public Exam Get(int? id)
         {
-            return _eevaContext.Exams.FirstOrDefault(e => e.Id == id);
+            Exam exam = _eevaContext.Exams
+                .Include(Exam => Exam.Teacher)
+                .Include(Exam => Exam.Course)
+                .Include(Exam => Exam.StudentExams)
+                .Include(Exam => Exam.ExamQuestions)
+                .FirstOrDefault(e => e.Id == id);
+            return exam;
         }
 
         public IEnumerable<Exam> GetAll()
         {
-            return _eevaContext.Exams.ToList();
+            return _eevaContext.Exams
+                .Include(Exam => Exam.Teacher)
+                .Include(Exam => Exam.Course)
+                .Include(Exam => Exam.StudentExams)
+                .Include(Exam => Exam.ExamQuestions)
+                .ToList();
         }
 
         public IEnumerable<Exam> Search(string keyword)
         {
             keyword = keyword.ToUpper();
 
-            List<Exam> exams = new List<Exam>();
-
             IEnumerable<Exam> entities = _eevaContext.Exams
-                .Where(e => e.Course.CourseName.ToUpper().Contains(keyword) || e.Teacher.LastName.ToUpper().Contains(keyword) || e.Teacher.FirstName.ToUpper().Contains(keyword));
-            foreach (var entity in entities)
-            {
-                exams.Add(new Exam()
-                {
-                    Id = entity.Id,
-                    Course = entity.Course,
-                    Date = entity.Date,
-                    StartTime = entity.StartTime,
-                    EndTime = entity.EndTime,
-                    ExamQuestions = entity.ExamQuestions,
-                    StudentExams = entity.StudentExams
+                .Include(Exam => Exam.Teacher)
+                .Include(Exam => Exam.Course)
+                .Include(Exam => Exam.StudentExams)
+                .Include(Exam => Exam.ExamQuestions)
+                .Where(e => e.Course.CourseName.ToUpper()
+                .Contains(keyword) || e.Teacher.LastName.ToUpper()
+                .Contains(keyword) || e.Teacher.FirstName.ToUpper()
+                .Contains(keyword));
 
-                });
-            }
-            return exams;
+            return new List<Exam>(entities);
         }
 
         public void Update(Exam entity)
