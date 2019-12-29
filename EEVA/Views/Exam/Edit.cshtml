@@ -37,15 +37,14 @@
                 <label asp-for="Course" class="control-label"></label>
                 <br />
                 @Html.DropDownListFor(m => m.CourseId,
-                new SelectList(Model.Courses, "Id", "CourseName", Model.CourseId),
-                "-- Select --")
+                new SelectList(Model.Courses, "Id", "CourseName", Model.CourseId), "-- Select --", new { @class = "form-control"  })
             </div>
             <div class="form-group">
                 <label asp-for="Teacher" class="control-label"></label>
                 <br />
                 @Html.DropDownListFor(m => m.TeacherId,
-                new SelectList(Model.Teachers, "Id", "FullName", Model.TeacherId),
-                "-- Select --")
+                new SelectList(Model.Teachers, "Id", "FullName", Model.TeacherId), "-- Select --", new { @class = "form-control"  })
+               
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

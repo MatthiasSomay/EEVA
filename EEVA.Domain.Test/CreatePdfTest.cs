@@ -14,8 +14,8 @@ namespace EEVA.Domain.Test
         {
             List<Tuple<int, string, string, string, string>> testData = new List<Tuple<int, string, string, string, string>>()
             {
-                new Tuple<int, string, string, string, string>(1, "Vraag ", "Antwoord 1", "Antwoord 2", "Antwoord 3"),
-                new Tuple<int, string, string, string, string>(2, "Vraag 2", "Antwoord 1", "Antwoord 2", "Antwoord 3")
+                new Tuple<int, string, string, string, string>(1, "Question", "Answer 1", "Answer 2", "Answer 3"),
+                new Tuple<int, string, string, string, string>(2, "Question", "Answer 1", "Answer 2", "Answer 3")
             };
 
             string outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
