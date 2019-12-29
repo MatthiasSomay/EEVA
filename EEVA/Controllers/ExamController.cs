@@ -26,6 +26,7 @@ namespace EEVA.Web.Controllers
         [Authorize(Roles = "Teacher, Admin")]
         public IActionResult Index()
         {
+
             IEnumerable<Exam> exams = _examManager.GetAll();
             List<ExamViewModel> examViewModels = new List<ExamViewModel>();
 
