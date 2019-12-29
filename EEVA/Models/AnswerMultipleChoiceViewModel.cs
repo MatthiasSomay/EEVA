@@ -8,10 +8,7 @@ namespace EEVA.Web.Models
 {
     public class AnswerMultipleChoiceViewModel
     {
-        public string Subtitle
-        {
-            get { return $"Details van '{Question.QuestionPhrase}'"; }
-        }
+       
         public Question Question { get; set; }
         public string Answer { get; set; }
     }

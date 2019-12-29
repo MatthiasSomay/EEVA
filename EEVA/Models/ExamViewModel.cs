@@ -13,7 +13,7 @@ namespace EEVA.Web.Models
         //TODO annotation doesn't work editable
         [ReadOnly(true)]
         [Display(Name = "Id")]
-        public int Id { get; set; }
+        public int Id { get; private set; }
 
         [Display(Name = "Course")]
         public Course Course { get; set; }

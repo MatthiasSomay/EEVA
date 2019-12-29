@@ -8,11 +8,7 @@ namespace EEVA.Web.Models
 {
     public class CourseViewModel
     {
-        public string Subtitle
-        {
-            get { return $"Details van {CourseName} - {CourseYear}"; }
-        }
-
+       
         public int Id { get; set; }
         public string CourseName { get; set; }
         public string CourseYear { get; set; }

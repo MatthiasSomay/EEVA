@@ -8,10 +8,7 @@ namespace EEVA.Web.Models
 {
     public class AnswerOpenViewModel
     {
-        public string Subtitle
-        {
-            get { return $"Details van '{Question.QuestionPhrase}'"; }
-        }
+      
         public Question Question { get; set; }
         public IEnumerable<string> Keywords { get; set; }
     }
