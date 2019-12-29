@@ -14,12 +14,14 @@ namespace EEVA.Web.Controllers
         private readonly ExamManager _examManager;
         private readonly CourseManager _courseManager;
         private readonly ContactManager _contactManager;
+        private readonly QuestionManager _questionManager;
 
         public ExamController(EEVAContext context)
         {
             _examManager = new ExamManager(context);
             _courseManager = new CourseManager(context);
             _contactManager = new ContactManager(context);
+            _questionManager = new QuestionManager(context);
         }
 
 
@@ -40,6 +42,8 @@ namespace EEVA.Web.Controllers
         // GET: Exam/Details/5
         public IActionResult Details(int? id)
         {
+            //testing remove
+            IEnumerable<Question> list = _questionManager.GetAll();
             if (id == null)
             {
                 return NotFound();
@@ -135,14 +139,14 @@ namespace EEVA.Web.Controllers
             {
                 return NotFound();
             }
-            Exam exam = _examManager.Get(id);
+            ExamViewModel examViewModel = MapToExamViewModel(_examManager.Get(id));
 
-            if (exam == null)
+            if (examViewModel == null)
             {
                 return NotFound();
             }
 
-            return View();
+            return View(examViewModel);
         }
 
         // POST: Exam/Delete/5

@@ -10,6 +10,7 @@ namespace EEVA.Web.Models
 {
     public class ExamViewModel
     {
+        //TODO annotation doesn't work editable
         [ReadOnly(true)]
         [Display(Name = "Id")]
         public int Id { get; set; }

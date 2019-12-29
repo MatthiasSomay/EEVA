@@ -52,3 +52,34 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamQuestions.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamQuestions.FirstOrDefault().QuestionPhrase)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.ExamQuestions.Count() > 0)
+            @foreach (var item in Model.ExamQuestions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionPhrase)
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+
+

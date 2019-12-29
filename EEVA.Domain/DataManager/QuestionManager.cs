@@ -7,10 +7,14 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-    class QuestionManager : IDataManager<Question>
+    public class QuestionManager : IDataManager<Question>
     {
-        private readonly EEVAContext _eevaContext;
+        public EEVAContext _eevaContext;
 
+        public QuestionManager()
+        {
+
+        }
         public QuestionManager(EEVAContext context)
         {
             _eevaContext = context;
@@ -34,6 +38,8 @@ namespace EEVA.Domain.DataManager
 
         public IEnumerable<Question> GetAll()
         {
+            //testing remove
+            IEnumerable<Question> l = _eevaContext.Questions.ToList();
             return _eevaContext.Questions.ToList();
         }
 
