@@ -5,6 +5,7 @@ using EEVA.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace EEVA.Web.Controllers
@@ -26,10 +27,17 @@ namespace EEVA.Web.Controllers
 
 
         [Authorize(Roles = "Teacher, Admin")]
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
-            IEnumerable<Exam> exams = _examManager.GetAll();
+            ViewData["CurrentFilter"] = searchString;
             List<ExamViewModel> examViewModels = new List<ExamViewModel>();
+            IEnumerable<Exam> exams;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                exams = _examManager.Search(searchString);
+            }
+            else exams = _examManager.GetAll();
 
             foreach (Exam e in exams)
             {
@@ -42,8 +50,6 @@ namespace EEVA.Web.Controllers
         // GET: Exam/Details/5
         public IActionResult Details(int? id)
         {
-            //testing remove
-            IEnumerable<Question> list = _questionManager.GetAll();
             if (id == null)
             {
                 return NotFound();

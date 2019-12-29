@@ -38,8 +38,6 @@ namespace EEVA.Domain.DataManager
 
         public IEnumerable<Question> GetAll()
         {
-            //testing remove
-            IEnumerable<Question> l = _eevaContext.Questions.ToList();
             return _eevaContext.Questions.ToList();
         }
 
