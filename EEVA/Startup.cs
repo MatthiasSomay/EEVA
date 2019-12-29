@@ -23,7 +23,7 @@ namespace EEVA
         {
             Configuration = configuration;
         }
-
+        
         readonly string[] ROLES = new string[] { "Admin", "Teacher", "Student" };
         // Gebaseerd op https://dotnetdetail.net/role-based-authorization-in-asp-net-core-3-0/
         private async Task CreateRoles(IServiceProvider serviceProvider)
