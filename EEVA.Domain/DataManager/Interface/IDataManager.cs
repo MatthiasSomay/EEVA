@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EEVA.Domain.Models.Repository
+namespace EEVA.Domain.Models.Interface
 {
     public interface IDataManager<TEntity>
     {

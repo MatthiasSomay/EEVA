@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EEVA.Domain.Test\EEVA.Domain.Test.csproj" />
     <ProjectReference Include="..\EEVA.Domain\EEVA.Domain.csproj" />
   </ItemGroup>
 

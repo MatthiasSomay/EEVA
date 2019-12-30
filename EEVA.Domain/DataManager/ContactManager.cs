@@ -1,5 +1,5 @@
 ﻿using EEVA.Domain.Models;
-using EEVA.Domain.Models.Repository;
+using EEVA.Domain.Models.Interface;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
