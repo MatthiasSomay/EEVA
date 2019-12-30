@@ -30,7 +30,6 @@ namespace EEVA.Domain.Test
 
             List<Contact> contacts = manager.Search("ken").ToList();
            
-
             Assert.IsNotNull(contacts);
             Assert.IsTrue(contacts.Count > 0);
         }
