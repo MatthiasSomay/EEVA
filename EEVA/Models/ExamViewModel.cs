@@ -3,14 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EEVA.Web.Models
 {
     public class ExamViewModel
     {
-        //TODO annotation doesn't work editable
         [ReadOnly(true)]
         [Display(Name = "Id")]
         public int Id { get; private set; }
@@ -29,8 +26,7 @@ namespace EEVA.Web.Models
 
         [Display(Name = "Exam Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Date { get; set; }
+         public DateTime Date { get; set; }
 
         [Display(Name = "Start Time")]
         [DataType(DataType.Time)]

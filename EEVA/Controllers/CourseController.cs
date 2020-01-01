@@ -7,40 +7,75 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EEVA.Domain;
 using EEVA.Domain.Models;
+using EEVA.Domain.DataManager;
+using Microsoft.AspNetCore.Authorization;
+using EEVA.Web.Models;
 
 namespace EEVA.Web.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly EEVAContext _context;
+        private readonly ExamManager _examManager;
+        private readonly CourseManager _courseManager;
+        private readonly ContactManager _contactManager;
+        private readonly QuestionManager _questionManager;
 
         public CourseController(EEVAContext context)
         {
-            _context = context;
+            _examManager = new ExamManager(context);
+            _courseManager = new CourseManager(context);
+            _contactManager = new ContactManager(context);
+            _questionManager = new QuestionManager(context);
         }
 
         // GET: Course
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "Teacher, Admin")]
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
-            return View(await _context.Courses.ToListAsync());
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+            List<CourseViewModel> courseViewModels = new List<CourseViewModel>();
+            IEnumerable<Course> courses;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                courses = _courseManager.Search(searchString);
+            }
+            else courses = _courseManager.GetAll();
+
+            foreach (Course c in courses)
+            {
+                courseViewModels.Add(MapToCourseViewModel(c));
+            }
+
+            int pageSize = 8;
+            return View(PaginatedList<CourseViewModel>.Create(courseViewModels, pageNumber ?? 1, pageSize));
         }
 
         // GET: Course/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
+            CourseViewModel courseViewModel = MapToCourseViewModel(_courseManager.Get(id));
+
+            if (courseViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(courseViewModel);
         }
 
         // GET: Course/Create
@@ -54,31 +89,35 @@ namespace EEVA.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CourseName,CourseYear")] Course course)
+        public IActionResult Create([Bind("Id,CourseName,CourseYear")] CourseViewModel courseViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
-                await _context.SaveChangesAsync();
+                Course course = MapToCourse(courseViewModel);
+                _courseManager.Add(course);
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            return View(courseViewModel);
         }
 
         // GET: Course/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var course = await _context.Courses.FindAsync(id);
+            Course course = _courseManager.Get(id);
             if (course == null)
             {
                 return NotFound();
             }
-            return View(course);
+            else
+            {
+                CourseViewModel courseViewModel = MapToCourseViewModel(course);
+                return View(courseViewModel);
+            }
         }
 
         // POST: Course/Edit/5
@@ -86,9 +125,9 @@ namespace EEVA.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CourseName,CourseYear")] Course course)
+        public IActionResult Edit(int id, [Bind("Id,CourseName,CourseYear")] CourseViewModel courseViewModel)
         {
-            if (id != course.Id)
+            if (id != courseViewModel.Id)
             {
                 return NotFound();
             }
@@ -97,12 +136,12 @@ namespace EEVA.Web.Controllers
             {
                 try
                 {
-                    _context.Update(course);
-                    await _context.SaveChangesAsync();
+                    Course course = MapToCourse(courseViewModel);
+                    _courseManager.Update(course);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.Id))
+                    if (!CourseExists(courseViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -113,41 +152,57 @@ namespace EEVA.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            return View();
         }
 
         // GET: Course/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            CourseViewModel courseViewModel = MapToCourseViewModel(_courseManager.Get(id));
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
+            if (courseViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(courseViewModel);
         }
 
         // POST: Course/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
+            Course course = _courseManager.Get(id);
+            _courseManager.Delete(course);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CourseExists(int id)
         {
-            return _context.Courses.Any(e => e.Id == id);
+            if (_courseManager.Get(id) != null)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        //Mapping Course to CourseViewModel
+        private CourseViewModel MapToCourseViewModel(Course c)
+        {
+            //Todo
+            return new CourseViewModel();
+        }
+
+        //Mapping CourseViewModel to Course
+        private Course MapToCourse(CourseViewModel courseViewModel)
+        {
+            //Todo
+            return new Course();
         }
     }
 }

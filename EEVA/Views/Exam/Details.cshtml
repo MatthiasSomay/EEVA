@@ -54,42 +54,85 @@
 </div>
 <div>
     <br />
+    <br />
     <h5>Related Exam Questions</h5>
 </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExamQuestions.FirstOrDefault().Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ExamQuestions.FirstOrDefault().QuestionPhrase)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamQuestions.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExamQuestions.FirstOrDefault().QuestionPhrase)
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+    <tbody>
 
-            @if (Model.ExamQuestions.Count() > 0)
-                @foreach (var item in Model.ExamQuestions)
-                {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QuestionPhrase)
-                </td>
-                <td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-                </td>
-            </tr>
-                }
-        </tbody>
-    </table>
+        @if (Model.ExamQuestions.Count() > 0)
+            @foreach (var item in Model.ExamQuestions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionPhrase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetType().Name)
+                    </td>
+                    <td>
+                        <a asp-action="QuestionEdit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="QuestionDetails" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+<div>
+    <br />
+    <h5>Related Exams</h5>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentExams.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentExams.FirstOrDefault().Student.FullName)
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.ExamQuestions.Count() > 0)
+            @foreach (var item in Model.StudentExams)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentExamAnswers)
+                    </td>
+                    <td>
+                        <a asp-action="StudentExamDetails" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
 
 

@@ -26,11 +26,10 @@ namespace EEVA.Web.Controllers
             _questionManager = new QuestionManager(context);
         }
 
-
+        // GET: Exam
         [Authorize(Roles = "Teacher, Admin")]
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
-
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -57,8 +56,6 @@ namespace EEVA.Web.Controllers
 
             int pageSize = 8;
             return View(PaginatedList<ExamViewModel>.Create(examViewModels, pageNumber ?? 1, pageSize));
-
-            //return View(examViewModels);
         }
 
         // GET: Exam/Details/5
@@ -179,6 +176,25 @@ namespace EEVA.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Redirect to the related details of a Question
+        public ActionResult QuestionDetails(int? id)
+        {
+            return RedirectToAction("Details", "Question", new { id });
+        }
+
+        // Redirect to edit Question
+        public ActionResult QuestionEdit (int? id)
+        {
+            return RedirectToAction("Edit", "Question", new { id });
+        }
+
+        // Redirect to the related details of a StudentExam
+        public ActionResult StudentExamDetails(int? id)
+        {
+            return RedirectToAction("Edit", "StudentExam", new { id });
+        }
+
+
         private bool ExamExists(int id)
         {
             if (_examManager.Get(id) != null)
@@ -187,7 +203,7 @@ namespace EEVA.Web.Controllers
             }
             else return false;
         }
-
+        
         //Mapping ExamViewModel to Exam
         private Exam MapToExam(ExamViewModel examViewModel)
         {
