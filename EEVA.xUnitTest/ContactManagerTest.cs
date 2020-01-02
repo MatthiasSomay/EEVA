@@ -14,7 +14,9 @@ namespace EEVA.xUnitTest
     public class ContactManagerTest : IDisposable
     {
         private readonly ContactManager _manager = new ContactManager();
-     
+        private Teacher TEACHER = new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" };
+
+
         public ContactManagerTest()
         {
             var serviceProvider = new ServiceCollection()
@@ -33,7 +35,7 @@ namespace EEVA.xUnitTest
         [Fact]
         public void AddContact_Test()
         {
-            _manager.Add(new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" });
+            _manager.Add(TEACHER);
 
             IList<Contact> contacts = _manager.GetAll().ToList();
 
@@ -46,7 +48,7 @@ namespace EEVA.xUnitTest
         [Fact]
         public void DeleteContact_Test()
         {
-            _manager.Add(new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" });
+            _manager.Add(TEACHER);
 
 
             IList<Contact> contacts = _manager.GetAll().ToList();
@@ -65,7 +67,7 @@ namespace EEVA.xUnitTest
         [Fact]
         public void GetContact_Test()
         {
-            _manager.Add(new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" });
+            _manager.Add(TEACHER);
 
             Contact contact = _manager.Get(1);
 
@@ -76,18 +78,18 @@ namespace EEVA.xUnitTest
         [Fact]
         public void GetAllContacts_Test()
         {
-            _manager.Add(new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" });
+            _manager.Add(TEACHER);
             _manager.Add(new Student { FirstName = "Matthias", LastName = "Somay", FullName = "Matthias Somay", Email = "somay@gmail.com", PhoneNumber = "04768282929" });
 
             IList<Contact> contacts = _manager.GetAll().ToList();
 
-            Assert.True(contacts.Count == 2);
+            Assert.Equal(2, contacts.Count);
         }
 
         [Fact]
         public void SearchContacts_Test()
         {
-            _manager.Add(new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" });
+            _manager.Add(TEACHER);
 
             IList<Contact> contacts = _manager.Search("ken").ToList();
 
@@ -97,7 +99,7 @@ namespace EEVA.xUnitTest
         [Fact]
         public void UpdateContact_Test()
         {
-            _manager.Add(new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" });
+            _manager.Add(TEACHER);
 
             IList<Contact> contacts = _manager.GetAll().ToList();
             Contact contact = contacts.First();
