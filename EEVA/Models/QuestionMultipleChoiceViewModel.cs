@@ -8,17 +8,15 @@ using System.Threading.Tasks;
 
 namespace EEVA.Web.Models
 {
-    public class QuestionMultipleChoiceViewModel
+    public class QuestionMultipleChoiceViewModel : QuestionViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [Display(Name = "Question Phrase")]
-        [Required]
-        public string QuestionPhrase { get; set; }
-
+ 
         [Display(Name = "Answers")]
         public IEnumerable<AnswerMultipleChoice> Answers { get; set; }
+
+        public QuestionMultipleChoiceViewModel(int id, string questionPhrase, List<AnswerMultipleChoice> answers) : base(id, questionPhrase)
+        {
+            Answers = answers;
+        }
     }
 }

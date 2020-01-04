@@ -36,6 +36,20 @@ namespace EEVA.Domain.DataManager
             return _eevaContext.Questions.FirstOrDefault(q => q.Id == id);
         }
 
+        public QuestionMultipleChoice GetMultipleChoice(int? id)
+        {
+            return _eevaContext.Questions
+                .OfType<QuestionMultipleChoice>()
+                .FirstOrDefault(q => q.Id == id);
+        }
+
+        public QuestionOpen GetOpen(int? id)
+        {
+            return _eevaContext.Questions
+                .OfType<QuestionOpen>()
+                .FirstOrDefault(q => q.Id == id);
+        }
+
         public IEnumerable<Question> GetAll()
         {
             return _eevaContext.Questions.ToList();
