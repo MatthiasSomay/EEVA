@@ -14,6 +14,5 @@ namespace EEVA.Domain.Models
         [Required]
         public string QuestionPhrase { get; set; }
 
-        public List<Answer> Answers { get; set; }
     }
 }

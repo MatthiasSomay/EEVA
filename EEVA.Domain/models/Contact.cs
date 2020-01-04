@@ -27,6 +27,7 @@ namespace EEVA.Domain.Models
         [Required]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "Name")]
         [NotMapped]
         public string FullName
         {

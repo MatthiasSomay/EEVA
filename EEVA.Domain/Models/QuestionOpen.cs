@@ -6,5 +6,6 @@ namespace EEVA.Domain.Models
 {
     public class QuestionOpen : Question
     {
+        public List<AnswerOpen> Answers { get; set; }
     }
 }

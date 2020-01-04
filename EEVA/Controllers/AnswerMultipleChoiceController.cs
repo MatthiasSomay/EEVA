@@ -10,22 +10,22 @@ using EEVA.Domain.Models;
 
 namespace EEVA.Web.Controllers
 {
-    public class QuestionController : Controller
+    public class AnswerMultipleChoiceController : Controller
     {
         private readonly EEVAContext _context;
 
-        public QuestionController(EEVAContext context)
+        public AnswerMultipleChoiceController(EEVAContext context)
         {
             _context = context;
         }
 
-        // GET: Question
+        // GET: AnswerMultipleChoice
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions.ToListAsync());
+            return View(await _context.AnswersMultipleChoice.ToListAsync());
         }
 
-        // GET: Question/Details/5
+        // GET: AnswerMultipleChoice/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
+            var answerMultipleChoice = await _context.AnswersMultipleChoice
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (answerMultipleChoice == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(answerMultipleChoice);
         }
 
-        // GET: Question/Create
+        // GET: AnswerMultipleChoice/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Question/Create
+        // POST: AnswerMultipleChoice/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,QuestionPhrase")] Question question)
+        public async Task<IActionResult> Create([Bind("Answer,IsAnswerCorrect,Id")] AnswerMultipleChoice answerMultipleChoice)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(question);
+                _context.Add(answerMultipleChoice);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(question);
+            return View(answerMultipleChoice);
         }
 
-        // GET: Question/Edit/5
+        // GET: AnswerMultipleChoice/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.FindAsync(id);
-            if (question == null)
+            var answerMultipleChoice = await _context.AnswersMultipleChoice.FindAsync(id);
+            if (answerMultipleChoice == null)
             {
                 return NotFound();
             }
-            return View(question);
+            return View(answerMultipleChoice);
         }
 
-        // POST: Question/Edit/5
+        // POST: AnswerMultipleChoice/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,QuestionPhrase")] Question question)
+        public async Task<IActionResult> Edit(int id, [Bind("Answer,IsAnswerCorrect,Id")] AnswerMultipleChoice answerMultipleChoice)
         {
-            if (id != question.Id)
+            if (id != answerMultipleChoice.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace EEVA.Web.Controllers
             {
                 try
                 {
-                    _context.Update(question);
+                    _context.Update(answerMultipleChoice);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!QuestionExists(question.Id))
+                    if (!AnswerMultipleChoiceExists(answerMultipleChoice.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace EEVA.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(question);
+            return View(answerMultipleChoice);
         }
 
-        // GET: Question/Delete/5
+        // GET: AnswerMultipleChoice/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
+            var answerMultipleChoice = await _context.AnswersMultipleChoice
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
+            if (answerMultipleChoice == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(answerMultipleChoice);
         }
 
-        // POST: Question/Delete/5
+        // POST: AnswerMultipleChoice/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var question = await _context.Questions.FindAsync(id);
-            _context.Questions.Remove(question);
+            var answerMultipleChoice = await _context.AnswersMultipleChoice.FindAsync(id);
+            _context.AnswersMultipleChoice.Remove(answerMultipleChoice);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool QuestionExists(int id)
+        private bool AnswerMultipleChoiceExists(int id)
         {
-            return _context.Questions.Any(e => e.Id == id);
+            return _context.AnswersMultipleChoice.Any(e => e.Id == id);
         }
     }
 }
