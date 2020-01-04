@@ -23,5 +23,19 @@ namespace EEVA.Domain.Models
         public List<Question> Questions { get; set; }
 
         public List<Exam> Exams { get; set; }
+
+        public Course(int id, string courseName, string courseYear, List<Question> questions, List<Exam> exams)
+        {
+            Id = id;
+            CourseName = courseName;
+            CourseYear = courseYear;
+            Questions = questions;
+            Exams = exams;
+        }
+
+        public Course()
+        {
+
+        }
     }
 }

@@ -14,8 +14,7 @@ namespace EEVA.xUnitTest
     public class ContactManagerTest : IDisposable
     {
         private readonly ContactManager _manager = new ContactManager();
-        private Teacher TEACHER = new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", FullName = "Kenneth Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" };
-
+        private Teacher TEACHER = new Teacher { FirstName = "Kenneth", LastName = "Van Den Borne", Email = "kenneth@gmail.com", PhoneNumber = "03893843949" };
 
         public ContactManagerTest()
         {
@@ -79,7 +78,7 @@ namespace EEVA.xUnitTest
         public void GetAllContacts_Test()
         {
             _manager.Add(TEACHER);
-            _manager.Add(new Student { FirstName = "Matthias", LastName = "Somay", FullName = "Matthias Somay", Email = "somay@gmail.com", PhoneNumber = "04768282929" });
+            _manager.Add(new Student { FirstName = "Matthias", LastName = "Somay", Email = "somay@gmail.com", PhoneNumber = "04768282929" });
 
             IList<Contact> contacts = _manager.GetAll().ToList();
 
