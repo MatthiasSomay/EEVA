@@ -50,6 +50,17 @@ namespace EEVA.Domain.DataManager
                 .ToList();
         }
 
+        public IEnumerable<Exam> GetExamssOfTeacher(int teacherId)
+        {
+
+            return _eevaContext.Exams
+               .Include(Exam => Exam.Teacher)
+               .Include(Exam => Exam.Course)
+               .Where(E => E.Teacher.Id == teacherId).ToList();
+           
+
+        }
+
         public IEnumerable<Exam> Search(string keyword)
         {
             keyword = keyword.ToUpper();

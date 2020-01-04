@@ -43,7 +43,7 @@ namespace EEVA.Web.Controllers
             List<ExamViewModel> examViewModels = new List<ExamViewModel>();
             IEnumerable<Exam> exams;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 exams = _examManager.Search(searchString);
             }
@@ -61,7 +61,7 @@ namespace EEVA.Web.Controllers
         // GET: Exam/Details/5
         public IActionResult Details(int? id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -99,7 +99,7 @@ namespace EEVA.Web.Controllers
         // GET: Exam/Edit/5
         public IActionResult Edit(int? id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -152,7 +152,7 @@ namespace EEVA.Web.Controllers
         // GET: Exam/Delete/5
         public IActionResult Delete(int? id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }

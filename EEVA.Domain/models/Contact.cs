@@ -37,12 +37,13 @@ namespace EEVA.Domain.Models
             }
         }
 
-        public Contact(string firstName, string lastName, string email, string phone)
+        public Contact(int id, string firstName, string lastName, string email, string phoneNumber)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            PhoneNumber = phone;
+            Id = id;
+            FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+            LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+            PhoneNumber = phoneNumber ?? throw new ArgumentNullException(nameof(phoneNumber));
         }
 
         public Contact()

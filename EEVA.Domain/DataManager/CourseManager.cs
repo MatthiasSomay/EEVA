@@ -39,7 +39,7 @@ namespace EEVA.Domain.DataManager
                 .Include(Course => Course.Exams)
                 .Include(Course => Course.Exams).ThenInclude(Exam => Exam.Teacher)
                 .FirstOrDefault(c => c.Id == id);
-        }
+        } 
 
         public IEnumerable<Course> GetAll()
         {
@@ -49,6 +49,8 @@ namespace EEVA.Domain.DataManager
                 .Include(Course => Course.Exams).ThenInclude(Exam => Exam.Teacher)
                 .ToList();
         }
+
+       
 
         public IEnumerable<Course> Search(string keyword)
         {
