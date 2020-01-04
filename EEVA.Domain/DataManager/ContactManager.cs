@@ -10,7 +10,7 @@ namespace EEVA.Domain.DataManager
 {
     public class ContactManager : IDataManager<Contact>
     {
-        private readonly EEVAContext _eevaContext;
+        public EEVAContext _eevaContext;
 
         public ContactManager()
         {
