@@ -10,7 +10,7 @@ namespace EEVA.Web.Models
     {
         [ReadOnly(true)]
         [Display(Name = "Id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         [Display(Name = "Course")]
         public Course Course { get; set; }

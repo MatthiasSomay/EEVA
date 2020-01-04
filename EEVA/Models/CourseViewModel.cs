@@ -1,10 +1,8 @@
 ﻿using EEVA.Domain.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEVA.Web.Models
 {
@@ -29,6 +27,15 @@ namespace EEVA.Web.Models
         public CourseViewModel()
         {
             
+        }
+
+        public CourseViewModel(int id, string courseName, string courseYear, List<Question> questions, List<Exam> exams)
+        {
+            Id = id;
+            CourseName = courseName;
+            CourseYear = courseYear;
+            Questions = questions;
+            Exams = exams;
         }
     }
 }

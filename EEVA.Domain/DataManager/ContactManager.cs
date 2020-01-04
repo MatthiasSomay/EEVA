@@ -34,43 +34,30 @@ namespace EEVA.Domain.DataManager
 
         public Contact Get(int? id)
         {
-            Contact contact = _eevaContext.Contacts.FirstOrDefault(c => c.Id == id);
-            contact.FullName = SetFullName(contact);
-            return contact;
+            return _eevaContext.Contacts.FirstOrDefault(c => c.Id == id);
         }
 
         public IEnumerable<Contact> GetAll()
         {
-            List<Contact> contacts = _eevaContext.Contacts.ToList();
-            foreach (Contact contact in contacts)
-            {
-                contact.FullName = SetFullName(contact);
-            }
-            return contacts;
+            return _eevaContext.Contacts.ToList();
         }
 
         //Get all Teachers
         //TODO make method generic
         public IEnumerable<Teacher> GetAllTeachers()
         {
-            List<Teacher> teachers = _eevaContext.Contacts.OfType<Teacher>().ToList();
-            foreach (Teacher teacher in teachers)
-            {
-                teacher.FullName = SetFullName(teacher);
-            }
-            return teachers;
-
+            return _eevaContext.Contacts.OfType<Teacher>().ToList();
         }
 
         public IEnumerable<Contact> Search(string keyword)
         {
             keyword = keyword.ToUpper();
             
-            IEnumerable<Contact> entities = _eevaContext.Contacts
-                .Where(c => c.FirstName.ToUpper().Contains(keyword) || c.LastName.ToUpper().Contains(keyword) || c.Email.ToUpper().Contains(keyword));
-            
-            return entities.ToList();
-
+            return _eevaContext.Contacts
+                .Where(c => c.FirstName.ToUpper()
+                .Contains(keyword) || c.LastName.ToUpper()
+                .Contains(keyword) || c.Email.ToUpper()
+                .Contains(keyword)).ToList();
         }
 
         public void Update(Contact entity)

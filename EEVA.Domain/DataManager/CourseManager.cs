@@ -1,5 +1,6 @@
 ﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,34 +34,34 @@ namespace EEVA.Domain.DataManager
 
         public Course Get(int? id)
         {
-            return _eevaContext.Courses.FirstOrDefault(c => c.Id == id);
+            return _eevaContext.Courses
+                .Include(Course => Course.Questions)
+                .Include(Course => Course.Exams)
+                .Include(Course => Course.Exams).ThenInclude(Exam => Exam.Teacher)
+                .FirstOrDefault(c => c.Id == id);
         }
 
         public IEnumerable<Course> GetAll()
         {
-            return _eevaContext.Courses.ToList();
+            return _eevaContext.Courses
+                .Include(Course => Course.Questions)
+                .Include(Course => Course.Exams)
+                .Include(Course => Course.Exams).ThenInclude(Exam => Exam.Teacher)
+                .ToList();
         }
 
         public IEnumerable<Course> Search(string keyword)
         {
             keyword = keyword.ToUpper();
 
-            List<Course> courses = new List<Course>();
-
             IEnumerable<Course> entities = _eevaContext.Courses
-                .Where(c => c.CourseName.ToUpper().Contains(keyword));
-            foreach (var entity in entities)
-            {
-                courses.Add(new Course()
-                {
-                    Id = entity.Id,
-                    CourseName = entity.CourseName,
-                    CourseYear = entity.CourseYear,
-                    Exams = entity.Exams,
-                    Questions = entity.Questions
-                });
-            }
-            return courses;
+                .Include(Course => Course.Questions)
+                .Include(Course => Course.Exams)
+                .Include(Course => Course.Exams).ThenInclude(Exam => Exam.Teacher)
+                .Where(c => c.CourseName.ToUpper()
+                .Contains(keyword));
+
+            return entities;
         }
 
         public void Update(Course entity)

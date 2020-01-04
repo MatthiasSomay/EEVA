@@ -81,7 +81,7 @@ namespace EEVA.Web.Controllers
         // GET: Course/Create
         public IActionResult Create()
         {
-            return View();
+            return View(NewCourseViewModel());
         }
 
         // POST: Course/Create
@@ -182,6 +182,30 @@ namespace EEVA.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Redirect to the related details of a Question
+        public ActionResult QuestionDetails(int? id)
+        {
+            return RedirectToAction("Details", "Question", new { id });
+        }
+
+        // Redirect to edit Question
+        public ActionResult QuestionEdit(int? id)
+        {
+            return RedirectToAction("Edit", "Question", new { id });
+        }
+
+        // Redirect to the related details of an Exam
+        public ActionResult ExamDetails(int? id)
+        {
+            return RedirectToAction("Details", "Exam", new { id });
+        }
+
+        // Redirect to edit Exam
+        public ActionResult ExamEdit(int? id)
+        {
+            return RedirectToAction("Edit", "Exam", new { id });
+        }
+
         private bool CourseExists(int id)
         {
             if (_courseManager.Get(id) != null)
@@ -194,15 +218,30 @@ namespace EEVA.Web.Controllers
         //Mapping Course to CourseViewModel
         private CourseViewModel MapToCourseViewModel(Course c)
         {
-            //Todo
-            return new CourseViewModel();
+            return new CourseViewModel(
+                c.Id,
+                c.CourseName,
+                c.CourseYear,
+                c.Questions,
+                c.Exams);
         }
 
         //Mapping CourseViewModel to Course
         private Course MapToCourse(CourseViewModel courseViewModel)
         {
-            //Todo
-            return new Course();
+            return new Course(
+                courseViewModel.Id,
+                courseViewModel.CourseName,
+                courseViewModel.CourseYear,
+                courseViewModel.Questions,
+                courseViewModel.Exams
+                );
+        }
+
+        //Creating blank CourseViewModel
+        private CourseViewModel NewCourseViewModel()
+        {
+            return new CourseViewModel();
         }
     }
 }

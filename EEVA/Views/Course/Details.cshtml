@@ -1,4 +1,4 @@
-﻿@model EEVA.Domain.Models.Course
+﻿@model EEVA.Web.Models.CourseViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,16 +10,22 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CourseName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CourseName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CourseYear)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CourseYear)
         </dd>
     </dl>
@@ -28,3 +34,103 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<div>
+    <br />
+    <br />
+    <h5>Related Questions</h5>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Questions.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Questions.FirstOrDefault().QuestionPhrase)
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.Questions.Count() > 0)
+            @foreach (var item in Model.Questions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionPhrase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetType().Name)
+                    </td>
+                    <td>
+                        <a asp-action="QuestionEdit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="QuestionDetails" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+<div>
+    <h5>Related Exams</h5>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Exams.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exams.FirstOrDefault().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exams.FirstOrDefault().StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exams.FirstOrDefault().EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exams.FirstOrDefault().Course.CourseName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exams.FirstOrDefault().Teacher.FullName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.Questions.Count() > 0)
+            @foreach (var item in Model.Exams)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Teacher.FullName)
+            </td>
+            <td>
+                <a asp-action="ExamEdit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="ExamDetails" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+            }
+    </tbody>
+</table>

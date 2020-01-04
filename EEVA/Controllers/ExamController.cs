@@ -233,6 +233,7 @@ namespace EEVA.Web.Controllers
                 );
         }
 
+        //Creating blank ExamViewModel for dropdown list initialization
         private ExamViewModel NewExamViewModel()
         {
             return new ExamViewModel(

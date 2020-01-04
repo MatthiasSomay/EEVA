@@ -32,13 +32,12 @@ namespace EEVA.Domain.DataManager
 
         public Exam Get(int? id)
         {
-            Exam exam = _eevaContext.Exams
+            return _eevaContext.Exams
                 .Include(Exam => Exam.Teacher)
                 .Include(Exam => Exam.Course)
                 .Include(Exam => Exam.StudentExams)
                 .Include(Exam => Exam.ExamQuestions)
                 .FirstOrDefault(e => e.Id == id);
-            return exam;
         }
 
         public IEnumerable<Exam> GetAll()
@@ -55,7 +54,7 @@ namespace EEVA.Domain.DataManager
         {
             keyword = keyword.ToUpper();
 
-            IEnumerable<Exam> entities = _eevaContext.Exams
+            return _eevaContext.Exams
                 .Include(Exam => Exam.Teacher)
                 .Include(Exam => Exam.Course)
                 .Include(Exam => Exam.StudentExams)
@@ -63,9 +62,8 @@ namespace EEVA.Domain.DataManager
                 .Where(e => e.Course.CourseName.ToUpper()
                 .Contains(keyword) || e.Teacher.LastName.ToUpper()
                 .Contains(keyword) || e.Teacher.FirstName.ToUpper()
-                .Contains(keyword));
-
-            return new List<Exam>(entities);
+                .Contains(keyword))
+                .ToList();
         }
 
         public void Update(Exam entity)
