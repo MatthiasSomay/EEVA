@@ -10,7 +10,12 @@ namespace EEVA.Domain.DataManager
 {
     public class AnswerManager : IDataManager<Answer>
     {
-        private readonly EEVAContext _eevaContext;
+        public EEVAContext _eevaContext;
+
+        public AnswerManager()
+        {
+
+        }
 
         public AnswerManager(EEVAContext context)
         {
@@ -33,6 +38,23 @@ namespace EEVA.Domain.DataManager
             return _eevaContext.Answers.FirstOrDefault(a => a.Id == id);
         }
 
+        public AnswerOpen GetOpen(int? id)
+        {
+            return _eevaContext.Answers
+                .Include(a => (a as AnswerOpen).Keyword)
+                .OfType<AnswerOpen>()
+                .FirstOrDefault(q => q.Id == id);
+        }
+
+        public AnswerMultipleChoice GetMultipleChoice(int? id)
+        {
+            return _eevaContext.Answers
+                .Include(a => (a as AnswerMultipleChoice).Answer)
+                .Include(a => (a as AnswerMultipleChoice).IsAnswerCorrect)
+                .OfType<AnswerMultipleChoice>()
+                .FirstOrDefault(q => q.Id == id);
+        }
+
         public IEnumerable<Answer> GetAll()
         {
             return _eevaContext.Answers.ToList();
@@ -42,19 +64,8 @@ namespace EEVA.Domain.DataManager
         {
             keyword = keyword.ToUpper();
 
-            List<Answer> answers = new List<Answer>();
-
-            IEnumerable<Answer> entities = _eevaContext.Answers
-                .Where(a => a.Question.QuestionPhrase.ToUpper().Contains(keyword));
-            foreach (var entity in entities)
-            {
-                answers.Add(new Answer()
-                {
-                    Id = entity.Id,
-                    Question = entity.Question
-                });
-            }
-            return answers;
+            return _eevaContext.Answers
+                .Where(a => a.Question.QuestionPhrase.ToUpper().Contains(keyword)).ToList();
         }
 
         public void Update(Answer entity)

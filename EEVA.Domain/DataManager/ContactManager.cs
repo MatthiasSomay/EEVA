@@ -69,10 +69,5 @@ namespace EEVA.Domain.DataManager
             dbEntity.PhoneNumber = entity.PhoneNumber;
             _eevaContext.SaveChanges();
         }
-
-        public string SetFullName(Contact contact)
-        {
-            return contact.LastName + " " + contact.FirstName;
-        }
     }
 }
