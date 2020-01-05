@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    [Migration("20191223195835_update23122019")]
-    partial class update23122019
+    [Migration("20200105205606_cleanStart")]
+    partial class cleanStart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,27 +21,49 @@ namespace EEVA.Domain.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("EEVA.Domain.Models.Answer", b =>
+            modelBuilder.Entity("EEVA.Domain.Models.AnswerMultipleChoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Answer")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuestionId")
+                    b.Property<bool>("IsAnswerCorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QuestionMultipleChoiceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionMultipleChoiceId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("AnswersMultipleChoice");
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Answer");
+            modelBuilder.Entity("EEVA.Domain.Models.AnswerOpen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Keyword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestionOpenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionOpenId");
+
+                    b.ToTable("AnswersOpen");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.Contact", b =>
@@ -139,6 +161,10 @@ namespace EEVA.Domain.Migrations
                     b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ExamId")
                         .HasColumnType("int");
 
@@ -153,6 +179,8 @@ namespace EEVA.Domain.Migrations
                     b.HasIndex("ExamId");
 
                     b.ToTable("Questions");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Question");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.StudentExam", b =>
@@ -194,29 +222,6 @@ namespace EEVA.Domain.Migrations
                     b.ToTable("StudentExamAnswers");
                 });
 
-            modelBuilder.Entity("EEVA.Domain.Models.AnswerMultipleChoice", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Answer");
-
-                    b.Property<string>("Answer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAnswerCorrect")
-                        .HasColumnType("bit");
-
-                    b.HasDiscriminator().HasValue("AnswerMultipleChoice");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.AnswerOpen", b =>
-                {
-                    b.HasBaseType("EEVA.Domain.Models.Answer");
-
-                    b.Property<string>("Keyword")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("AnswerOpen");
-                });
-
             modelBuilder.Entity("EEVA.Domain.Models.Student", b =>
                 {
                     b.HasBaseType("EEVA.Domain.Models.Contact");
@@ -231,11 +236,34 @@ namespace EEVA.Domain.Migrations
                     b.HasDiscriminator().HasValue("Teacher");
                 });
 
-            modelBuilder.Entity("EEVA.Domain.Models.Answer", b =>
+            modelBuilder.Entity("EEVA.Domain.Models.QuestionMultipleChoice", b =>
                 {
-                    b.HasOne("EEVA.Domain.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
+                    b.HasBaseType("EEVA.Domain.Models.Question");
+
+                    b.HasDiscriminator().HasValue("QuestionMultipleChoice");
+                });
+
+            modelBuilder.Entity("EEVA.Domain.Models.QuestionOpen", b =>
+                {
+                    b.HasBaseType("EEVA.Domain.Models.Question");
+
+                    b.HasDiscriminator().HasValue("QuestionOpen");
+                });
+
+            modelBuilder.Entity("EEVA.Domain.Models.AnswerMultipleChoice", b =>
+                {
+                    b.HasOne("EEVA.Domain.Models.QuestionMultipleChoice", "QuestionMultipleChoice")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionMultipleChoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EEVA.Domain.Models.AnswerOpen", b =>
+                {
+                    b.HasOne("EEVA.Domain.Models.QuestionOpen", "QuestionOpen")
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionOpenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -245,13 +273,13 @@ namespace EEVA.Domain.Migrations
                     b.HasOne("EEVA.Domain.Models.Course", "Course")
                         .WithMany("Exams")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EEVA.Domain.Models.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -265,19 +293,19 @@ namespace EEVA.Domain.Migrations
                         .WithMany("ExamQuestions")
                         .HasForeignKey("ExamId");
                 });
-            
+
             modelBuilder.Entity("EEVA.Domain.Models.StudentExam", b =>
                 {
                     b.HasOne("EEVA.Domain.Models.Exam", "Exam")
                         .WithMany("StudentExams")
                         .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EEVA.Domain.Models.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

@@ -14,11 +14,11 @@ namespace EEVA.Web.Controllers
 {
     public class AnswerOpenController : Controller
     {
-        private readonly AnswerManager _answerManager;
+        private readonly AnswerOpenManager _answerOpenManager;
 
         public AnswerOpenController(EEVAContext context)
         {
-            _answerManager = new AnswerManager(context);
+            _answerOpenManager = new AnswerOpenManager(context);
         }
 
         // GET: AnswerOpen/Details/5
@@ -29,7 +29,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(_answerManager.GetOpen(id));
+            AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(_answerOpenManager.Get(id));
 
             if (answerOpenViewModel == null)
             {
@@ -55,7 +55,7 @@ namespace EEVA.Web.Controllers
             if (ModelState.IsValid)
             {
                 AnswerOpen answerOpen = MapToAnswerOpen(answerOpenViewModel);
-                _answerManager.Add(answerOpen);
+                _answerOpenManager.Add(answerOpen);
                 return RedirectToAction(nameof(Index));
             }
             return View(answerOpenViewModel);
@@ -69,7 +69,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerOpen answerOpen = _answerManager.GetOpen(id);
+            AnswerOpen answerOpen = _answerOpenManager.Get(id);
             if (answerOpen == null)
             {
                 return NotFound();
@@ -98,7 +98,7 @@ namespace EEVA.Web.Controllers
                 try
                 {
                     AnswerOpen answerOpen = MapToAnswerOpen(answerOpenViewModel);
-                    _answerManager.Update(answerOpen);
+                    _answerOpenManager.Update(answerOpen);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +124,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(_answerManager.GetOpen(id));
+            AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(_answerOpenManager.Get(id));
 
             if (answerOpenViewModel == null)
             {
@@ -139,14 +139,14 @@ namespace EEVA.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            AnswerOpen answerOpen = _answerManager.GetOpen(id);
-            _answerManager.Delete(answerOpen);
+            AnswerOpen answerOpen = _answerOpenManager.Get(id);
+            _answerOpenManager.Delete(answerOpen);
             return RedirectToAction(nameof(Index));
         }
 
         private bool AnswerOpenExists(int id)
         {
-            if (_answerManager.Get(id) != null)
+            if (_answerOpenManager.Get(id) != null)
             {
                 return true;
             }
@@ -162,7 +162,7 @@ namespace EEVA.Web.Controllers
         //Mapping AnswerOpenViewModel to AnswerOpen
         private AnswerOpen MapToAnswerOpen(AnswerOpenViewModel answerOpenViewModel)
         {
-            return new AnswerOpen();
+            return null;
         }
 
     }
