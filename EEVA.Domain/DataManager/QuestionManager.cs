@@ -1,5 +1,6 @@
 ﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,12 +34,14 @@ namespace EEVA.Domain.DataManager
 
         public Question Get(int? id)
         {
-            return _eevaContext.Questions.FirstOrDefault(q => q.Id == id);
+            return _eevaContext.Questions
+                .FirstOrDefault(q => q.Id == id);
         }
 
         public QuestionMultipleChoice GetMultipleChoice(int? id)
         {
             return _eevaContext.Questions
+                .Include(q => (q as QuestionMultipleChoice).Answers)
                 .OfType<QuestionMultipleChoice>()
                 .FirstOrDefault(q => q.Id == id);
         }
@@ -47,6 +50,7 @@ namespace EEVA.Domain.DataManager
         {
             return _eevaContext.Questions
                 .OfType<QuestionOpen>()
+                .Include(q => q.Answers)
                 .FirstOrDefault(q => q.Id == id);
         }
 

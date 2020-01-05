@@ -14,5 +14,16 @@ namespace EEVA.Domain.Models
         [Required]
         public string QuestionPhrase { get; set; }
 
+        public Question()
+        {
+               
+        }
+
+        public Question(int id, string questionPhrase)
+        {
+            Id = id;
+            QuestionPhrase = questionPhrase;
+        }
+
     }
 }

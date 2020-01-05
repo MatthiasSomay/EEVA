@@ -1,4 +1,4 @@
-﻿@model EEVA.Domain.Models.QuestionMultipleChoice
+﻿@model EEVA.Web.Models.QuestionMultipleChoiceViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -10,10 +10,10 @@
     <h4>QuestionMultipleChoice</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.QuestionPhrase)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.QuestionPhrase)
         </dd>
     </dl>
@@ -22,3 +22,45 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<div>
+    <br />
+    <br />
+    <h5>Answers</h5>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Answers.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Answers.FirstOrDefault().Answer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Answers.FirstOrDefault().IsAnswerCorrect)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.Answers.Count() > 0)
+            @foreach (var item in Model.Answers)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Answer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsAnswerCorrect)
+                    </td>
+                    <td>
+                        <a asp-action="QuestionEdit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="QuestionDetails" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>

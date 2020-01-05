@@ -47,12 +47,12 @@ namespace EEVA.Domain.DataManager
             IEnumerable<Answer> entities = _eevaContext.Answers
                 .Where(a => a.Question.QuestionPhrase.ToUpper().Contains(keyword));
             foreach (var entity in entities)
-            {/*
+            {
                 answers.Add(new Answer()
                 {
                     Id = entity.Id,
                     Question = entity.Question
-                });*/
+                });
             }
             return answers;
         }
