@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using EEVA.Domain.Models;
 using EEVA.Domain.Models.Interface;
 using EEVA.Domain.DataManager;
-using EEVA.Domain.DataManager.Dummies;
 using Microsoft.AspNetCore.Identity;
 using EEVA.Web.Data;
 
