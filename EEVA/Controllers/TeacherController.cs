@@ -89,7 +89,7 @@ namespace EEVA.Web.Controllers
         // POST: Teacher/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TeacherViewModel teacherViewModel)
+        public ActionResult Create([Bind("Id,FirstName,LastName,Email,PhoneNumber")] TeacherViewModel teacherViewModel)
         {
             if(ModelState.IsValid)
             {
