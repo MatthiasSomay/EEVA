@@ -12,5 +12,9 @@ namespace EEVA.Domain.Models
         {
             Keyword = keyword;
         }
+
+        public AnswerOpen()
+        {
+        }
     }
 }

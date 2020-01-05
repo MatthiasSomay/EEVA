@@ -12,16 +12,16 @@ using EEVA.Web.Models;
 
 namespace EEVA.Web.Controllers
 {
-    public class AnswerMultipleChoiceController : Controller
+    public class AnswerOpenController : Controller
     {
         private readonly AnswerManager _answerManager;
 
-        public AnswerMultipleChoiceController(EEVAContext context)
+        public AnswerOpenController(EEVAContext context)
         {
             _answerManager = new AnswerManager(context);
         }
 
-        // GET: AnswerMultipleChoice/Details/5
+        // GET: AnswerOpen/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -29,39 +29,39 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(_answerManager.GetMultipleChoice(id));
+            AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(_answerManager.GetOpen(id));
 
-            if (answerMultipleChoiceViewModel == null)
+            if (answerOpenViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(answerMultipleChoiceViewModel);
+            return View(answerOpenViewModel);
         }
 
-        // GET: AnswerMultipleChoice/Create
+        // GET: AnswerOpen/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: AnswerMultipleChoice/Create
+        // POST: AnswerOpen/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Answer,IsAnswerCorrect,Id")] AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel)
+        public IActionResult Create([Bind("Answer,IsAnswerCorrect,Id")] AnswerOpenViewModel answerOpenViewModel)
         {
             if (ModelState.IsValid)
             {
-                AnswerMultipleChoice answerMultipleChoice = MapToAnswerMultipleChoice(answerMultipleChoiceViewModel);
-                _answerManager.Add(answerMultipleChoice);
+                AnswerOpen answerOpen = MapToAnswerOpen(answerOpenViewModel);
+                _answerManager.Add(answerOpen);
                 return RedirectToAction(nameof(Index));
             }
-            return View(answerMultipleChoiceViewModel);
+            return View(answerOpenViewModel);
         }
 
-        // GET: AnswerMultipleChoice/Edit/5
+        // GET: AnswerOpen/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -69,26 +69,26 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerMultipleChoice answerMultipleChoice = _answerManager.GetMultipleChoice(id);
-            if (answerMultipleChoice == null)
+            AnswerOpen answerOpen = _answerManager.GetOpen(id);
+            if (answerOpen == null)
             {
                 return NotFound();
             }
             else
             {
-                AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(answerMultipleChoice);
-                return View(answerMultipleChoiceViewModel);
+                AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(answerOpen);
+                return View(answerOpenViewModel);
             }
         }
 
-        // POST: AnswerMultipleChoice/Edit/5
+        // POST: AnswerOpen/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Answer,IsAnswerCorrect,Id")] AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel)
+        public IActionResult Edit(int id, [Bind("Answer,IsAnswerCorrect,Id")] AnswerOpenViewModel answerOpenViewModel)
         {
-            if (id != answerMultipleChoiceViewModel.Id)
+            if (id != answerOpenViewModel.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace EEVA.Web.Controllers
             {
                 try
                 {
-                    AnswerMultipleChoice answerMultipleChoice = MapToAnswerMultipleChoice(answerMultipleChoiceViewModel);
-                    _answerManager.Update(answerMultipleChoice);
+                    AnswerOpen answerOpen = MapToAnswerOpen(answerOpenViewModel);
+                    _answerManager.Update(answerOpen);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AnswerMultipleChoiceExists(answerMultipleChoiceViewModel.Id))
+                    if (!AnswerOpenExists(answerOpenViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +116,7 @@ namespace EEVA.Web.Controllers
             return View();
         }
 
-        // GET: AnswerMultipleChoice/Delete/5
+        // GET: AnswerOpen/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -124,27 +124,27 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(_answerManager.GetMultipleChoice(id));
+            AnswerOpenViewModel answerOpenViewModel = MapToAnswerOpenViewModel(_answerManager.GetOpen(id));
 
-            if (answerMultipleChoiceViewModel == null)
+            if (answerOpenViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(answerMultipleChoiceViewModel);
+            return View(answerOpenViewModel);
         }
 
-        // POST: AnswerMultipleChoice/Delete/5
+        // POST: AnswerOpen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            AnswerMultipleChoice answerMultipleChoice = _answerManager.GetMultipleChoice(id);
-            _answerManager.Delete(answerMultipleChoice);
+            AnswerOpen answerOpen = _answerManager.GetOpen(id);
+            _answerManager.Delete(answerOpen);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AnswerMultipleChoiceExists(int id)
+        private bool AnswerOpenExists(int id)
         {
             if (_answerManager.Get(id) != null)
             {
@@ -153,16 +153,16 @@ namespace EEVA.Web.Controllers
             else return false;
         }
 
-        //Mapping AnswerMultipleChoice to AnswerMultipleChoiceViewModel
-        private AnswerMultipleChoiceViewModel MapToAnswerMultipleChoiceViewModel(AnswerMultipleChoice answerMultipleChoice)
+        //Mapping AnswerOpen to AnswerOpenViewModel
+        private AnswerOpenViewModel MapToAnswerOpenViewModel(AnswerOpen answerOpen)
         {
-            return new AnswerMultipleChoiceViewModel();
+            return new AnswerOpenViewModel();
         }
 
-        //Mapping AnswerMultipleChoiceViewModel to AnswerMultipleChoice
-        private AnswerMultipleChoice MapToAnswerMultipleChoice(AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel)
+        //Mapping AnswerOpenViewModel to AnswerOpen
+        private AnswerOpen MapToAnswerOpen(AnswerOpenViewModel answerOpenViewModel)
         {
-            return new AnswerMultipleChoice();
+            return new AnswerOpen();
         }
 
     }
