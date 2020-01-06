@@ -13,7 +13,7 @@ namespace EEVA.Domain.Models
 
         }
 
-        public QuestionOpen(int id, string questionPhrase, IEnumerable<AnswerOpen> answers) : base(id, questionPhrase)
+        public QuestionOpen(int id, string questionPhrase, Course course, IEnumerable<AnswerOpen> answers) : base(id, questionPhrase, course)
         {
             Answers = answers;
         }

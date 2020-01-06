@@ -14,7 +14,7 @@ namespace EEVA.Domain.Models
 
         }
 
-        public QuestionMultipleChoice(int id, string questionPhrase, IEnumerable<AnswerMultipleChoice> answers) : base(id, questionPhrase)
+        public QuestionMultipleChoice(int id, string questionPhrase, Course course, IEnumerable<AnswerMultipleChoice> answers) : base(id, questionPhrase, course)
         {
             Answers = answers;
         }

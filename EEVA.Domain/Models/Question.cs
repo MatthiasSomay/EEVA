@@ -14,15 +14,20 @@ namespace EEVA.Domain.Models
         [Required]
         public string QuestionPhrase { get; set; }
 
+        [Display(Name = "Course")]
+        [Required]
+        public Course Course { get; set; }
+
         public Question()
         {
                
         }
 
-        public Question(int id, string questionPhrase)
+        public Question(int id, string questionPhrase, Course course)
         {
             Id = id;
             QuestionPhrase = questionPhrase;
+            Course = course;
         }
 
     }

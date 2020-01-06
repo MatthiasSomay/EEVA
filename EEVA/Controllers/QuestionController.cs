@@ -15,10 +15,12 @@ namespace EEVA.Web.Controllers
     public class QuestionController : Controller
     {
         private readonly QuestionManager _questionManager;
+        private readonly CourseManager _courseManager;
 
         public QuestionController(EEVAContext context)
         {
             _questionManager = new QuestionManager(context);
+            _courseManager = new CourseManager(context);
         }
 
         // GET: Question
@@ -91,7 +93,7 @@ namespace EEVA.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,QuestionPhrase")] QuestionViewModel QuestionViewModel)
+        public IActionResult Create([Bind("Id,QuestionPhrase,CourseId")] QuestionViewModel QuestionViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -198,20 +200,27 @@ namespace EEVA.Web.Controllers
         private QuestionViewModel MapToQuestionViewModel(Question question)
         {
             return new QuestionViewModel(
-            question.Id,
-            question.QuestionPhrase);
+                    question.Id,
+                    question.QuestionPhrase,
+                    question.Course,
+                    _courseManager.GetAll()
+            );
         }
 
         //Mapping Question to QuestionViewModel
         private Question MapToQuestion(QuestionViewModel questionViewModel)
         {
-            return new Question();
+            return new Question(
+                questionViewModel.Id,
+                questionViewModel.QuestionPhrase,
+                _courseManager.Get(questionViewModel.CourseId)
+                );
         }
 
         //Creating blank QuestionViewModel
         private QuestionViewModel NewQuestionViewModel()
         {
-            return new QuestionViewModel();
+            return new QuestionViewModel(_courseManager.GetAll());
         }
     }
 }

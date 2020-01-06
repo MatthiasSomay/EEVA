@@ -10,7 +10,7 @@ namespace EEVA.Web.Models
         [Display(Name = "Keywords")]
         public IEnumerable<AnswerOpen> Answers { get; set; }
 
-        public QuestionOpenViewModel(int id, string questionPhrase, IEnumerable<AnswerOpen> answers) : base(id, questionPhrase)
+        public QuestionOpenViewModel(int id, string questionPhrase, Course course, IEnumerable<AnswerOpen> answers, IEnumerable<Course> courses) : base(id, questionPhrase, course, courses)
         {
             Answers = answers;
         }

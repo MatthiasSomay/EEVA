@@ -15,10 +15,12 @@ namespace EEVA.Web.Controllers
     public class QuestionOpenController : Controller
     {
         private readonly QuestionManager _questionManager;
+        private readonly CourseManager _courseManager;
 
         public QuestionOpenController(EEVAContext context)
         {
             _questionManager = new QuestionManager(context);
+            _courseManager = new CourseManager(context);
         }
 
 
@@ -82,7 +84,9 @@ namespace EEVA.Web.Controllers
             return new QuestionOpenViewModel(
                 questionOpen.Id,
                 questionOpen.QuestionPhrase,
-                questionOpen.Answers
+                questionOpen.Course,
+                questionOpen.Answers,
+                _courseManager.GetAll()
                 );
         }
     }

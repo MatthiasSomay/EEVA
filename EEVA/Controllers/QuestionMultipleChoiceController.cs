@@ -12,10 +12,12 @@ namespace EEVA.Web.Controllers
     public class QuestionMultipleChoiceController : Controller
     {
         private readonly QuestionManager _questionManager;
+        private readonly CourseManager _courseManager;
 
         public QuestionMultipleChoiceController(EEVAContext context)
         {
             _questionManager = new QuestionManager(context);
+            _courseManager = new CourseManager(context);
         }
         
 
@@ -79,7 +81,9 @@ namespace EEVA.Web.Controllers
             return new QuestionMultipleChoiceViewModel(
                 questionMultipleChoice.Id,
                 questionMultipleChoice.QuestionPhrase,
-                questionMultipleChoice.Answers
+                questionMultipleChoice.Course,
+                questionMultipleChoice.Answers,
+                _courseManager.GetAll()
                 );
         }
     }
