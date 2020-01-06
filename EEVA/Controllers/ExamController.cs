@@ -1,5 +1,7 @@
 ﻿using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Lists;
+using Aspose.Words.Tables;
 using EEVA.Domain;
 using EEVA.Domain.DataManager;
 using EEVA.Domain.Models;
@@ -260,70 +262,103 @@ namespace EEVA.Web.Controllers
 
             Style headerStyle = doc.Styles.Add(StyleType.Paragraph, "HeaderStyle");
             headerStyle.Font.Size = 21;
-            headerStyle.Font.Name = "Verdana";
+            headerStyle.Font.Bold = true;
+            headerStyle.Font.Name = "Corbel";
             headerStyle.ParagraphFormat.SpaceAfter = 12;
+            headerStyle.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             Style subHeaderStyle = doc.Styles.Add(StyleType.Paragraph, "SubHeaderStyle");
             subHeaderStyle.Font.Size = 14;
-            subHeaderStyle.Font.Name = "Verdana";
+            subHeaderStyle.Font.Italic = true;
+            subHeaderStyle.Font.Name = "Corbel";
             subHeaderStyle.ParagraphFormat.SpaceAfter = 12;
+            subHeaderStyle.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             Style bulletStyle = doc.Styles.Add(StyleType.Paragraph, "bulletStyle");
             bulletStyle.Font.Size = 11;
             bulletStyle.Font.Name = "Calibri";
             bulletStyle.ParagraphFormat.SpaceAfter = 10;
-            bulletStyle.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.BulletCircle);
+            bulletStyle.ListFormat.List = doc.Lists.Add(ListTemplate.BulletCircle);
             bulletStyle.ListFormat.ListLevelNumber = 0;
 
-            Style numberStyle = doc.Styles.Add(StyleType.Paragraph, "numberStyle");
-            numberStyle.Font.Size = 12;
-            numberStyle.Font.Name = "Calibri";
-            numberStyle.ParagraphFormat.SpaceAfter = 12;
-            numberStyle.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberArabicDot);
-            numberStyle.ListFormat.ListLevelNumber = 0;
-
+           
             docBuilder.ParagraphFormat.Style = headerStyle;
             docBuilder.Writeln("Exam " + exam.Course.CourseName + " - " + exam.Course.CourseYear);
+          
+            
             docBuilder.ParagraphFormat.Style = subHeaderStyle;
-            docBuilder.Writeln(exam.Date.Day.ToString() + "/" + exam.Date.Month.ToString() + "/" + exam.Date.Year.ToString());
+            docBuilder.Writeln("Date: " + exam.Date.Day.ToString() + "/" + exam.Date.Month.ToString() + "/" + exam.Date.Year.ToString());
+
+            Table table = docBuilder.StartTable();
+            CellFormat cellFormat = docBuilder.CellFormat;
+            docBuilder.RowFormat.HeightRule = HeightRule.Auto;
+            docBuilder.ParagraphFormat.ClearFormatting();
+            cellFormat.Width = 100;
+            docBuilder.InsertCell();
+            table.AllowAutoFit = true;
+            docBuilder.Writeln("First Name: ");
+            docBuilder.InsertCell();
+            docBuilder.Writeln("Last Name: ");
+            docBuilder.EndRow();
+            docBuilder.InsertCell();
+            docBuilder.Writeln("Group: ");
+            docBuilder.InsertCell();
+            docBuilder.Writeln("Year: ");
+            docBuilder.EndTable();
+            docBuilder.InsertBreak(BreakType.LineBreak);
+
+
+            int counter = 0;
 
             foreach (Question question in exam.Course.Questions)
             {
-                docBuilder.ParagraphFormat.Style = numberStyle;
-                docBuilder.Writeln(question.QuestionPhrase);
+                counter++;
+
+                docBuilder.ParagraphFormat.ClearFormatting();
+                docBuilder.StartTable();
+                docBuilder.InsertCell();
+                docBuilder.RowFormat.HeightRule = HeightRule.Exactly;
+                docBuilder.RowFormat.Height = 30;
+                docBuilder.Writeln(counter.ToString() + ". " + question.QuestionPhrase);
+                docBuilder.EndRow();
+                docBuilder.RowFormat.HeightRule = HeightRule.Exactly;
+                docBuilder.RowFormat.Height = 150;
+                docBuilder.InsertCell();
+                
 
                 if (question is QuestionMultipleChoice)
                 {
+                    
+                    
                     QuestionMultipleChoice questionMultipleChoice = (QuestionMultipleChoice)question;
 
                     foreach (var item in questionMultipleChoice.Answers)
                     {
+                        
+                        docBuilder.RowFormat.HeightRule = HeightRule.Auto;
+                        docBuilder.ParagraphFormat.Style = bulletStyle;
 
                         if (questionMultipleChoice.Answers.ToList().IndexOf(item) == questionMultipleChoice.Answers.ToList().Count - 1)
                         {
+
                             docBuilder.Write(item.Answer);
                         }
                         else
                         {
-                            docBuilder.ParagraphFormat.Style = bulletStyle;
+
                             docBuilder.Writeln(item.Answer);
                         }
-                        
-                           
                     }
-                    
-                } else if (question is QuestionOpen)
-                {
-                    Shape textBoxShape = docBuilder.InsertShape(ShapeType.TextBox, 420, 200);
-                    docBuilder.MoveTo(textBoxShape.LastParagraph);
-                    docBuilder.ParagraphFormat.ClearFormatting();
-                    docBuilder.MoveTo(textBoxShape.ParentParagraph);
 
 
                 }
+
+                docBuilder.EndTable();
+                docBuilder.InsertBreak(BreakType.LineBreak);
+
             }
 
-            doc.Save(outputPath, SaveFormat.Pdf);
+                doc.Save(outputPath, SaveFormat.Pdf);
 
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", exam.Course.CourseName + "_" + exam.Course.CourseYear.ToString());
 
