@@ -1,4 +1,6 @@
-﻿using EEVA.Domain;
+﻿using Aspose.Words;
+using Aspose.Words.Drawing;
+using EEVA.Domain;
 using EEVA.Domain.DataManager;
 using EEVA.Domain.Models;
 using EEVA.Web.Models;
@@ -7,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace EEVA.Web.Controllers
@@ -183,7 +188,7 @@ namespace EEVA.Web.Controllers
         }
 
         // Redirect to edit Question
-        public ActionResult QuestionEdit (int? id)
+        public ActionResult QuestionEdit(int? id)
         {
             return RedirectToAction("Edit", "Question", new { id });
         }
@@ -203,7 +208,7 @@ namespace EEVA.Web.Controllers
             }
             else return false;
         }
-        
+
         //Mapping ExamViewModel to Exam
         private Exam MapToExam(ExamViewModel examViewModel)
         {
@@ -213,7 +218,7 @@ namespace EEVA.Web.Controllers
                 (Teacher)_contactManager.Get(examViewModel.TeacherId),
                 examViewModel.Date,
                 examViewModel.StartTime,
-                examViewModel.EndTime);       
+                examViewModel.EndTime);
         }
 
         //Mapping Exam to ExamViewModel
@@ -240,6 +245,87 @@ namespace EEVA.Web.Controllers
                 _courseManager.GetAll(),
                 _contactManager.GetAllTeachers()
                 );
+        }
+
+        [HttpGet]
+        public ActionResult DownloadToPDF(int? id)
+        {
+            Exam exam = _examManager.Get(id);
+
+            string outputPath = Path.Combine(Path.GetTempPath(), exam.Course.CourseName + ".pdf");
+
+            Document doc = new Document();
+
+            DocumentBuilder docBuilder = new DocumentBuilder(doc);
+
+            Style headerStyle = doc.Styles.Add(StyleType.Paragraph, "HeaderStyle");
+            headerStyle.Font.Size = 21;
+            headerStyle.Font.Name = "Verdana";
+            headerStyle.ParagraphFormat.SpaceAfter = 12;
+
+            Style subHeaderStyle = doc.Styles.Add(StyleType.Paragraph, "SubHeaderStyle");
+            subHeaderStyle.Font.Size = 14;
+            subHeaderStyle.Font.Name = "Verdana";
+            subHeaderStyle.ParagraphFormat.SpaceAfter = 12;
+
+            Style bulletStyle = doc.Styles.Add(StyleType.Paragraph, "bulletStyle");
+            bulletStyle.Font.Size = 11;
+            bulletStyle.Font.Name = "Calibri";
+            bulletStyle.ParagraphFormat.SpaceAfter = 10;
+            bulletStyle.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.BulletCircle);
+            bulletStyle.ListFormat.ListLevelNumber = 0;
+
+            Style numberStyle = doc.Styles.Add(StyleType.Paragraph, "numberStyle");
+            numberStyle.Font.Size = 12;
+            numberStyle.Font.Name = "Calibri";
+            numberStyle.ParagraphFormat.SpaceAfter = 12;
+            numberStyle.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberArabicDot);
+            numberStyle.ListFormat.ListLevelNumber = 0;
+
+            docBuilder.ParagraphFormat.Style = headerStyle;
+            docBuilder.Writeln("Exam " + exam.Course.CourseName + " - " + exam.Course.CourseYear);
+            docBuilder.ParagraphFormat.Style = subHeaderStyle;
+            docBuilder.Writeln(exam.Date.Day.ToString() + "/" + exam.Date.Month.ToString() + "/" + exam.Date.Year.ToString());
+
+            foreach (Question question in exam.Course.Questions)
+            {
+                docBuilder.ParagraphFormat.Style = numberStyle;
+                docBuilder.Writeln(question.QuestionPhrase);
+
+                if (question is QuestionMultipleChoice)
+                {
+                    QuestionMultipleChoice questionMultipleChoice = (QuestionMultipleChoice)question;
+
+                    foreach (var item in questionMultipleChoice.Answers)
+                    {
+                        if (questionMultipleChoice.Answers.IndexOf(item) == questionMultipleChoice.Answers.Count - 1)
+                        {
+                            docBuilder.Write(item.Answer);
+                        }
+                        else
+                        {
+                            docBuilder.ParagraphFormat.Style = bulletStyle;
+                            docBuilder.Writeln(item.Answer);
+                        }
+                        
+                           
+                    }
+                    
+                } else if (question is QuestionOpen)
+                {
+                    Shape textBoxShape = docBuilder.InsertShape(ShapeType.TextBox, 420, 200);
+                    docBuilder.MoveTo(textBoxShape.LastParagraph);
+                    docBuilder.ParagraphFormat.ClearFormatting();
+                    docBuilder.MoveTo(textBoxShape.ParentParagraph);
+
+
+                }
+            }
+
+            doc.Save(outputPath, SaveFormat.Pdf);
+
+            return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", exam.Course.CourseName + "_" + exam.Course.CourseYear.ToString());
+
         }
     }
 }

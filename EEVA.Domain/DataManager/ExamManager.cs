@@ -37,6 +37,7 @@ namespace EEVA.Domain.DataManager
                 .Include(Exam => Exam.Course)
                 .Include(Exam => Exam.StudentExams)
                 .Include(Exam => Exam.ExamQuestions)
+                .ThenInclude(Question => (Question as QuestionMultipleChoice).Answers)
                 .FirstOrDefault(e => e.Id == id);
         }
 
