@@ -298,7 +298,8 @@ namespace EEVA.Web.Controllers
 
                     foreach (var item in questionMultipleChoice.Answers)
                     {
-                        if (questionMultipleChoice.Answers.IndexOf(item) == questionMultipleChoice.Answers.Count - 1)
+
+                        if (questionMultipleChoice.Answers.ToList().IndexOf(item) == questionMultipleChoice.Answers.ToList().Count - 1)
                         {
                             docBuilder.Write(item.Answer);
                         }
