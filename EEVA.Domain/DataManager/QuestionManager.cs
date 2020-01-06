@@ -35,12 +35,14 @@ namespace EEVA.Domain.DataManager
         public Question Get(int? id)
         {
             return _eevaContext.Questions
+                .Include(Question => Question.Course)
                 .FirstOrDefault(q => q.Id == id);
         }
 
         public QuestionMultipleChoice GetMultipleChoice(int? id)
         {
             return _eevaContext.Questions
+                .Include(Question => Question.Course)
                 .Include(q => (q as QuestionMultipleChoice).Answers)
                 .OfType<QuestionMultipleChoice>()
                 .FirstOrDefault(q => q.Id == id);
@@ -49,6 +51,7 @@ namespace EEVA.Domain.DataManager
         public QuestionOpen GetOpen(int? id)
         {
             return _eevaContext.Questions
+                .Include(Question => Question.Course)
                 .OfType<QuestionOpen>()
                 .Include(q => q.Answers)
                 .FirstOrDefault(q => q.Id == id);
@@ -56,7 +59,9 @@ namespace EEVA.Domain.DataManager
 
         public IEnumerable<Question> GetAll()
         {
-            return _eevaContext.Questions.ToList();
+            return _eevaContext.Questions
+                .Include(Question => Question.Course)
+                .ToList();
         }
 
         public IEnumerable<Question> Search(string keyword)
