@@ -74,6 +74,20 @@ namespace EEVA.Web.Controllers
             }
         }
 
+        //Return back to the Question Details page
+        public IActionResult BackToQuestion()
+        {
+            try
+            {
+                int? Id = (int)TempData["questionId"];
+                return RedirectToAction("Details", "QuestionMultipleChoice", new { Id });
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
+
         // GET: AnswerMultipleChoice/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -124,7 +138,7 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return BackToQuestion();
             }
             return View();
         }
@@ -154,7 +168,7 @@ namespace EEVA.Web.Controllers
         {
             AnswerMultipleChoice answerMultipleChoice = _answerMultipleChoiceManager.Get(id);
             _answerMultipleChoiceManager.Delete(answerMultipleChoice);
-            return RedirectToAction(nameof(Index));
+            return BackToQuestion();
         }
 
         private bool AnswerMultipleChoiceExists(int id)

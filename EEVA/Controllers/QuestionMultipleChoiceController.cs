@@ -43,6 +43,37 @@ namespace EEVA.Web.Controllers
             return RedirectToAction("Create", "AnswerMultipleChoice", new { questionId = id });
         }
 
+        // Redirect to Answer Edit
+        public ActionResult AnswerEdit(int? id)
+        {
+            return RedirectToAction("Edit", "AnswerMultipleChoice", new { id });
+        }
+
+        // Redirect to Answer Details
+        public ActionResult AnswerDetails(int? id)
+        {
+            return RedirectToAction("Details", "AnswerMultipleChoice", new { id });
+        }
+
+        // Redirect to Answer Delete
+        public ActionResult AnswerDelete(int? id)
+        {
+            return RedirectToAction("Delete", "AnswerMultipleChoice", new { id });
+        }
+
+        // Redirect to Question Index
+        public ActionResult Index(int? id)
+        {
+            return RedirectToAction("Index", "Question", new { id });
+        }
+
+        // Redirect to Question Edit
+        public ActionResult Edit(int? id)
+        {
+            return RedirectToAction("Edit", "Question", new { id });
+        }
+
+        //Mapping QuestionMultipleChoice to QuestionMultipleChoiceViewModel
         private QuestionMultipleChoiceViewModel MapToQuestionMultipleChoiceViewModel(QuestionMultipleChoice questionMultipleChoice)
         {
             return new QuestionMultipleChoiceViewModel(

@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>QuestionOpen</h4>
+    <h4>Question</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -25,7 +25,10 @@
 <div>
     <br />
     <br />
-    <h5>Answers</h5>
+    <h5>Keywords</h5>
+    <a asp-action="AddAnswer" asp-route-id="@Model.Id">Add a Keyword</a>
+    <br />
+    <br />
 </div>
 <table class="table">
     <thead>
@@ -51,8 +54,9 @@
                         @Html.DisplayFor(modelItem => item.Keyword)
                     </td>
                     <td>
-                        <a asp-action="QuestionEdit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="QuestionDetails" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="AnswerEdit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="AnswerDetails" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="AnswerDelete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }

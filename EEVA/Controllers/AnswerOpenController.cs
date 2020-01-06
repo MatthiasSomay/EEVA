@@ -15,10 +15,12 @@ namespace EEVA.Web.Controllers
     public class AnswerOpenController : Controller
     {
         private readonly AnswerOpenManager _answerOpenManager;
+        private readonly QuestionManager _questionManager;
 
         public AnswerOpenController(EEVAContext context)
         {
             _answerOpenManager = new AnswerOpenManager(context);
+            _questionManager = new QuestionManager(context);
         }
 
         // GET: AnswerOpen/Details/5
@@ -40,8 +42,9 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: AnswerOpen/Create
-        public IActionResult Create()
+        public IActionResult Create(int? questionId)
         {
+            TempData["questionId"] = questionId;
             return View();
         }
 
@@ -50,15 +53,38 @@ namespace EEVA.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Answer,IsAnswerCorrect,Id")] AnswerOpenViewModel answerOpenViewModel)
+        public IActionResult Create([Bind("Answer,Id,Keyword")] AnswerOpenViewModel answerOpenViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                AnswerOpen answerOpen = MapToAnswerOpen(answerOpenViewModel);
-                _answerOpenManager.Add(answerOpen);
-                return RedirectToAction(nameof(Index));
+                int? questionId = (int)TempData["questionId"];
+                answerOpenViewModel.QuestionOpen = _questionManager.GetOpen(questionId);
+
+                if (ModelState.IsValid)
+                {
+                    AnswerOpen answerOpen = MapToAnswerOpen(answerOpenViewModel);
+                    _answerOpenManager.Add(answerOpen);
+                }
+                return RedirectToAction("Details", "QuestionOpen", new { id = questionId });
             }
-            return View(answerOpenViewModel);
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
+
+        //Return back to the Question Details page
+        public IActionResult BackToQuestion()
+        {
+            try
+            {
+                int? Id = (int)TempData["questionId"];
+                return RedirectToAction("Details", "QuestionOpen", new { Id });
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         // GET: AnswerOpen/Edit/5
@@ -86,7 +112,7 @@ namespace EEVA.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Answer,IsAnswerCorrect,Id")] AnswerOpenViewModel answerOpenViewModel)
+        public IActionResult Edit(int id, [Bind("Keyword,Id")] AnswerOpenViewModel answerOpenViewModel)
         {
             if (id != answerOpenViewModel.Id)
             {
@@ -111,7 +137,7 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return BackToQuestion();
             }
             return View();
         }
@@ -141,7 +167,7 @@ namespace EEVA.Web.Controllers
         {
             AnswerOpen answerOpen = _answerOpenManager.Get(id);
             _answerOpenManager.Delete(answerOpen);
-            return RedirectToAction(nameof(Index));
+            return BackToQuestion();
         }
 
         private bool AnswerOpenExists(int id)
@@ -156,13 +182,21 @@ namespace EEVA.Web.Controllers
         //Mapping AnswerOpen to AnswerOpenViewModel
         private AnswerOpenViewModel MapToAnswerOpenViewModel(AnswerOpen answerOpen)
         {
-            return new AnswerOpenViewModel();
+            return new AnswerOpenViewModel(
+                answerOpen.Id,
+                answerOpen.QuestionOpen,
+                answerOpen.Keyword
+                );
         }
 
         //Mapping AnswerOpenViewModel to AnswerOpen
         private AnswerOpen MapToAnswerOpen(AnswerOpenViewModel answerOpenViewModel)
         {
-            return null;
+            return new AnswerOpen(
+                answerOpenViewModel.Id,
+                answerOpenViewModel.QuestionOpen,
+                answerOpenViewModel.Keyword
+                );
         }
 
     }

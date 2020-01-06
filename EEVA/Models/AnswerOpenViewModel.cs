@@ -14,7 +14,6 @@ namespace EEVA.Web.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
         public QuestionOpen QuestionOpen { get; set; }
 
         [Required]

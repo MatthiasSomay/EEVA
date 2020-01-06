@@ -40,6 +40,43 @@ namespace EEVA.Web.Controllers
             return View(questionOpenViewModel);
         }
 
+        // Redirect to Answer Create
+        public ActionResult AddAnswer(int? id)
+        {
+            return RedirectToAction("Create", "AnswerOpen", new { questionId = id });
+        }
+
+        // Redirect to Answer Edit
+        public ActionResult AnswerEdit(int? id)
+        {
+            return RedirectToAction("Edit", "AnswerOpen", new { id });
+        }
+
+        // Redirect to Answer Details
+        public ActionResult AnswerDetails(int? id)
+        {
+            return RedirectToAction("Details", "AnswerOpen", new { id });
+        }
+
+        // Redirect to Answer Delete
+        public ActionResult AnswerDelete(int? id)
+        {
+            return RedirectToAction("Delete", "AnswerOpen", new { id });
+        }
+
+        // Redirect to Question Index
+        public ActionResult Index(int? id)
+        {
+            return RedirectToAction("Index", "Question", new { id });
+        }
+
+        // Redirect to Question Edit
+        public ActionResult Edit(int? id)
+        {
+            return RedirectToAction("Edit", "Question", new { id });
+        }
+
+        //Mapping QuestionOpen to QuestionOpenViewModel
         private QuestionOpenViewModel MapToQuestionOpenViewModel(QuestionOpen questionOpen)
         {
             return new QuestionOpenViewModel(
