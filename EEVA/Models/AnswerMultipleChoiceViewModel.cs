@@ -13,9 +13,28 @@ namespace EEVA.Web.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public Question Question { get; set; }
 
+        public QuestionMultipleChoice QuestionMultipleChoice { get; set; }
+
+        [Required]
         public string Answer { get; set; }
+
+        [Required]
+        public bool IsAnswerCorrect { get; set; }
+
+        public int questionId { get; set; }
+
+        public AnswerMultipleChoiceViewModel(int id, QuestionMultipleChoice questionMultipleChoice, string answer, bool isAnswerCorrect)
+        {
+            Id = id;
+            QuestionMultipleChoice = questionMultipleChoice;
+            Answer = answer;
+            IsAnswerCorrect = isAnswerCorrect;
+        }
+
+        public AnswerMultipleChoiceViewModel()
+        {
+
+        }
     }
 }

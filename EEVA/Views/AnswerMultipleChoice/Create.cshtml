@@ -1,4 +1,4 @@
-﻿@model EEVA.Domain.Models.AnswerMultipleChoice
+﻿@model EEVA.Web.Models.AnswerMultipleChoiceViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -19,7 +19,8 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAnswerCorrect" /> @Html.DisplayNameFor(model => model.IsAnswerCorrect)
+                    <input class="form-check-input" asp-for="IsAnswerCorrect" />
+                    @Html.DisplayNameFor(model => model.IsAnswerCorrect)
                 </label>
             </div>
             <div class="form-group">

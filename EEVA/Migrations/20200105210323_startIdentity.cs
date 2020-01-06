@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EEVA.Domain.Migrations
+namespace EEVA.Web.Migrations
 {
-    public partial class renew : Migration
+    public partial class startIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

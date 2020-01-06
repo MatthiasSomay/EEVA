@@ -14,11 +14,13 @@ namespace EEVA.Web.Controllers
 {
     public class AnswerMultipleChoiceController : Controller
     {
-        private readonly AnswerManager _answerManager;
+        private readonly AnswerMultipleChoiceManager _answerMultipleChoiceManager;
+        private readonly QuestionManager _questionManager;
 
         public AnswerMultipleChoiceController(EEVAContext context)
         {
-            _answerManager = new AnswerManager(context);
+            _answerMultipleChoiceManager = new AnswerMultipleChoiceManager(context);
+            _questionManager = new QuestionManager(context);
         }
 
         // GET: AnswerMultipleChoice/Details/5
@@ -29,7 +31,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(_answerManager.GetMultipleChoice(id));
+            AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(_answerMultipleChoiceManager.Get(id));
 
             if (answerMultipleChoiceViewModel == null)
             {
@@ -40,25 +42,36 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: AnswerMultipleChoice/Create
-        public IActionResult Create()
+        public IActionResult Create(int? questionId)
         {
+            TempData["questionId"] = questionId;
             return View();
         }
+        
 
         // POST: AnswerMultipleChoice/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Answer,IsAnswerCorrect,Id")] AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel)
+        public IActionResult Create([Bind("Answer,IsAnswerCorrect,Id,Question")] AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                AnswerMultipleChoice answerMultipleChoice = MapToAnswerMultipleChoice(answerMultipleChoiceViewModel);
-                _answerManager.Add(answerMultipleChoice);
-                return RedirectToAction(nameof(Index));
+                int? questionId = (int)TempData["questionId"];
+                answerMultipleChoiceViewModel.QuestionMultipleChoice = _questionManager.GetMultipleChoice(questionId);
+
+                if (ModelState.IsValid)
+                {
+                    AnswerMultipleChoice answerMultipleChoice = MapToAnswerMultipleChoice(answerMultipleChoiceViewModel);
+                    _answerMultipleChoiceManager.Add(answerMultipleChoice);
+                }
+                return RedirectToAction("Details", "QuestionMultipleChoice", new { id = questionId });
             }
-            return View(answerMultipleChoiceViewModel);
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         // GET: AnswerMultipleChoice/Edit/5
@@ -69,7 +82,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerMultipleChoice answerMultipleChoice = _answerManager.GetMultipleChoice(id);
+            AnswerMultipleChoice answerMultipleChoice = _answerMultipleChoiceManager.Get(id);
             if (answerMultipleChoice == null)
             {
                 return NotFound();
@@ -98,7 +111,7 @@ namespace EEVA.Web.Controllers
                 try
                 {
                     AnswerMultipleChoice answerMultipleChoice = MapToAnswerMultipleChoice(answerMultipleChoiceViewModel);
-                    _answerManager.Update(answerMultipleChoice);
+                    _answerMultipleChoiceManager.Update(answerMultipleChoice);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +137,7 @@ namespace EEVA.Web.Controllers
                 return NotFound();
             }
 
-            AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(_answerManager.GetMultipleChoice(id));
+            AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel = MapToAnswerMultipleChoiceViewModel(_answerMultipleChoiceManager.Get(id));
 
             if (answerMultipleChoiceViewModel == null)
             {
@@ -139,14 +152,14 @@ namespace EEVA.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            AnswerMultipleChoice answerMultipleChoice = _answerManager.GetMultipleChoice(id);
-            _answerManager.Delete(answerMultipleChoice);
+            AnswerMultipleChoice answerMultipleChoice = _answerMultipleChoiceManager.Get(id);
+            _answerMultipleChoiceManager.Delete(answerMultipleChoice);
             return RedirectToAction(nameof(Index));
         }
 
         private bool AnswerMultipleChoiceExists(int id)
         {
-            if (_answerManager.Get(id) != null)
+            if (_answerMultipleChoiceManager.Get(id) != null)
             {
                 return true;
             }
@@ -156,13 +169,23 @@ namespace EEVA.Web.Controllers
         //Mapping AnswerMultipleChoice to AnswerMultipleChoiceViewModel
         private AnswerMultipleChoiceViewModel MapToAnswerMultipleChoiceViewModel(AnswerMultipleChoice answerMultipleChoice)
         {
-            return new AnswerMultipleChoiceViewModel();
+            return new AnswerMultipleChoiceViewModel(
+                answerMultipleChoice.Id,
+                answerMultipleChoice.QuestionMultipleChoice,
+                answerMultipleChoice.Answer,
+                answerMultipleChoice.IsAnswerCorrect
+                );
         }
 
         //Mapping AnswerMultipleChoiceViewModel to AnswerMultipleChoice
         private AnswerMultipleChoice MapToAnswerMultipleChoice(AnswerMultipleChoiceViewModel answerMultipleChoiceViewModel)
         {
-            return new AnswerMultipleChoice();
+            return new AnswerMultipleChoice(
+                answerMultipleChoiceViewModel.Id,
+                answerMultipleChoiceViewModel.QuestionMultipleChoice,
+                answerMultipleChoiceViewModel.Answer,
+                answerMultipleChoiceViewModel.IsAnswerCorrect
+                ) ;
         }
 
     }

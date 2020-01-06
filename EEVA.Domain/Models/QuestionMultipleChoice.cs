@@ -7,14 +7,14 @@ namespace EEVA.Domain.Models
     public class QuestionMultipleChoice : Question
     {
         
-        public List<AnswerMultipleChoice> Answers { get; set; }
+        public IEnumerable<AnswerMultipleChoice> Answers { get; set; }
 
         public QuestionMultipleChoice()
         {
 
         }
 
-        public QuestionMultipleChoice(int id, string questionPhrase, List<AnswerMultipleChoice> answers) : base(id, questionPhrase)
+        public QuestionMultipleChoice(int id, string questionPhrase, IEnumerable<AnswerMultipleChoice> answers) : base(id, questionPhrase)
         {
             Answers = answers;
         }

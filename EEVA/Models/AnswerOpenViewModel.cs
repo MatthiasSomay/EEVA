@@ -13,10 +13,24 @@ namespace EEVA.Web.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public Question Question { get; set; }
 
-        public string Answer { get; set; }
+        [Required]
+        public QuestionOpen QuestionOpen { get; set; }
+
+        [Required]
+        public string Keyword { get; set; }
+
+        public AnswerOpenViewModel(int id, QuestionOpen questionOpen, string keyword)
+        {
+            Id = id;
+            QuestionOpen = questionOpen;
+            Keyword = keyword;
+        }
+
+        public AnswerOpenViewModel()
+        {
+
+        }
 
     }
 }

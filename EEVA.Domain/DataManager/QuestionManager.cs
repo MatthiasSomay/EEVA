@@ -63,19 +63,9 @@ namespace EEVA.Domain.DataManager
         {
             keyword = keyword.ToUpper();
 
-            List<Question> questions = new List<Question>();
+            return _eevaContext.Questions
+                .Where(q => q.QuestionPhrase.ToUpper().Contains(keyword)).ToList();
 
-            IEnumerable<Question> entities = _eevaContext.Questions
-                .Where(q => q.QuestionPhrase.ToUpper().Contains(keyword));
-            foreach (var entity in entities)
-            {
-                questions.Add(new Question()
-                {
-                    Id = entity.Id,
-                    QuestionPhrase = entity.QuestionPhrase
-                });
-            }
-            return questions;
         }
 
         public void Update(Question entity)

@@ -14,7 +14,7 @@ namespace EEVA.Web.Models
         [Display(Name = "Answers")]
         public IEnumerable<AnswerMultipleChoice> Answers { get; set; }
 
-        public QuestionMultipleChoiceViewModel(int id, string questionPhrase, List<AnswerMultipleChoice> answers) : base(id, questionPhrase)
+        public QuestionMultipleChoiceViewModel(int id, string questionPhrase, IEnumerable<AnswerMultipleChoice> answers) : base(id, questionPhrase)
         {
             Answers = answers;
         }

@@ -3,6 +3,7 @@ using EEVA.Domain.DataManager;
 using EEVA.Domain.Models;
 using EEVA.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -34,6 +35,12 @@ namespace EEVA.Web.Controllers
             }
 
             return View(questionMultipleChoiceViewModel);
+        }
+
+        // Redirect to Answer Create
+        public ActionResult AddAnswer(int? id)
+        {
+            return RedirectToAction("Create", "AnswerMultipleChoice", new { questionId = id });
         }
 
         private QuestionMultipleChoiceViewModel MapToQuestionMultipleChoiceViewModel(QuestionMultipleChoice questionMultipleChoice)

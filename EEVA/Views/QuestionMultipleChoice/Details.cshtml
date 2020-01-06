@@ -26,6 +26,9 @@
     <br />
     <br />
     <h5>Answers</h5>
+    <a asp-action="AddAnswer" asp-route-id="@Model.Id">Add an Answer</a>
+    <br />
+    <br />
 </div>
 <table class="table">
     <thead>
@@ -38,6 +41,8 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Answers.FirstOrDefault().IsAnswerCorrect)
+            </th>
+            <th>
             </th>
         </tr>
     </thead>

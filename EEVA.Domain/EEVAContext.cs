@@ -23,7 +23,6 @@ namespace EEVA.Domain
         public DbSet<Exam> Exams { get; set; }
         public DbSet<StudentExam> StudentExams { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<Answer> Answers { get; set; }
         public DbSet<StudentExamAnswer> StudentExamAnswers { get; set; }
         public DbSet<AnswerMultipleChoice> AnswersMultipleChoice { get; set; }
         public DbSet<AnswerOpen> AnswersOpen { get; set; }
@@ -44,7 +43,8 @@ namespace EEVA.Domain
             modelBuilder.Entity<Exam>().HasData(new Exam() { Id = 1, Course = course, Date = DateTime.Today, EndTime = TimeSpan.FromHours(12), StartTime = TimeSpan.FromHours(9),    });
             modelBuilder.Entity<StudentExam>();
             modelBuilder.Entity<Question>();
-            modelBuilder.Entity<Answer>();
+            modelBuilder.Entity<AnswerMultipleChoice>();
+            modelBuilder.Entity<AnswerOpen>();
             modelBuilder.Entity<StudentExamAnswer>();
 
             
