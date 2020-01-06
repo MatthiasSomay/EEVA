@@ -10,6 +10,15 @@
 <p>
     <a asp-action="Create">Create New Student</a>
 </p>
+<form asp-action="Index" method="get" class="form-inline">
+    <div class="form-actions no-color">
+        <p>
+            Find by keyword: <input type="text" name="SearchString" class="form-control mr-sm-2" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
