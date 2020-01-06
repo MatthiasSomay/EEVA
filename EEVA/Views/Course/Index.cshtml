@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>List of Courses</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Course</a>
 </p>
-<form asp-action="Index" method="get">
+<form asp-action="Index" method="get" class="form-inline">
     <div class="form-actions no-color">
         <p>
-            Find by keyword: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
+            Find by keyword: <input type="text" name="SearchString" class="form-control mr-sm-2" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" /> |
             <a asp-action="Index">Back to Full List</a>
         </p>
     </div>
