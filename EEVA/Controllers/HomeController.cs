@@ -20,7 +20,11 @@ namespace EEVA.Controllers
 
         public IActionResult Index()
         {
+
+
+
             return View();
+
         }
 
         public IActionResult Privacy()

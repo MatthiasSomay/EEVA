@@ -29,7 +29,7 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: Course
-        [Authorize(Roles = "Teacher, Admin")]
+        
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
             if (searchString != null)
@@ -78,6 +78,7 @@ namespace EEVA.Web.Controllers
             return View(courseViewModel);
         }
 
+        [Authorize(Roles = "Teacher, Admin")]
         // GET: Course/Create
         public IActionResult Create()
         {
@@ -100,6 +101,7 @@ namespace EEVA.Web.Controllers
             return View(courseViewModel);
         }
 
+        [Authorize(Roles = "Teacher, Admin")]
         // GET: Course/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -155,6 +157,7 @@ namespace EEVA.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher, Admin")]
         // GET: Course/Delete/5
         public IActionResult Delete(int? id)
         {

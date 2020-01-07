@@ -83,24 +83,22 @@
 
 <nav aria-label="...">
     <ul class="pagination">
-        <li class="page-item">
+        <li class="page-item @prevDisabled">
             <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-pageNumber="@(Model.PageIndex - 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="page-link @prevDisabled">
+               class="page-link">
                 Previous
             </a>
         </li>
-        <li class="page-item">
+        <li class="page-item @nextDisabled">
             <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-pageNumber="@(Model.PageIndex + 1)"
                asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               class="page-link @nextDisabled">
+               class="page-link">
                 Next
             </a>
         </li>
     </ul>
-    </nav>
+</nav>
 

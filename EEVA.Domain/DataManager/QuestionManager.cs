@@ -69,7 +69,8 @@ namespace EEVA.Domain.DataManager
             keyword = keyword.ToUpper();
 
             return _eevaContext.Questions
-                .Where(q => q.QuestionPhrase.ToUpper().Contains(keyword)).ToList();
+                 .Include(Question => Question.Course)
+                .Where(q => q.QuestionPhrase.ToUpper().Contains(keyword) || q.Course.CourseName.ToUpper().Contains(keyword)).ToList();
 
         }
 

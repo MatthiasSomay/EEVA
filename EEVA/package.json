@@ -11,6 +11,8 @@
     "updatedb": "update-database"
   },
   "dependencies": {
+    "chart.js": "^2.9.3",
+    "devextreme": "19.2.5",
     "jquery-validation": "^1.19.1",
     "jquery-validation-unobtrusive": "^3.2.11"
   }
