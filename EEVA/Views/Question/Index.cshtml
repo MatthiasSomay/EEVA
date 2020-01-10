@@ -4,8 +4,22 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>List of Questions</h1>
 
+
+
+@if(ViewBag.Message)
+{
+    <div class="col-lg-12" id="success-alert">
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Question created!</label>
+        </div>
+    </div>
+}
+
+
+
+<h1>List of Questions</h1>
 <p>
     <a asp-action="Create">Create New Question</a>
 </p>

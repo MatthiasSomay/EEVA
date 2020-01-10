@@ -24,8 +24,9 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: Question
-        public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, bool questionCreated)
         {
+            ViewBag.Message = questionCreated;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -99,7 +100,7 @@ namespace EEVA.Web.Controllers
             {
                 Question Question = MapToQuestion(QuestionViewModel);
                 _questionManager.Add(Question);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { questionCreated = true });
             }
             return View();
         }
