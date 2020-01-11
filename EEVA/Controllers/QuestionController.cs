@@ -9,9 +9,11 @@ using EEVA.Domain;
 using EEVA.Domain.Models;
 using EEVA.Domain.DataManager;
 using EEVA.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class QuestionController : Controller
     {
         private readonly QuestionManager _questionManager;

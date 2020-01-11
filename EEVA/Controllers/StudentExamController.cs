@@ -10,9 +10,11 @@ using EEVA.Domain.Models;
 using EEVA.Domain.DataManager;
 using EEVA.Web.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class StudentExamController : Controller
     {
         private readonly StudentExamManager _studentExamManager;
@@ -26,6 +28,7 @@ namespace EEVA.Web.Controllers
             _contactManager = new ContactManager(context);
         }
 
+        [Authorize(Roles = "Teacher, Admin, Student")]
         // GET: StudentExam
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
@@ -56,6 +59,7 @@ namespace EEVA.Web.Controllers
             int pageSize = 8;
             return View(PaginatedList<StudentExamViewModel>.Create(studentExamViewModels, pageNumber ?? 1, pageSize));
         }
+
 
         // GET: StudentExam/Details/5
         public IActionResult Details(int? id)

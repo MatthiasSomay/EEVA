@@ -15,21 +15,30 @@
     <div class="row">
         <div class="card col-md-6">
             <div class="card-body">
+                <h5>Number of Courses</h5>
+                <canvas id="numberOfCoursesBarChart"></canvas>
+                @{ChartJSCore.Models.Chart chart2 = (ChartJSCore.Models.Chart)ViewData["numberOfCoursesBarChart"]; }
+            </div>
+        </div>
+        <div class="card col-md-6">
+            <div class="card-body">
                 <h5>Number of Questions per Course</h5>
                 <canvas id="questionsCourseBarChart"></canvas>
                 @{ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)ViewData["questionsCourseBarChart"]; }
             </div>
         </div>
 
+
     </div>
 
 
-    <div><canvas id="lineChart"></canvas></div>
+
 
     @section Scripts {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" integrity="sha256-nZaxPHA2uAaquixjSDX19TmIlbRNCOrf5HO1oHl5p70=" crossorigin="anonymous"></script>
         <script>
         @Html.Raw(chart.CreateChartCode("questionsCourseBarChart"));
+        @Html.Raw(chart2.CreateChartCode("numberOfCoursesBarChart"));
         </script>
     }
 

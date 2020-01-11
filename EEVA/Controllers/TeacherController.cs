@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class TeacherController : Controller
     {
         private readonly ContactManager _contactManager;
@@ -26,7 +27,7 @@ namespace EEVA.Web.Controllers
         }
 
 
-        [Authorize(Roles = "Teacher, Admin")]
+       
         public ActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
             ViewBag.Message = message;

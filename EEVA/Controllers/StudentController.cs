@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class StudentController : Controller
     {
         private readonly ContactManager _contactManager;
@@ -26,7 +27,7 @@ namespace EEVA.Web.Controllers
             _contactManager = new ContactManager(context);
         }
 
-        [Authorize(Roles = "Teacher, Admin")]
+
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
             ViewBag.Message = message;

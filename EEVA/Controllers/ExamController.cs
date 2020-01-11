@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class ExamController : Controller
     {
         private readonly ExamManager _examManager;
@@ -34,7 +35,7 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: Exam
-        [Authorize(Roles = "Teacher, Admin")]
+        
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
             ViewBag.Message = message;

@@ -13,6 +13,7 @@ using EEVA.Web.Models;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class CourseController : Controller
     {
         private readonly ExamManager _examManager;
@@ -80,7 +81,7 @@ namespace EEVA.Web.Controllers
             return View(courseViewModel);
         }
 
-        [Authorize(Roles = "Teacher, Admin")]
+        
         // GET: Course/Create
         public IActionResult Create()
         {
