@@ -4,6 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
+@if (ViewBag.Message)
+{
+    <div class="col-lg-12" id="success-alert">
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Course created!</label>
+        </div>
+    </div>
+}
+
 <h1>List of Courses</h1>
 
 <p>

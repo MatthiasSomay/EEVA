@@ -30,8 +30,10 @@ namespace EEVA.Web.Controllers
 
         // GET: Course
         
-        public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, bool courseCreated)
         {
+            ViewBag.Message = courseCreated;
+
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -45,7 +47,7 @@ namespace EEVA.Web.Controllers
             List<CourseViewModel> courseViewModels = new List<CourseViewModel>();
             IEnumerable<Course> courses;
 
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 courses = _courseManager.Search(searchString);
             }
@@ -96,7 +98,7 @@ namespace EEVA.Web.Controllers
             {
                 Course course = MapToCourse(courseViewModel);
                 _courseManager.Add(course);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { courseCreated = true});
             }
             return View(courseViewModel);
         }
