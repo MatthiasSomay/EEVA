@@ -23,7 +23,7 @@ namespace EEVA
         {
             Configuration = configuration;
         }
-        
+
         readonly string[] ROLES = new string[] { "Admin", "Teacher", "Student" };
         // Gebaseerd op https://dotnetdetail.net/role-based-authorization-in-asp-net-core-3-0/
         private async Task CreateRoles(IServiceProvider serviceProvider)
@@ -46,14 +46,12 @@ namespace EEVA
             //here we are assigning the Admin role to the User that we have registered above 
             //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
             //be assigned to that user.
-            IdentityUser user = await UserManager.FindByEmailAsync("somay_2@hotmail.com");
-            if (user != null)
-            {
-                foreach (string role in ROLES)
-                {
-                    await UserManager.AddToRoleAsync(user, role);
-                }
-            }
+            IdentityUser user = await UserManager.FindByEmailAsync("jens.vanbever@student.ucll.be");
+            
+
+            await UserManager.AddToRoleAsync(user, "Student");
+          
+
         }
 
 

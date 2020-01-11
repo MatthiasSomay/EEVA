@@ -15,6 +15,7 @@
     <PackageReference Include="Aspose.Words" Version="20.1.0" />
     <PackageReference Include="bootstrap" Version="4.4.1" />
     <PackageReference Include="Chart.js" Version="2.9.3" />
+    <PackageReference Include="ChartJSCore" Version="1.5.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
@@ -30,6 +31,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+    <PackageReference Include="RequireJS" Version="2.3.6" />
   </ItemGroup>
 
   <ItemGroup>

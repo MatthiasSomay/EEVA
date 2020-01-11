@@ -1,8 +1,70 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
+{
+
+    <h2>Statistics</h2>
+    <div class="row">
+        <div class="col">
+            &nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-md-6">
+            <div class="card-body">
+                <h5>Number of Questions per Course</h5>
+                <canvas id="questionsCourseBarChart"></canvas>
+                @{ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)ViewData["questionsCourseBarChart"]; }
+            </div>
+        </div>
+
+    </div>
+
+
+    <div><canvas id="lineChart"></canvas></div>
+
+    @section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" integrity="sha256-nZaxPHA2uAaquixjSDX19TmIlbRNCOrf5HO1oHl5p70=" crossorigin="anonymous"></script>
+        <script>
+        @Html.Raw(chart.CreateChartCode("questionsCourseBarChart"));
+        </script>
+    }
+
+}
+else
+{
+    <br />
+    <br />
+    <br />
+    <br />
+    <h1 class="headertext">Welcome to the <br />Online Examination Tool of UCLL</h1>
+    <h2 class="subheadertext">Make sure you are logged in and head to the "My Exams" section to start an Exam assigned to you.</h2>
+
+    <div class="row" id="images">
+        <div class=" col-md-4">
+
+
+            <img src="~/img/brooke-cagle-g1Kr4Ozfoac-unsplash.jpg" width="350" height="300" class="form-inline" />
+
+
+        </div>
+        <div class=" col-md-4">
+
+
+            <img src="~/img/element5-digital-jCIMcOpFHig-unsplash.jpg" width="350" height="300" class="form-inline" />
+
+
+        </div>
+        <div class=" col-md-4">
+
+
+            <img src="~/img/wes-hicks-4-EeTnaC1S4-unsplash.jpg" width="350" height="300" class="form-inline" />
+
+
+        </div>
+
+    </div>
+}

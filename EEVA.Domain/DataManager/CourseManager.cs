@@ -50,8 +50,6 @@ namespace EEVA.Domain.DataManager
                 .ToList();
         }
 
-       
-
         public IEnumerable<Course> Search(string keyword)
         {
             keyword = keyword.ToUpper();

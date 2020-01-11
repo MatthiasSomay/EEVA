@@ -35,8 +35,9 @@ namespace EEVA.Web.Controllers
 
         // GET: Exam
         [Authorize(Roles = "Teacher, Admin")]
-        public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
+            ViewBag.Message = message;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -98,7 +99,7 @@ namespace EEVA.Web.Controllers
             {
                 Exam exam = MapToExam(examViewModel);
                 _examManager.Add(exam);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "create"});
             }
             return View();
         }
@@ -151,7 +152,7 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "edit" });
             }
             return View();
         }
@@ -180,7 +181,7 @@ namespace EEVA.Web.Controllers
         {
             Exam exam = _examManager.Get(id);
             _examManager.Delete(exam);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = "delete" });
         }
 
         // Redirect to the Create StudentExam

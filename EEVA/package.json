@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "chart.js": "^2.9.3",
-    "devextreme": "19.2.5",
+    "requirejs": "2.3.6",
+    "jquery": "3.4.1",
     "jquery-validation": "^1.19.1",
     "jquery-validation-unobtrusive": "^3.2.11"
   }
