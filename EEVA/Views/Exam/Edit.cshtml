@@ -15,7 +15,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" readonly="readonly"/>
+                <input asp-for="Id" class="form-control" readonly="readonly" />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,14 +37,14 @@
                 <label asp-for="Course" class="control-label"></label>
                 <br />
                 @Html.DropDownListFor(m => m.CourseId,
-                new SelectList(Model.Courses, "Id", "CourseName", Model.CourseId), "-- Select --", new { @class = "form-control"  })
+                new SelectList(Model.Courses, "Id", "CourseName", Model.CourseId), "-- Select --", new { @class = "form-control" })
             </div>
             <div class="form-group">
                 <label asp-for="Teacher" class="control-label"></label>
                 <br />
                 @Html.DropDownListFor(m => m.TeacherId,
-                new SelectList(Model.Teachers, "Id", "FullName", Model.TeacherId), "-- Select --", new { @class = "form-control"  })
-               
+                new SelectList(Model.Teachers, "Id", "FullName", Model.TeacherId), "-- Select --", new { @class = "form-control" })
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

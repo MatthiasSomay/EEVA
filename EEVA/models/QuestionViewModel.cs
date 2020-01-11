@@ -21,6 +21,8 @@ namespace EEVA.Web.Models
         [Display(Name = "Course")]
         public Course Course { get; set; }
 
+        public bool Answered { get; set; }
+
         //Used for Course dropdown in view
         public IEnumerable<Course> Courses { get; set; }
         public int CourseId { get; set; }

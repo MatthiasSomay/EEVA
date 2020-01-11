@@ -1,0 +1,74 @@
+﻿@model EEVA.Web.PaginatedList<EEVA.Web.Models.QuestionViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>List of Questions</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].QuestionPhrase)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.Count() > 0)
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        123
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionPhrase)
+                    </td>
+                    <td>
+                        @if (!item.Answered)
+                        {
+                            <a asp-action="AddAnswer" asp-route-id="@item.Id" class="btn btn-outline-success my-2 my-sm-0 btn-sm">Answer Question</a>
+                        }
+                        @if (item.Answered)
+                        {
+                            <a asp-action="ReviewAnswer" asp-route-id="@item.Id" class="btn btn-outline-warning my-2 my-sm-0 btn-sm">Review Answer</a>
+                        }
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="page-link">
+                Previous
+            </a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="page-link">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+
+

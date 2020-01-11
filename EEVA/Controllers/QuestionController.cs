@@ -16,11 +16,13 @@ namespace EEVA.Web.Controllers
     {
         private readonly QuestionManager _questionManager;
         private readonly CourseManager _courseManager;
+        private readonly StudentExamManager _studentExamManager;
 
         public QuestionController(EEVAContext context)
         {
             _questionManager = new QuestionManager(context);
             _courseManager = new CourseManager(context);
+            _studentExamManager = new StudentExamManager(context);
         }
 
         // GET: Question
@@ -187,6 +189,43 @@ namespace EEVA.Web.Controllers
             Question question = _questionManager.Get(id);
             _questionManager.Delete(question);
             return RedirectToAction(nameof(Index), new { message = "delete"});
+        }
+
+        // GET: Question/ExamQuestion
+        // Listing all the Questions related to a studentExam and providing the possibility to answer
+        public IActionResult ExamQuestion(int? pageNumber)
+        {
+            try
+            {
+                int? studentExamId = (int)TempData["studentExamId"];
+                StudentExam studentExam = _studentExamManager.Get(studentExamId);
+
+                List<QuestionViewModel> questionViewModels = new List<QuestionViewModel>();
+                IEnumerable<Question> questions = studentExam.Exam.ExamQuestions;
+
+                foreach (Question q in questions)
+                {
+                    QuestionViewModel questionViewModel = MapToQuestionViewModel(q);
+                    foreach (StudentExamAnswer a in studentExam.StudentExamAnswers)
+                    {
+                        //Setting Question answered true if has exists
+                        if (a.Question.Equals(q))
+                        {
+                            questionViewModel.Answered = true;
+                        }
+                        else questionViewModel.Answered = false;
+                    }
+                    questionViewModels.Add(questionViewModel);
+                }
+
+                int pageSize = 8;
+                return View(PaginatedList<QuestionViewModel>.Create(questionViewModels, pageNumber ?? 1, pageSize));
+
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         private bool QuestionExists(int id)

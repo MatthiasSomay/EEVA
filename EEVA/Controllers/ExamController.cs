@@ -183,6 +183,13 @@ namespace EEVA.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Redirect to the Create StudentExam
+        public ActionResult StudentExamCreate(int? id)
+        {
+            return RedirectToAction("Create", "StudentExam", new { examId = id });
+        }
+
+
         // Redirect to the related details of a Question
         public ActionResult QuestionDetails(int? id)
         {
@@ -249,6 +256,8 @@ namespace EEVA.Web.Controllers
                 );
         }
 
+
+        //Printing out the Exam document
         [HttpGet]
         public ActionResult DownloadToPDF(int? id)
         {

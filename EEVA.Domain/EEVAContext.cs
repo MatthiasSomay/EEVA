@@ -24,6 +24,8 @@ namespace EEVA.Domain
         public DbSet<StudentExam> StudentExams { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<StudentExamAnswer> StudentExamAnswers { get; set; }
+        public DbSet<StudentExamAnswerOpen> StudentExamAnswersOpen { get; set; }
+        public DbSet<StudentExamAnswerMultipleChoice> StudentExamAnswersMultipleChoice { get; set; }
         public DbSet<AnswerMultipleChoice> AnswersMultipleChoice { get; set; }
         public DbSet<AnswerOpen> AnswersOpen { get; set; }
         public DbSet<QuestionMultipleChoice> QuestionsMultipleChoice { get; set; }
