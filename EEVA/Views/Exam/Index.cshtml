@@ -22,16 +22,16 @@
     <thead>
         <tr>
             <th>
-              @Html.DisplayNameFor(model => model[0].Id)
+                @Html.DisplayNameFor(model => model[0].Id)
             </th>
             <th>
-               @Html.DisplayNameFor(model => model[0].Date)
+                @Html.DisplayNameFor(model => model[0].Date)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].StartTime)
             </th>
             <th>
-                 @Html.DisplayNameFor(model => model[0].EndTime)
+                @Html.DisplayNameFor(model => model[0].EndTime)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].CourseName)
@@ -65,11 +65,18 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TeacherFullName)
-                    </td>
+                    </td> 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        @if (ViewContext.HttpContext.User.IsInRole("Teacher"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a><span> | </span>
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a><span> | </span>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                        @if (ViewContext.HttpContext.User.IsInRole("Student"))
+                        {
+                            <a asp-action="StudentExamCreate" asp-route-id="@item.Id"  class="btn btn-outline-warning my-2 my-sm-0 btn-sm">Start Exam</a>
+                        }
                     </td>
                 </tr>
             }

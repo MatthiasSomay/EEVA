@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 
 namespace EEVA.Domain.DataManager
@@ -68,6 +69,12 @@ namespace EEVA.Domain.DataManager
             dbEntity.Email = entity.Email;
             dbEntity.PhoneNumber = entity.PhoneNumber;
             _eevaContext.SaveChanges();
+        }
+
+        //Getting the contact by the user logged in via Identity framework
+        public Contact GetByEmail(ClaimsPrincipal user)
+        {
+            return _eevaContext.Contacts.FirstOrDefault(c => c.Email == user.Identity.Name);
         }
     }
 }
