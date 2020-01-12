@@ -417,7 +417,7 @@ namespace EEVA.Web.Controllers
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", exam.Course.CourseName + "_" + exam.Course.CourseYear.ToString());
 
         }
-
+        
         public IActionResult LinkToStudent(int? id)
         {
             return View();
