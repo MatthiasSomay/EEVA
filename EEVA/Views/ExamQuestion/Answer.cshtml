@@ -51,15 +51,29 @@
             }
             @if (Model.QuestionMultipleChoice != null)
             {
-                <div class="form-group">
-                    <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
-                    <br />
-                    @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
-                        @foreach (var item in Model.QuestionMultipleChoice.Answers)
+        <div class="form-group">
+            <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
+            <br />
+            @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
+                @foreach (var item in Model.QuestionMultipleChoice.Answers)
+                {
+                    if (Model.Answers != null)
+                    {
+                        if (Model.Answers.Contains(item.Id))
+                        {
+                            <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" checked/> @item.Answer<br />
+                        }
+                        else
                         {
                             <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
                         }
-                </div>
+                    }
+                    else
+                    {
+                        <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
+                    }
+                }
+        </div>
             }
             <br />
             <div class="form-group">

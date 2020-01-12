@@ -85,26 +85,21 @@ namespace EEVA.Web.Controllers
                 if (question is QuestionOpen)
                 {
                     examQuestionViewModel.QuestionOpen = _questionManager.GetOpen(question.Id);
-                    try
+                    StudentExamAnswerOpen studentExamAnswerOpen = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExam.Id, question.Id);
+                    if (studentExamAnswerOpen != null)
                     {
-                        examQuestionViewModel.Answer = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExam.Id, question.Id).Answer;
-                    }
-                    catch (Exception)
-                    {
-
+                        examQuestionViewModel.Answer = studentExamAnswerOpen.Answer;
                     }
                 }
                 else if (question is QuestionMultipleChoice)
                 {
                     examQuestionViewModel.QuestionMultipleChoice = _questionManager.GetMultipleChoice(question.Id);
-                    try
+                    StudentExamAnswerMultipleChoice studentExamAnswer = _studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExam.Id, question.Id);
+                    if (studentExamAnswer != null)
                     {
-                        // examQuestionViewModel.Answers =_studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExam.Id, question.Id).Answer;
-                    }
-                    catch (Exception)
-                    {
-
-                        throw;
+                        List<int> answers = new List<int>();
+                        answers.Add(studentExamAnswer.Answer.Id);
+                        examQuestionViewModel.Answers = answers;
                     }
                 }
                 else
@@ -132,7 +127,6 @@ namespace EEVA.Web.Controllers
 
                 StudentExam studentExam = _studentExamManager.Get(studentExamId);
                 Question question = studentExam.Exam.ExamQuestions.ElementAt(id - 1);
-
 
                 //Checking which type of question it is
                 if (question is QuestionOpen)
