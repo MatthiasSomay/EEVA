@@ -59,7 +59,7 @@
             }
             @if (Model.QuestionMultipleChoice != null)
             {
-                <div class="form-group" id="answers">
+                <div class="form-group">
                     <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
                     <br />
                     @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
@@ -68,7 +68,6 @@
                             <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
                         }
                 </div>
-                <span class="error alert-danger">Please select at least one Answer</span>
             }
             <br />
             <div class="form-group">
