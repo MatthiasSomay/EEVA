@@ -60,6 +60,14 @@ namespace EEVA.Web.Models
 
         public int StudentId { get; set; }
 
+        [Display(Name = "Questions")]
+        public List<Question> Questions { get; set; }
+
+        [Display(Name = "Questions")]
+        public IEnumerable<Question> QuestionsAll { get; set; }
+
+        public int QuestionId { get; set; }
+
         public ExamViewModel(int id, Course course, Teacher teacher, DateTime date, TimeSpan startTime, TimeSpan endTime, IEnumerable<Question> examQuestions, IEnumerable<StudentExam> studentExams, IEnumerable<Course> courses, IEnumerable<Teacher> teachers, List<Student> students, IEnumerable<Student> studentsAll)
         {
             Id = id;
