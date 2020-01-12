@@ -52,7 +52,15 @@ namespace EEVA.Web.Models
         public IEnumerable<Teacher> Teachers { get; set; }
         public int TeacherId { get; set; }
 
-        public ExamViewModel(int id, Course course, Teacher teacher, DateTime date, TimeSpan startTime, TimeSpan endTime, IEnumerable<Question> examQuestions, IEnumerable<StudentExam> studentExams, IEnumerable<Course> courses, IEnumerable<Teacher> teachers)
+        [Display(Name = "Students")]
+        public List<Student> Students { get; set; }
+
+        [Display(Name = "Students")]
+        public IEnumerable<Student> StudentsAll { get; set; }
+
+        public int StudentId { get; set; }
+
+        public ExamViewModel(int id, Course course, Teacher teacher, DateTime date, TimeSpan startTime, TimeSpan endTime, IEnumerable<Question> examQuestions, IEnumerable<StudentExam> studentExams, IEnumerable<Course> courses, IEnumerable<Teacher> teachers, List<Student> students, IEnumerable<Student> studentsAll)
         {
             Id = id;
 
@@ -77,6 +85,8 @@ namespace EEVA.Web.Models
             StudentExams = studentExams;
             Courses = courses;
             Teachers = teachers;
+            Students = students;
+            StudentsAll = studentsAll;
         }
 
         public ExamViewModel(IEnumerable<Course> courses, IEnumerable<Teacher> teachers)

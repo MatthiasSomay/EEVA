@@ -44,16 +44,22 @@ namespace EEVA.Domain.DataManager
         }
 
         //Get all Teachers
-        //TODO make method generic
         public IEnumerable<Teacher> GetAllTeachers()
         {
             return _eevaContext.Contacts.OfType<Teacher>().ToList();
         }
 
+        //Get All Students
+        public IEnumerable<Student> GetAllStudents()
+        {
+            return _eevaContext.Contacts.OfType<Student>().ToList();
+        }
+
+
         public IEnumerable<Contact> Search(string keyword)
         {
             keyword = keyword.ToUpper();
-            
+
             return _eevaContext.Contacts
                 .Where(c => c.FirstName.ToUpper()
                 .Contains(keyword) || c.LastName.ToUpper()
@@ -75,6 +81,11 @@ namespace EEVA.Domain.DataManager
         public Contact GetByEmail(ClaimsPrincipal user)
         {
             return _eevaContext.Contacts.FirstOrDefault(c => c.Email == user.Identity.Name);
+        }
+
+        public Student GetStudent(int studentId)
+        {
+            return _eevaContext.Contacts.OfType<Student>().FirstOrDefault(c => c.Id == studentId);
         }
     }
 }

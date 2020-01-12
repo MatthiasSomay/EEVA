@@ -35,7 +35,7 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: Exam
-        
+
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
             ViewBag.Message = message;
@@ -100,7 +100,7 @@ namespace EEVA.Web.Controllers
             {
                 Exam exam = MapToExam(examViewModel);
                 _examManager.Add(exam);
-                return RedirectToAction(nameof(Index), new { message = "create"});
+                return RedirectToAction(nameof(Index), new { message = "create" });
             }
             return View();
         }
@@ -210,6 +210,37 @@ namespace EEVA.Web.Controllers
             return RedirectToAction("Edit", "StudentExam", new { id });
         }
 
+        // Add Student
+        public IActionResult AddStudent(int? id)
+        {
+            ExamViewModel examViewModel = new ExamViewModel();
+            examViewModel.CourseName = _examManager.Get(id).Course.CourseName;
+            examViewModel.StudentsAll = _contactManager.GetAllStudents();
+            return View(examViewModel);
+        }
+
+        // Add Student
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddStudent(int? id, [Bind("StudentId")] ExamViewModel examViewModel)
+        {
+            Exam exam = _examManager.Get(id);
+            List<ExamStudent> studentList = new List<ExamStudent>();
+            if (exam.Students != null)
+            {
+                foreach (var s in exam.Students)
+                {
+                    Student student = _contactManager.GetStudent(examViewModel.StudentId);
+                    studentList.Add(new ExamStudent(exam, student));
+                }
+            }
+            Student newStudent = _contactManager.GetStudent(examViewModel.StudentId);
+            exam.Students = studentList;
+            exam.Students.Add(new ExamStudent(exam, newStudent));
+            _examManager.Update(exam);
+            return RedirectToAction("Details", "Exam", new { id });
+        }
+
 
         private bool ExamExists(int id)
         {
@@ -235,6 +266,16 @@ namespace EEVA.Web.Controllers
         //Mapping Exam to ExamViewModel
         private ExamViewModel MapToExamViewModel(Exam exam)
         {
+
+            List<Student> studentList = new List<Student>();
+            if (exam.Students != null)
+            {
+                foreach (var s in exam.Students)
+                {
+                    studentList.Add(_contactManager.GetStudent(s.StudentId));
+                }
+            }
+
             return new ExamViewModel(
                 exam.Id,
                 exam.Course,
@@ -245,7 +286,9 @@ namespace EEVA.Web.Controllers
                 exam.ExamQuestions,
                 exam.StudentExams,
                 _courseManager.GetAll(),
-                _contactManager.GetAllTeachers()
+                _contactManager.GetAllTeachers(),
+                studentList,
+                _contactManager.GetAllStudents()
                 );
         }
 
@@ -292,11 +335,11 @@ namespace EEVA.Web.Controllers
             bulletStyle.ListFormat.List = doc.Lists.Add(ListTemplate.BulletCircle);
             bulletStyle.ListFormat.ListLevelNumber = 0;
 
-           
+
             docBuilder.ParagraphFormat.Style = headerStyle;
             docBuilder.Writeln("Exam " + exam.Course.CourseName + " - " + exam.Course.CourseYear);
-          
-            
+
+
             docBuilder.ParagraphFormat.Style = subHeaderStyle;
             docBuilder.Writeln("Date: " + exam.Date.Day.ToString() + "/" + exam.Date.Month.ToString() + "/" + exam.Date.Year.ToString());
 
@@ -335,17 +378,17 @@ namespace EEVA.Web.Controllers
                 docBuilder.RowFormat.HeightRule = HeightRule.Exactly;
                 docBuilder.RowFormat.Height = 150;
                 docBuilder.InsertCell();
-                
+
 
                 if (question is QuestionMultipleChoice)
                 {
-                    
-                    
+
+
                     QuestionMultipleChoice questionMultipleChoice = (QuestionMultipleChoice)question;
 
                     foreach (var item in questionMultipleChoice.Answers)
                     {
-                        
+
                         docBuilder.RowFormat.HeightRule = HeightRule.Auto;
                         docBuilder.ParagraphFormat.Style = bulletStyle;
 
@@ -369,12 +412,12 @@ namespace EEVA.Web.Controllers
 
             }
 
-                doc.Save(outputPath, SaveFormat.Pdf);
+            doc.Save(outputPath, SaveFormat.Pdf);
 
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", exam.Course.CourseName + "_" + exam.Course.CourseYear.ToString());
 
         }
-        
+
         public IActionResult LinkToStudent(int? id)
         {
             return View();

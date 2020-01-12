@@ -89,6 +89,18 @@ namespace EEVA.Domain
         public int StudentId { get; set; }
         public Student Student { get; set; }
 
+        public ExamStudent(Exam e, Student s)
+        {
+            ExamId = e.Id;
+            Exam = e;
+            StudentId = s.Id;
+            Student = s;
+        }
+        public ExamStudent()
+        {
+
+        }
+
 
     }
 

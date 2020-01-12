@@ -7,7 +7,7 @@
 <h1>Details of Exam</h1>
 
 <div>
-    
+
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -51,12 +51,13 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a> |
-    <a asp-action="DownloadToPDF" asp-route-id="@Model.Id">Download as PDF</a> |
+    <a asp-action="DownloadToPDF" asp-route-id="@Model.Id">Download as PDF</a>
 </div>
 <div>
     <br />
     <br />
     <h5>Related Exam Questions</h5>
+    <a asp-action="AddQuestion" asp-route-id="@Model.Id">Add Question</a>
 </div>
 <table class="table">
     <thead>
@@ -97,39 +98,25 @@
 </table>
 <div>
     <br />
-    <h5>Related Student Exams</h5>
+    <h5>Students</h5>
+    <a asp-action="AddStudent" asp-route-id="@Model.Id">Add Student</a>
 </div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StudentExams.FirstOrDefault().Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StudentExams.FirstOrDefault().Student.FullName)
-            </th>
-            <th>
-                Type
+                @Html.DisplayNameFor(model => model.Students.FirstOrDefault().FullName)
             </th>
         </tr>
     </thead>
     <tbody>
 
-        @if (Model.ExamQuestions.Count() > 0)
-            @foreach (var item in Model.StudentExams)
+        @if (Model.Students.Count() > 0)
+            @foreach (var item in Model.Students)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Student.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StudentExamAnswers)
-                    </td>
-                    <td>
-                        <a asp-action="StudentExamDetails" asp-route-id="@item.Id">Details</a>
+                        @Html.DisplayFor(modelItem => item.FullName)
                     </td>
                 </tr>
             }

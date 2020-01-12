@@ -37,6 +37,7 @@ namespace EEVA.Domain.DataManager
                 .Include(Exam => Exam.Course)
                 .Include(Exam => Exam.StudentExams)
                 .Include(Exam => Exam.ExamQuestions)
+                .Include(Exam => Exam.Students)
                 //.ThenInclude(Question => (Question as QuestionMultipleChoice).Answers)
                 .FirstOrDefault(e => e.Id == id);
         }
@@ -48,6 +49,7 @@ namespace EEVA.Domain.DataManager
                 .Include(Exam => Exam.Course)
                 .Include(Exam => Exam.StudentExams)
                 .Include(Exam => Exam.ExamQuestions)
+                .Include(Exam => Exam.Students)
                 .ToList();
         }
 
@@ -94,8 +96,12 @@ namespace EEVA.Domain.DataManager
             {
             dbEntity.StudentExams = entity.StudentExams;
             }
-            
-            _eevaContext.SaveChanges();
+            if (entity.Students != null)
+            {
+                dbEntity.Students = entity.Students;
+            }
+
+                _eevaContext.SaveChanges();
         }
     }
 }
