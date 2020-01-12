@@ -8,23 +8,20 @@ namespace EEVA.Domain.Models
     {
         public AnswerMultipleChoice Answer { get; set; }
 
-        public QuestionMultipleChoice Question { get; set; }
-
         public StudentExamAnswerMultipleChoice()
         {
 
         }
 
-        public StudentExamAnswerMultipleChoice(QuestionMultipleChoice question, StudentExam studentExam, AnswerMultipleChoice answer) : base (studentExam)
+        public StudentExamAnswerMultipleChoice(Question question, StudentExam studentExam, AnswerMultipleChoice answer) : base (question, studentExam)
         {
             Answer = answer;
-            Question = question;
         }
 
-        public override int CalculatePoints()
+        public override double CalculatePoints()
         {
-            QuestionMultipleChoice q = Question;
-            int x = 0;
+            QuestionMultipleChoice q = (QuestionMultipleChoice)Question;
+            double x = 0;
             foreach (AnswerMultipleChoice a in q.Answers)
             {
                 if(Answer.Id == a.Id && a.IsAnswerCorrect)

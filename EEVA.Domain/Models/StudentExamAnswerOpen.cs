@@ -9,33 +9,30 @@ namespace EEVA.Domain.Models
 
         public string Answer { get; set; }
 
-        public QuestionOpen Question { get; set; }
-
         public StudentExamAnswerOpen()
         {
 
         }
 
-        public StudentExamAnswerOpen(QuestionOpen question, StudentExam studentExam, string answer) : base(studentExam)
+        public StudentExamAnswerOpen(Question question, StudentExam studentExam, string answer) : base(question, studentExam)
         {
             Answer = answer;
-            Question = question;
         }
 
-        public override int CalculatePoints()
+        public override double CalculatePoints()
         {
             QuestionOpen q = (QuestionOpen)Question;
             if (q.Answers != null)
             {
-                List<AnswerOpen> list = (List<AnswerOpen>)q.Answers;
-                int t = list.Count;
-                int x = 0;
-                foreach (AnswerOpen a in list)
+                double t = 0;
+                double x = 0;
+                foreach (AnswerOpen a in q.Answers)
                 {
-                    if (Answer.Contains(a.Keyword))
+                    if (Answer.ToLower().Contains(a.Keyword.ToLower()))
                     {
                         x++;
                     }
+                    t++;
                 }
                 return x / t;
             }

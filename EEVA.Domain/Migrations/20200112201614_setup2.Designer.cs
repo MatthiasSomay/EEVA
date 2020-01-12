@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    [Migration("20200111215512_studentexamanswerMultiple")]
-    partial class studentexamanswerMultiple
+    [Migration("20200112201614_setup2")]
+    partial class setup2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,36 @@ namespace EEVA.Domain.Migrations
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("EEVA.Domain.ExamQuestion", b =>
+                {
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExamId", "QuestionId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("ExamQuestion");
+                });
+
+            modelBuilder.Entity("EEVA.Domain.ExamStudent", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "ExamId");
+
+                    b.HasIndex("ExamId");
+
+                    b.ToTable("ExamStudent");
+                });
 
             modelBuilder.Entity("EEVA.Domain.Models.AnswerMultipleChoice", b =>
                 {
@@ -193,6 +223,12 @@ namespace EEVA.Domain.Migrations
                     b.Property<int>("ExamId")
                         .HasColumnType("int");
 
+                    b.Property<double>("OnPoints")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Points")
+                        .HasColumnType("float");
+
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
@@ -281,6 +317,36 @@ namespace EEVA.Domain.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("StudentExamAnswerOpen");
+                });
+
+            modelBuilder.Entity("EEVA.Domain.ExamQuestion", b =>
+                {
+                    b.HasOne("EEVA.Domain.Models.Exam", "Exam")
+                        .WithMany("Questions")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EEVA.Domain.Models.Question", "Question")
+                        .WithMany("Exams")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("EEVA.Domain.ExamStudent", b =>
+                {
+                    b.HasOne("EEVA.Domain.Models.Exam", "Exam")
+                        .WithMany("Students")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EEVA.Domain.Models.Student", "Student")
+                        .WithMany("Exams")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.AnswerMultipleChoice", b =>

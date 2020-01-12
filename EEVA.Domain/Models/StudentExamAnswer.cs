@@ -11,6 +11,8 @@ namespace EEVA.Domain.Models
 
         public StudentExam StudentExam { get; set; }
 
+        public Question Question { get; set; }
+
         public StudentExamAnswer()
         {
 
@@ -22,12 +24,13 @@ namespace EEVA.Domain.Models
             StudentExam = studentExam;
         }
 
-        public StudentExamAnswer(StudentExam studentExam)
+        public StudentExamAnswer(Question question, StudentExam studentExam)
         {
             StudentExam = studentExam;
+            Question = question;
         }
 
-        public virtual int CalculatePoints()
+        public virtual double CalculatePoints()
         {
             throw new System.NotImplementedException();
         }

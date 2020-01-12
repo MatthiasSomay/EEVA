@@ -221,11 +221,11 @@ namespace EEVA.Domain.Migrations
                     b.Property<int>("ExamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OnPoints")
-                        .HasColumnType("int");
+                    b.Property<double>("OnPoints")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
+                    b.Property<double>("Points")
+                        .HasColumnType("float");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
@@ -250,10 +250,15 @@ namespace EEVA.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("StudentExamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
 
                     b.HasIndex("StudentExamId");
 
@@ -297,12 +302,7 @@ namespace EEVA.Domain.Migrations
                     b.Property<int?>("AnswerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
                     b.HasIndex("AnswerId");
-
-                    b.HasIndex("QuestionId");
 
                     b.HasDiscriminator().HasValue("StudentExamAnswerMultipleChoice");
                 });
@@ -313,12 +313,6 @@ namespace EEVA.Domain.Migrations
 
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("QuestionId")
-                        .HasColumnName("StudentExamAnswerOpen_QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("QuestionId");
 
                     b.HasDiscriminator().HasValue("StudentExamAnswerOpen");
                 });
@@ -416,6 +410,10 @@ namespace EEVA.Domain.Migrations
 
             modelBuilder.Entity("EEVA.Domain.Models.StudentExamAnswer", b =>
                 {
+                    b.HasOne("EEVA.Domain.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
                     b.HasOne("EEVA.Domain.Models.StudentExam", "StudentExam")
                         .WithMany("StudentExamAnswers")
                         .HasForeignKey("StudentExamId");
@@ -426,17 +424,6 @@ namespace EEVA.Domain.Migrations
                     b.HasOne("EEVA.Domain.Models.AnswerMultipleChoice", "Answer")
                         .WithMany()
                         .HasForeignKey("AnswerId");
-
-                    b.HasOne("EEVA.Domain.Models.QuestionMultipleChoice", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.StudentExamAnswerOpen", b =>
-                {
-                    b.HasOne("EEVA.Domain.Models.QuestionOpen", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
                 });
 #pragma warning restore 612, 618
         }

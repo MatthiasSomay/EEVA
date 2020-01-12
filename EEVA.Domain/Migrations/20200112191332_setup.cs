@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EEVA.Domain.Migrations
 {
-    public partial class cleanStart : Migration
+    public partial class setup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,13 +68,37 @@ namespace EEVA.Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExamStudent",
+                columns: table => new
+                {
+                    ExamId = table.Column<int>(nullable: false),
+                    StudentId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExamStudent", x => new { x.StudentId, x.ExamId });
+                    table.ForeignKey(
+                        name: "FK_ExamStudent_Exams_ExamId",
+                        column: x => x.ExamId,
+                        principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ExamStudent_Contacts_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Contacts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     QuestionPhrase = table.Column<string>(nullable: false),
-                    CourseId = table.Column<int>(nullable: true),
+                    CourseId = table.Column<int>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     ExamId = table.Column<int>(nullable: true)
                 },
@@ -102,7 +126,9 @@ namespace EEVA.Domain.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StudentId = table.Column<int>(nullable: false),
-                    ExamId = table.Column<int>(nullable: false)
+                    ExamId = table.Column<int>(nullable: false),
+                    Points = table.Column<int>(nullable: false),
+                    OnPoints = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,20 +189,60 @@ namespace EEVA.Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExamQuestion",
+                columns: table => new
+                {
+                    ExamId = table.Column<int>(nullable: false),
+                    QuestionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExamQuestion", x => new { x.ExamId, x.QuestionId });
+                    table.ForeignKey(
+                        name: "FK_ExamQuestion_Exams_ExamId",
+                        column: x => x.ExamId,
+                        principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExamQuestion_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentExamAnswers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentExamId = table.Column<int>(nullable: true)
+                    StudentExamId = table.Column<int>(nullable: true),
+                    QuestionId = table.Column<int>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    AnswerId = table.Column<int>(nullable: true),
+                    Answer = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StudentExamAnswers", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_StudentExamAnswers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_StudentExamAnswers_StudentExams_StudentExamId",
                         column: x => x.StudentExamId,
                         principalTable: "StudentExams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StudentExamAnswers_AnswersMultipleChoice_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "AnswersMultipleChoice",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -192,6 +258,11 @@ namespace EEVA.Domain.Migrations
                 column: "QuestionOpenId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExamQuestion_QuestionId",
+                table: "ExamQuestion",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exams_CourseId",
                 table: "Exams",
                 column: "CourseId");
@@ -200,6 +271,11 @@ namespace EEVA.Domain.Migrations
                 name: "IX_Exams_TeacherId",
                 table: "Exams",
                 column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExamStudent_ExamId",
+                table: "ExamStudent",
+                column: "ExamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_CourseId",
@@ -212,9 +288,19 @@ namespace EEVA.Domain.Migrations
                 column: "ExamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StudentExamAnswers_QuestionId",
+                table: "StudentExamAnswers",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentExamAnswers_StudentExamId",
                 table: "StudentExamAnswers",
                 column: "StudentExamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentExamAnswers_AnswerId",
+                table: "StudentExamAnswers",
+                column: "AnswerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentExams_ExamId",
@@ -230,19 +316,25 @@ namespace EEVA.Domain.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AnswersMultipleChoice");
+                name: "AnswersOpen");
 
             migrationBuilder.DropTable(
-                name: "AnswersOpen");
+                name: "ExamQuestion");
+
+            migrationBuilder.DropTable(
+                name: "ExamStudent");
 
             migrationBuilder.DropTable(
                 name: "StudentExamAnswers");
 
             migrationBuilder.DropTable(
-                name: "Questions");
+                name: "StudentExams");
 
             migrationBuilder.DropTable(
-                name: "StudentExams");
+                name: "AnswersMultipleChoice");
+
+            migrationBuilder.DropTable(
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "Exams");

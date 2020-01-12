@@ -37,7 +37,7 @@ namespace EEVA.Domain.DataManager
                 .Include(Exam => Exam.Course)
                 .Include(Exam => Exam.StudentExams)
                 .Include(Exam => Exam.ExamQuestions)
-                .ThenInclude(Question => (Question as QuestionMultipleChoice).Answers)
+                //.ThenInclude(Question => (Question as QuestionMultipleChoice).Answers)
                 .FirstOrDefault(e => e.Id == id);
         }
 
@@ -86,9 +86,15 @@ namespace EEVA.Domain.DataManager
             dbEntity.Date = entity.Date;
             dbEntity.StartTime = entity.StartTime;
             dbEntity.EndTime = entity.EndTime;
+            if(entity.ExamQuestions != null)
+            {
             dbEntity.ExamQuestions = entity.ExamQuestions;
+            }
+            if (entity.StudentExams != null)
+            {
             dbEntity.StudentExams = entity.StudentExams;
-
+            }
+            
             _eevaContext.SaveChanges();
         }
     }
