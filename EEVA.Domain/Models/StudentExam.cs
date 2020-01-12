@@ -10,10 +10,17 @@ namespace EEVA.Domain.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [Required]
         public Student Student { get; set; }
+
         [Required]
         public Exam Exam { get; set; }
+
+        public int Points { get; set; }
+
+        public int OnPoints { get; set; }
+
         public IEnumerable<StudentExamAnswer> StudentExamAnswers { get; set; }
 
         public StudentExam(int id, Student student, Exam exam, IEnumerable<StudentExamAnswer> studentExamAnswers)
@@ -30,6 +37,16 @@ namespace EEVA.Domain.Models
         {
             Student = student;
             Exam = exam;
+        }
+
+        public void CalculatePoints()
+        {
+            OnPoints = Exam.ExamQuestions.Count;
+            Points = 0;
+            foreach (StudentExamAnswer s in StudentExamAnswers)
+            {
+                Points += s.CalculatePoints();
+            }
         }
     }
 }

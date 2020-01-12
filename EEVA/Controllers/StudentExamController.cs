@@ -198,6 +198,7 @@ namespace EEVA.Web.Controllers
                     TempData["studentExamId"] = id;
                     return RedirectToAction("Index", "ExamQuestion");
                 case "Submit":
+                    studentExam.CalculatePoints();
                     return RedirectToAction(nameof(Index));
                 default:
                     return NotFound();

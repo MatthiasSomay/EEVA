@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEVA.Domain.Models
 {
-    public class StudentExamAnswer
+    public class StudentExamAnswer : ICalculatePoints
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,6 +29,11 @@ namespace EEVA.Domain.Models
         {
             Question = question;
             StudentExam = studentExam;
+        }
+
+        public virtual int CalculatePoints()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
