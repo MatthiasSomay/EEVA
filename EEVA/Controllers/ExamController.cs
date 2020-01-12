@@ -186,26 +186,26 @@ namespace EEVA.Web.Controllers
         }
 
         // Redirect to the Create StudentExam
-        public ActionResult StudentExamCreate(int? id)
+        public IActionResult StudentExamCreate(int? id)
         {
             return RedirectToAction("Create", "StudentExam", new { examId = id });
         }
 
 
         // Redirect to the related details of a Question
-        public ActionResult QuestionDetails(int? id)
+        public IActionResult QuestionDetails(int? id)
         {
             return RedirectToAction("Details", "Question", new { id });
         }
 
         // Redirect to edit Question
-        public ActionResult QuestionEdit(int? id)
+        public IActionResult QuestionEdit(int? id)
         {
             return RedirectToAction("Edit", "Question", new { id });
         }
 
         // Redirect to the related details of a StudentExam
-        public ActionResult StudentExamDetails(int? id)
+        public IActionResult StudentExamDetails(int? id)
         {
             return RedirectToAction("Edit", "StudentExam", new { id });
         }
@@ -261,7 +261,7 @@ namespace EEVA.Web.Controllers
 
         //Printing out the Exam document
         [HttpGet]
-        public ActionResult DownloadToPDF(int? id)
+        public IActionResult DownloadToPDF(int? id)
         {
             Exam exam = _examManager.Get(id);
 
@@ -373,6 +373,11 @@ namespace EEVA.Web.Controllers
 
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", exam.Course.CourseName + "_" + exam.Course.CourseYear.ToString());
 
+        }
+        
+        public IActionResult LinkToStudent(int? id)
+        {
+            return View();
         }
     }
 }

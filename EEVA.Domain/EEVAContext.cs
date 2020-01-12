@@ -37,11 +37,6 @@ namespace EEVA.Domain
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Course course = new Course() { Id = 1, CourseName = "ASP.NET", CourseYear = "2019-2020", Exams = null, Questions = null };
-            Teacher teacher = new Teacher() { Id = 1, FirstName = "Kenneth", LastName = "Van Den Borne", Email = "kenneth@live.be", PhoneNumber = "046729292" };
-            Exam exam = new Exam() { Id = 1, Course = course, Date = DateTime.Today, EndTime = TimeSpan.FromHours(12), StartTime = TimeSpan.FromHours(9), };
-
-
 
 
             modelBuilder.Entity<Contact>();
@@ -53,7 +48,60 @@ namespace EEVA.Domain
             modelBuilder.Entity<AnswerOpen>();
             modelBuilder.Entity<StudentExamAnswer>();
 
-            
+            modelBuilder.Entity<ExamStudent>()
+                .HasKey(t => new { t.StudentId, t.ExamId });
+
+            modelBuilder.Entity<ExamStudent>()
+                .HasOne(e => e.Exam)
+                .WithMany(s => s.Students)
+                .HasForeignKey(e => e.ExamId);
+
+            modelBuilder.Entity<ExamStudent>()
+                .HasOne(e => e.Student)
+                .WithMany(s => s.Exams)
+                .HasForeignKey(e => e.StudentId);
+
+            modelBuilder.Entity<ExamQuestion>()
+              .HasKey(t => new { t.ExamId, t.QuestionId });
+
+            modelBuilder.Entity<ExamQuestion>()
+                .HasOne(e => e.Question)
+                .WithMany(s => s.Exams)
+                .HasForeignKey(e => e.QuestionId);
+
+            modelBuilder.Entity<ExamQuestion>()
+                .HasOne(e => e.Exam)
+                .WithMany(s => s.Questions)
+                .HasForeignKey(e => e.ExamId);
+
+
+
+
         }
+
+       
     }
+    public class ExamStudent
+    {
+        public int ExamId { get; set; }
+        public Exam Exam { get; set; }
+
+        public int StudentId { get; set; }
+        public Student Student { get; set; }
+
+
+    }
+
+    public class ExamQuestion
+    {
+        public int ExamId { get; set; }
+        public Exam Exam { get; set; }
+
+        public int QuestionId { get; set; }
+        public Question Question { get; set; }
+
+
+    }
+
+
 }

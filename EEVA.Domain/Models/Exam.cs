@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using static EEVA.Domain.EEVAContext;
 
 namespace EEVA.Domain.Models
 {
@@ -30,6 +31,11 @@ namespace EEVA.Domain.Models
         [Required] 
         public TimeSpan EndTime { get; set; }
 
+        public List<ExamStudent> Students { get; set; }
+
+        public List<ExamQuestion> Questions { get; set; }
+
+        //refactor
         public List<Question> ExamQuestions { get; set; }
         public List<StudentExam> StudentExams { get; set; }
 
