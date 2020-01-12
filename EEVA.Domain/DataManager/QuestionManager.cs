@@ -54,8 +54,8 @@ namespace EEVA.Domain.DataManager
         {
             return _eevaContext.Questions
                 .Include(Question => Question.Course)
+                .Include(q => (q as QuestionOpen).Answers)
                 .OfType<QuestionOpen>()
-                .Include(q => q.Answers)
                 .FirstOrDefault(q => q.Id == id);
         }
 

@@ -46,21 +46,36 @@ namespace EEVA
             //here we are assigning the Admin role to the User that we have registered above 
             //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
             //be assigned to that user.
-            IdentityUser user = await UserManager.FindByEmailAsync("jens.vanbever@student.ucll.be");
-            
+            /*
+            IdentityUser user1 = await UserManager.FindByEmailAsync("kennethvdb@live.be");
+            IdentityUser user2 = await UserManager.FindByEmailAsync("somay_2@hotmail.com");
+            IdentityUser user3 = await UserManager.FindByEmailAsync("jens.vanbever@student.ucll.be");
 
-            await UserManager.AddToRoleAsync(user, "Student");
-          
 
+            await UserManager.AddToRoleAsync(user1, "Student");
+            await UserManager.AddToRoleAsync(user2, "Student");
+            await UserManager.AddToRoleAsync(user3, "Student");
+            */
+
+
+            IdentityUser user = await UserManager.FindByEmailAsync("kennethvdb@live.be");
+            if (user != null)
+            {
+                foreach (string role in ROLES)
+                {
+                    await UserManager.AddToRoleAsync(user, role);
+
+
+                }
+            }
         }
-
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddDbContext<EEVAContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:EEVA"]));
             services.AddDbContext<SecurityContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:SecurityContextConnection"]));
             services.AddScoped<IDataManager<Exam>, ExamManager>();

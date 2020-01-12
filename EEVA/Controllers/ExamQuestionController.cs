@@ -44,7 +44,8 @@ namespace EEVA.Web.Controllers
                 {
                     i++;
                     ExamQuestionViewModel examQuestionViewModel = NewExamQuestionViewModel(studentExam, q, i);
-                    foreach (StudentExamAnswerMultipleChoice a in examQuestionViewModel.StudentExam.StudentExamAnswers)
+
+                    foreach (StudentExamAnswer a in examQuestionViewModel.StudentExam.StudentExamAnswers)
                     {
                         //Setting Question answered true if has exists
                         if (a.Question.Id == q.Id)
@@ -54,6 +55,8 @@ namespace EEVA.Web.Controllers
                         }
                         else examQuestionViewModel.Answered = false;
                     }
+
+
                     examQuestionViewModels.Add(examQuestionViewModel);
                 }
 

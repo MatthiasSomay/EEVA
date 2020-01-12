@@ -9,10 +9,18 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Index" method="get" class="form-inline">
+    <div class="form-actions no-color">
+        <p>
+            Find by keyword: <input type="text" name="SearchString" class="form-control mr-sm-2" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-outline-success my-2 my-sm-0" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
-            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model[0].Id)
             </th>
@@ -23,12 +31,18 @@
                 @Html.DisplayNameFor(model => model[0].Exam.Date)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model[0].Exam.Course.CourseName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model[0].Points)
+            </th>
+            <th>
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
@@ -40,14 +54,48 @@
                 @Html.DisplayFor(modelItem => item.Exam.Date)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Exam.Course.CourseName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Points)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @if (Model[0].ExamAllowed)
+                {
+                    <a asp-action="StudentExamCreate" asp-route-id="@item.Id" class="btn btn-outline-warning my-2 my-sm-0 btn-sm">Start Exam</a>
+                }
+                @if (!Model[0].ExamAllowed)
+                {
+                <a asp-action="None" asp-route-id="@item.Id" class="btn btn-outline-danger my-2 my-sm-0 btn-sm disabled">Not (yet) Available</a>
+                }
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item @prevDisabled">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="page-link">
+                Previous
+            </a>
+        </li>
+        <li class="page-item @nextDisabled">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="page-link">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>

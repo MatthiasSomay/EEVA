@@ -18,9 +18,9 @@ namespace EEVA.Domain.Models
         [Required]
         public Exam Exam { get; set; }
 
-        public int Points { get; set; }
+        public double Points { get; set; }
 
-        public int OnPoints { get; set; }
+        public double OnPoints { get; set; }
 
         public IEnumerable<StudentExamAnswer> StudentExamAnswers { get; set; }
 
@@ -43,8 +43,8 @@ namespace EEVA.Domain.Models
         public void CalculatePoints(EEVAContext context)
         {
             CalculateHelper ch = new CalculateHelper(context);
-            OnPoints = ch.TotalPoints(this.Id);
-            Points = ch.CalculatePoints(this.Id);
+            ch.TotalPoints(this.Id);
+            ch.CalculatePoints(this.Id);
         }
     }
 }

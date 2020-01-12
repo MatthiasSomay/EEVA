@@ -2,6 +2,6 @@
 {
     public interface ICalculatePoints
     {
-        int CalculatePoints();
+        double CalculatePoints();
     }
 }

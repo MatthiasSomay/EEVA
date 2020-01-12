@@ -15,21 +15,23 @@ namespace EEVA.Domain.models
             _studentExamManager = new StudentExamManager(context);
         }
 
-        public int CalculatePoints(int id)
+        public void CalculatePoints(int id)
         {
             StudentExam studentExam = _studentExamManager.Get(id);
-            int points = 0;
+            double points = 0;
             foreach (StudentExamAnswer s in studentExam.StudentExamAnswers)
             {
                 points += s.CalculatePoints();
             }
-            return points;
+            studentExam.Points = points;
+            _studentExamManager.Update(studentExam);
         }
 
-        public int TotalPoints(int id)
+        public void TotalPoints(int id)
         {
             StudentExam studentExam = _studentExamManager.Get(id);
-            return studentExam.Exam.ExamQuestions.Count;
+            studentExam.OnPoints = studentExam.Exam.ExamQuestions.Count;
+            _studentExamManager.Update(studentExam);
         }
     }
 }

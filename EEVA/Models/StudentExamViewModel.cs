@@ -19,6 +19,11 @@ namespace EEVA.Web.Models
         public Exam Exam { get; set; }
         public IEnumerable<StudentExamAnswer> StudentExamAnswers { get; set; }
 
+        [Display(Name = "Score")]
+        public string Points { get; set; }
+
+        public bool ExamAllowed { get; set; }
+
         public int Counter { get; set; }
 
         [Display(Name = "Answer")]
@@ -27,13 +32,20 @@ namespace EEVA.Web.Models
         [Display(Name = "Question")]
         public Question Question { get; set; }
 
-        public StudentExamViewModel(int id, Student student, Exam exam, IEnumerable<StudentExamAnswer> studentExamAnswers)
+        public StudentExamViewModel(int id, Student student, Exam exam, IEnumerable<StudentExamAnswer> studentExamAnswers, StudentExam studentExam)
         {
             Id = id;
             Student = student;
             Exam = exam;
             StudentExamAnswers = studentExamAnswers;
-           
+            if (studentExam.OnPoints != 0)
+            {
+                Points = studentExam.Points + " / " + studentExam.OnPoints;
+            }
+            if (DateTime.Now.Date == studentExam.Exam.Date && DateTime.Now.Hour >= studentExam.Exam.StartTime.Hours && DateTime.Now.Hour <= studentExam.Exam.EndTime.Hours)
+            {
+                ExamAllowed = true;
+            } 
         }
 
         public StudentExamViewModel() { }

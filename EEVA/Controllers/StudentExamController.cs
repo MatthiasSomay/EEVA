@@ -225,7 +225,8 @@ namespace EEVA.Web.Controllers
                 studentExam.Id,
                 studentExam.Student,
                 studentExam.Exam,
-                studentExam.StudentExamAnswers
+                studentExam.StudentExamAnswers,
+                studentExam
                 );
         }
 
