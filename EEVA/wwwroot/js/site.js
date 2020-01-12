@@ -5,17 +5,13 @@
     });
 });
 
-function valthisform()
-{
-    var checkboxs=document.getElementsByName("Answers");
-    var okay=false;
-    for(var i=0,l=checkboxs.length;i<l;i++)
-    {
-        if(checkboxs[i].checked)
-        {
-            okay=true;
-            break;
+$(function () {
+    $(".btnSubmit").click(function () {
+        var checked_checkboxes = $("#answers input[type=checkbox]:checked");
+        if (checked_checkboxes.length == 0) {
+            $(".error").show();
+            return false;
         }
-    }
-    if (!okay) alert("Please choose at least one Answer");
-}
+        return true;
+    });
+});
