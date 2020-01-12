@@ -9,7 +9,7 @@ $(function () {
     $(".btnSubmit").click(function () {
         var checked_checkboxes = $("#answers input[type=checkbox]:checked");
         var checkboxes = $("#answers  input[type=checkbox]")
-        if (checkboxes > 0) {
+        if (checkboxes.length > 0) {
             if (checked_checkboxes.length == 0) {
                 $(".error").show();
                 return false;
@@ -17,6 +17,24 @@ $(function () {
             return true;
         }
         else return true;       
+    });
+});
+
+$(function () {
+    $(".chkTrt").click(function () {
+        var checked_checkboxes = $("#answers input[type=checkbox]:checked");
+        var checkboxes = $("#answers  input[type=checkbox]")
+        if (checkboxes.length > 0) {
+            if (checked_checkboxes.length == 0) {
+                $(".error").show();
+                return false;
+            }
+            else {
+                $(".error").hide();
+                return true;
+            }
+        }
+        else return true;
     });
 });
 

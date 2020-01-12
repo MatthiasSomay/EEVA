@@ -58,47 +58,38 @@
             }
             @if (Model.QuestionMultipleChoice != null)
             {
-        <div class="form-group" id="answers">
-            <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
-            <br />
-            @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
-            {
-                @foreach (var item in Model.QuestionMultipleChoice.Answers)
-                {
-                    if (Model.Answers != null)
+                <div class="form-group" id="answers">
+                    <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
+                    <br />
+                    @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
                     {
-                        if (Model.Answers.Contains(item.Id))
+                        @foreach (var item in Model.QuestionMultipleChoice.Answers)
                         {
-                            <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" checked /> @item.Answer<br />
+                            if (Model.Answers != null)
+                            {
+                                if (Model.Answers.Contains(item.Id))
+                                {
+                                    <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" checked /> @item.Answer<br />
+                                }
+                                else
+                                {
+                                    <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
+                                }
+                            }
+                            else
+                            {
+                                <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
+                            }
                         }
-                        else
-                        {
-                            <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
-                        }
+                        <div style="display:none" class="error alert-danger">
+                            Please select at least one answer!
+                        </div>
                     }
-                    else
-                    {
-                        <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
-                    }
-                }
-                <div style="display:none" class="error alert-danger">
-                    Please select at least one answer!
                 </div>
-            }
-        </div>
             }
             <br />
             <div class="form-group">
-                <table>
-                    <tr>
-                        <td>
-                            <input type="submit" name="submit" value="Save and back to list" class="btn btn-primary btnSubmit" />
-                        </td>
-                        <td>
-                            <input type="submit" value="Submit Exam" class="btn btn-outline-success my-2 my-sm-0 btnSubmit" />
-                        </td>
-                    </tr>
-                </table>
+                <input type="submit" name="submit" value="Save and back to list" class="btn btn-primary btnSubmit" />
             </div>
 
             @{
@@ -117,10 +108,10 @@
                 <table>
                     <tr>
                         <td class="page-item @prevDisabled">
-                            <input type="submit" name="submit" value="Previous" class="page-link" />
+                            <input type="submit" name="submit" value="Previous" class="page-link btnSubmit" />
                         </td>
                         <td class="page-item @nextDisabled">
-                            <input type="submit" name="submit" value="Next" class="page-link" />
+                            <input type="submit" name="submit" value="Next" class="page-link btnSubmit" />
                         </td>
                     </tr>
                 </table>
