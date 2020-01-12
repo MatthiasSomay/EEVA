@@ -375,7 +375,7 @@ namespace EEVA.Web.Controllers
 
         }
         
-        public IActionResult LinkToStudent(int? id)
+        public IActionResult AddStudent(int? id)
         {
             return View();
         }

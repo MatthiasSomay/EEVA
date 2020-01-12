@@ -33,6 +33,7 @@ namespace EEVA.Web.Models
             Student = student;
             Exam = exam;
             StudentExamAnswers = studentExamAnswers;
+           
         }
 
         public StudentExamViewModel() { }
