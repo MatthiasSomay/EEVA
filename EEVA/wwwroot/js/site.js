@@ -10,3 +10,18 @@ $(function () {
         $('div.form-group .chkTrt').not(this).prop('checked', false);
     });
 });
+
+function valthisform()
+{
+    var checkboxs=document.getElementsByName("Answers");
+    var okay=false;
+    for(var i=0,l=checkboxs.length;i<l;i++)
+    {
+        if(checkboxs[i].checked)
+        {
+            okay=true;
+            break;
+        }
+    }
+    if (!okay) alert("Please choose at least one Answer");
+}
