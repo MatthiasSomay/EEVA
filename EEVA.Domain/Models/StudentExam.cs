@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EEVA.Domain.models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,14 +40,11 @@ namespace EEVA.Domain.Models
             Exam = exam;
         }
 
-        public void CalculatePoints()
+        public void CalculatePoints(EEVAContext context)
         {
-            OnPoints = Exam.ExamQuestions.Count;
-            Points = 0;
-            foreach (StudentExamAnswer s in StudentExamAnswers)
-            {
-                Points += s.CalculatePoints();
-            }
+            CalculateHelper ch = new CalculateHelper(context);
+            OnPoints = ch.TotalPoints(this.Id);
+            Points = ch.CalculatePoints(this.Id);
         }
     }
 }

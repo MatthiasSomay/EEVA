@@ -44,7 +44,7 @@ namespace EEVA.Web.Controllers
                 {
                     i++;
                     ExamQuestionViewModel examQuestionViewModel = NewExamQuestionViewModel(studentExam, q, i);
-                    foreach (StudentExamAnswer a in examQuestionViewModel.StudentExam.StudentExamAnswers)
+                    foreach (StudentExamAnswerMultipleChoice a in examQuestionViewModel.StudentExam.StudentExamAnswers)
                     {
                         //Setting Question answered true if has exists
                         if (a.Question.Id == q.Id)
@@ -134,7 +134,7 @@ namespace EEVA.Web.Controllers
                     StudentExamAnswerOpen so = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExamId, question.Id);
                     StudentExamAnswerOpen studentExamAnswerOpen =
                                     new StudentExamAnswerOpen(
-                                question,
+                                _questionManager.GetOpen(question.Id),
                                 studentExam,
                                 examQuestionViewModel.Answer
                                 );
@@ -154,7 +154,7 @@ namespace EEVA.Web.Controllers
 
                     StudentExamAnswerMultipleChoice studentExamAnswerMultipleChoice =
                             new StudentExamAnswerMultipleChoice(
-                         question,
+                         _questionManager.GetMultipleChoice(question.Id),
                          studentExam,
                          _answerMultipleChoiceManager.Get(examQuestionViewModel.Answers.FirstOrDefault())
                          );

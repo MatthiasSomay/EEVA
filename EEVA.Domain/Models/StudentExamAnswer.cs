@@ -9,8 +9,6 @@ namespace EEVA.Domain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public Question Question { get; set; }
-
         public StudentExam StudentExam { get; set; }
 
         public StudentExamAnswer()
@@ -18,16 +16,14 @@ namespace EEVA.Domain.Models
 
         }
 
-        public StudentExamAnswer(int id, Question question, StudentExam studentExam)
+        public StudentExamAnswer(int id, StudentExam studentExam)
         {
             Id = id;
-            Question = question;
             StudentExam = studentExam;
         }
 
-        public StudentExamAnswer(Question question, StudentExam studentExam)
+        public StudentExamAnswer(StudentExam studentExam)
         {
-            Question = question;
             StudentExam = studentExam;
         }
 

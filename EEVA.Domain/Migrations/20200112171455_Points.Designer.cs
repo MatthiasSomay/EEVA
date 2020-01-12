@@ -4,14 +4,16 @@ using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    partial class EEVAContextModelSnapshot : ModelSnapshot
+    [Migration("20200112171455_Points")]
+    partial class Points
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,10 +252,15 @@ namespace EEVA.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("StudentExamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
 
                     b.HasIndex("StudentExamId");
 
@@ -297,12 +304,7 @@ namespace EEVA.Domain.Migrations
                     b.Property<int?>("AnswerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
                     b.HasIndex("AnswerId");
-
-                    b.HasIndex("QuestionId");
 
                     b.HasDiscriminator().HasValue("StudentExamAnswerMultipleChoice");
                 });
@@ -313,12 +315,6 @@ namespace EEVA.Domain.Migrations
 
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("QuestionId")
-                        .HasColumnName("StudentExamAnswerOpen_QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("QuestionId");
 
                     b.HasDiscriminator().HasValue("StudentExamAnswerOpen");
                 });
@@ -416,6 +412,10 @@ namespace EEVA.Domain.Migrations
 
             modelBuilder.Entity("EEVA.Domain.Models.StudentExamAnswer", b =>
                 {
+                    b.HasOne("EEVA.Domain.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
                     b.HasOne("EEVA.Domain.Models.StudentExam", "StudentExam")
                         .WithMany("StudentExamAnswers")
                         .HasForeignKey("StudentExamId");
@@ -426,17 +426,6 @@ namespace EEVA.Domain.Migrations
                     b.HasOne("EEVA.Domain.Models.AnswerMultipleChoice", "Answer")
                         .WithMany()
                         .HasForeignKey("AnswerId");
-
-                    b.HasOne("EEVA.Domain.Models.QuestionMultipleChoice", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.StudentExamAnswerOpen", b =>
-                {
-                    b.HasOne("EEVA.Domain.Models.QuestionOpen", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
                 });
 #pragma warning restore 612, 618
         }

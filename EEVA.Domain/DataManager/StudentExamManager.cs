@@ -30,7 +30,8 @@ namespace EEVA.Domain.DataManager
         public StudentExam Get(int? id)
         {
             return _eevaContext.StudentExams
-                .Include(s => s.Exam).ThenInclude(e => e.ExamQuestions)
+                .Include(s => s.Exam).ThenInclude(e => e.ExamQuestions).ThenInclude(q => (q as QuestionMultipleChoice).Answers)
+                .Include(s => s.Exam).ThenInclude(e => e.ExamQuestions).ThenInclude(q => (q as QuestionOpen).Answers)
                 .Include(s => s.Exam).ThenInclude(e => e.Course)
                 .Include(s => s.Student)
                 .Include(s => s.StudentExamAnswers)

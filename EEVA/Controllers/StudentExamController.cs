@@ -20,12 +20,14 @@ namespace EEVA.Web.Controllers
         private readonly StudentExamManager _studentExamManager;
         private readonly ExamManager _examManager;
         private readonly ContactManager _contactManager;
+        private readonly EEVAContext _eevaContext;
 
         public StudentExamController(EEVAContext context)
         {
             _studentExamManager = new StudentExamManager(context);
             _examManager = new ExamManager(context);
             _contactManager = new ContactManager(context);
+            _eevaContext = context;
         }
 
         [Authorize(Roles = "Teacher, Admin, Student")]
@@ -198,7 +200,7 @@ namespace EEVA.Web.Controllers
                     TempData["studentExamId"] = id;
                     return RedirectToAction("Index", "ExamQuestion");
                 case "Submit":
-                    studentExam.CalculatePoints();
+                    studentExam.CalculatePoints(_eevaContext);
                     return RedirectToAction(nameof(Index));
                 default:
                     return NotFound();

@@ -1,5 +1,6 @@
 ﻿using EEVA.Domain.Models;
 using EEVA.Domain.Models.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,11 @@ namespace EEVA.Domain.DataManager
 
         public StudentExamAnswer Get(int? id)
         {
-            return _eevaContext.StudentExamAnswers.FirstOrDefault(s => s.Id == id);
+            return _eevaContext.StudentExamAnswers
+                .Include(s => s.StudentExam)
+                .Include(s => (s as StudentExamAnswerMultipleChoice).Question).ThenInclude(q => q.Answers)
+                .Include(s => (s as StudentExamAnswerOpen).Question).ThenInclude(q => q.Answers)
+                .FirstOrDefault(s => s.Id == id);
         }
 
         public IEnumerable<StudentExamAnswer> GetAll()
@@ -60,16 +65,16 @@ namespace EEVA.Domain.DataManager
         public StudentExamAnswerOpen GetByStudentExamAndQuestionOpen(int studentExamId, int questionId)
         {
             return _eevaContext.StudentExamAnswers
-                .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
                 .OfType<StudentExamAnswerOpen>()
+                .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
                 .FirstOrDefault();
         }
 
         public StudentExamAnswerMultipleChoice GetByStudentExamAndQuestionMultiple(int studentExamId, int questionId)
         {
             return _eevaContext.StudentExamAnswers
-                .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
                 .OfType<StudentExamAnswerMultipleChoice>()
+                .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
                 .FirstOrDefault();
         }
 

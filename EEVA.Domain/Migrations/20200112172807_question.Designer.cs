@@ -4,14 +4,16 @@ using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    partial class EEVAContextModelSnapshot : ModelSnapshot
+    [Migration("20200112172807_question")]
+    partial class question
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
