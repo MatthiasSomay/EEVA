@@ -8,10 +8,20 @@
 $(function () {
     $(".btnSubmit").click(function () {
         var checked_checkboxes = $("#answers input[type=checkbox]:checked");
-        if (checked_checkboxes.length == 0) {
-            $(".error").show();
-            return false;
+        var checkboxes = $("#answers  input[type=checkbox]")
+        if (checkboxes > 0) {
+            if (checked_checkboxes.length == 0) {
+                $(".error").show();
+                return false;
+            }
+            return true;
         }
-        return true;
+        else return true;       
+    });
+});
+
+$(function () {
+    $('div.form-group .chkTrt').on('click', function () {
+        $('div.form-group .chkTrt').not(this).prop('checked', false);
     });
 });

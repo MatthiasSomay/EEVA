@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EEVA.Domain.DataManager
 {
-   public class CourseManager : IDataManager<Course>
+    public class CourseManager : IDataManager<Course>
     {
         public EEVAContext _eevaContext { get; set; }
 
@@ -39,7 +39,7 @@ namespace EEVA.Domain.DataManager
                 .Include(Course => Course.Exams)
                 .Include(Course => Course.Exams).ThenInclude(Exam => Exam.Teacher)
                 .FirstOrDefault(c => c.Id == id);
-        } 
+        }
 
         public IEnumerable<Course> GetAll()
         {
@@ -69,8 +69,14 @@ namespace EEVA.Domain.DataManager
             Course dbEntity = Get(entity.Id);
             dbEntity.CourseName = entity.CourseName;
             dbEntity.CourseYear = entity.CourseYear;
-            dbEntity.Questions = entity.Questions;
-            dbEntity.Exams = entity.Exams;
+            if (entity.Questions != null)
+            {
+                dbEntity.Questions = entity.Questions;
+            }
+            if (entity.Exams != null)
+            {
+                dbEntity.Exams = entity.Exams;
+            }
             _eevaContext.SaveChanges();
         }
     }
