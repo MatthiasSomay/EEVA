@@ -59,7 +59,7 @@
             <td>
                 @if (Model[0].ExamAllowed)
                 {
-                    <a asp-action="StudentExamCreate" asp-route-id="@item.Id" class="btn btn-outline-warning my-2 my-sm-0 btn-sm">Start Exam</a>
+                    <a asp-action="Create" asp-route-id="@item.Id" class="btn btn-outline-warning my-2 my-sm-0 btn-sm">Start Exam</a>
                 }
                 @if (!Model[0].ExamAllowed)
                 {

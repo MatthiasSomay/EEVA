@@ -42,7 +42,7 @@ namespace EEVA.Web.Models
             {
                 Points = studentExam.Points + " / " + studentExam.OnPoints;
             }
-            if (DateTime.Now.Date == studentExam.Exam.Date && DateTime.Now.Hour >= studentExam.Exam.StartTime.Hours && DateTime.Now.Hour <= studentExam.Exam.EndTime.Hours)
+            if (DateTime.Now.Date == studentExam.Exam.Date && DateTime.Now.Hour >= studentExam.Exam.StartTime.Hours && DateTime.Now.Hour <= studentExam.Exam.EndTime.Hours && studentExam.OnPoints == 0)
             {
                 ExamAllowed = true;
             } 

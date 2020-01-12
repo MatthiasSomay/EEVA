@@ -25,6 +25,7 @@ namespace EEVA.Web.Controllers
         private readonly CourseManager _courseManager;
         private readonly ContactManager _contactManager;
         private readonly QuestionManager _questionManager;
+        private readonly StudentExamManager _studentExamManager;
 
         public ExamController(EEVAContext context)
         {
@@ -32,6 +33,7 @@ namespace EEVA.Web.Controllers
             _courseManager = new CourseManager(context);
             _contactManager = new ContactManager(context);
             _questionManager = new QuestionManager(context);
+            _studentExamManager = new StudentExamManager(context);
         }
 
         // GET: Exam
@@ -185,13 +187,6 @@ namespace EEVA.Web.Controllers
             return RedirectToAction(nameof(Index), new { message = "delete" });
         }
 
-        // Redirect to the Create StudentExam
-        public IActionResult StudentExamCreate(int? id)
-        {
-            return RedirectToAction("Create", "StudentExam", new { examId = id });
-        }
-
-
         // Redirect to the related details of a Question
         public IActionResult QuestionDetails(int? id)
         {
@@ -215,7 +210,19 @@ namespace EEVA.Web.Controllers
         {
             ExamViewModel examViewModel = new ExamViewModel();
             examViewModel.CourseName = _examManager.Get(id).Course.CourseName;
-            examViewModel.StudentsAll = _contactManager.GetAllStudents();
+            Exam exam = _examManager.Get(id);
+
+            List<Student> studentList = _contactManager.GetAllStudents().ToList();
+
+            if (exam.Students != null)
+            {
+                foreach (var s in exam.Students)
+                {
+                    Student student = _contactManager.GetStudent(s.StudentId);
+                    studentList.Remove(student);
+                }
+            }
+            examViewModel.StudentsAll = studentList;
             return View(examViewModel);
         }
 
@@ -225,20 +232,17 @@ namespace EEVA.Web.Controllers
         public IActionResult AddStudent(int? id, [Bind("StudentId")] ExamViewModel examViewModel)
         {
             Exam exam = _examManager.Get(id);
-            List<ExamStudent> studentList = new List<ExamStudent>();
-            if (exam.Students != null)
-            {
-                foreach (var s in exam.Students)
-                {
-                    Student student = _contactManager.GetStudent(examViewModel.StudentId);
-                    studentList.Add(new ExamStudent(exam, student));
-                }
-            }
             Student newStudent = _contactManager.GetStudent(examViewModel.StudentId);
-            exam.Students = studentList;
+
             exam.Students.Add(new ExamStudent(exam, newStudent));
             _examManager.Update(exam);
+
+
+            StudentExam studentExam = new StudentExam(newStudent, exam);
+            _studentExamManager.Add(studentExam);
+
             return RedirectToAction("Details", "Exam", new { id });
+
         }
 
 

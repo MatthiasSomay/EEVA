@@ -98,7 +98,7 @@ namespace EEVA.Domain.DataManager
             }
             if (entity.Students != null)
             {
-                dbEntity.Students = entity.Students;
+                dbEntity.Students.AddRange(entity.Students);
             }
 
                 _eevaContext.SaveChanges();

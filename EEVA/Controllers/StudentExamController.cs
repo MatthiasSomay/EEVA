@@ -82,10 +82,9 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: StudentExam/Create
-        public IActionResult Create(int examId, int? pageNumber)
+        public IActionResult Create(int id)
         {
-            StudentExam studentExam = NewStudentExam(examId);
-            TempData["studentExamId"] = studentExam.Id;
+            TempData["studentExamId"] = id;
             return RedirectToAction("Index", "ExamQuestion");
         }
 
@@ -241,16 +240,6 @@ namespace EEVA.Web.Controllers
                 );
         }
 
-        private StudentExam NewStudentExam(int examId)
-        {
-            StudentExam studentExam = new StudentExam(
-                (Student)_contactManager.GetByEmail(this.User),
-                _examManager.Get(examId)
-                );
 
-            _studentExamManager.Add(studentExam);
-
-            return studentExam;
-        }
     }
 }
