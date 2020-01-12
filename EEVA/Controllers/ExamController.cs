@@ -53,7 +53,6 @@ namespace EEVA.Web.Controllers
             ViewData["CurrentFilter"] = searchString;
             List<ExamViewModel> examViewModels = new List<ExamViewModel>();
             IEnumerable<Exam> exams;
-
             if (!string.IsNullOrEmpty(searchString))
             {
                 exams = _examManager.Search(searchString);

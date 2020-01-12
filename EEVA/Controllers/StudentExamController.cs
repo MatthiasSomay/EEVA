@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EEVA.Web.Controllers
 {
-    [Authorize(Roles = "Teacher")]
     public class StudentExamController : Controller
     {
         private readonly StudentExamManager _studentExamManager;
@@ -30,10 +29,11 @@ namespace EEVA.Web.Controllers
             _eevaContext = context;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Student")]
         // GET: StudentExam
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
+            Student s = (Student)_contactManager.GetByEmail(this.User);
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -49,9 +49,9 @@ namespace EEVA.Web.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                studentExams = _studentExamManager.Search(searchString);
+                studentExams = _studentExamManager.SearchByStudent(searchString, s.Id);
             }
-            else studentExams = _studentExamManager.GetAll();
+            else studentExams = _studentExamManager.GetAllByStudent(s.Id);
 
             foreach (StudentExam e in studentExams)
             {
@@ -81,6 +81,7 @@ namespace EEVA.Web.Controllers
             return View(studentExamViewModel);
         }
 
+        [Authorize(Roles = "Teacher")]
         // GET: StudentExam/Create
         public IActionResult Create(int id)
         {
@@ -88,6 +89,8 @@ namespace EEVA.Web.Controllers
             return RedirectToAction("Index", "ExamQuestion");
         }
 
+
+        [Authorize(Roles = "Teacher")]
         // GET: StudentExam/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -108,6 +111,7 @@ namespace EEVA.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Teacher")]
         // POST: StudentExam/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -143,6 +147,7 @@ namespace EEVA.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Teacher")]
         // GET: StudentExam/Delete/5
         public IActionResult Delete(int? id)
         {
@@ -160,6 +165,7 @@ namespace EEVA.Web.Controllers
             return View(studentExamViewModel);
         }
 
+        [Authorize(Roles = "Teacher")]
         // POST: StudentExam/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -170,6 +176,7 @@ namespace EEVA.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Student")]
         // GET: StudentExam/SubmitExam
         public IActionResult SubmitExam(int? id)
         {
@@ -187,6 +194,7 @@ namespace EEVA.Web.Controllers
             return View(studentExamViewModel);
         }
 
+        [Authorize(Roles = "Student")]
         // POST: StudentExam/SubmitExam
         [HttpPost, ActionName("SubmitExamDefinitive")]
         [ValidateAntiForgeryToken]

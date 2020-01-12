@@ -48,6 +48,17 @@ namespace EEVA.Domain.DataManager
                 .ToList();
         }
 
+        public IEnumerable<StudentExam> GetAllByStudent(int id)
+        {
+            return _eevaContext.StudentExams
+                .Include(s => s.Exam).ThenInclude(e => e.ExamQuestions)
+                .Include(s => s.Exam).ThenInclude(e => e.Course)
+                .Include(s => s.Student)
+                .Include(s => s.StudentExamAnswers)
+                .Where(s => s.Student.Id == id)
+                .ToList();
+        }
+
         public IEnumerable<StudentExam> Search(string keyword)
         {
             keyword = keyword.ToUpper();
@@ -56,6 +67,17 @@ namespace EEVA.Domain.DataManager
                 .Where(s => s.Exam.Course.CourseName.ToUpper().Contains(keyword) 
                 || s.Exam.Teacher.LastName.ToUpper().Contains(keyword) 
                 || s.Student.LastName.ToUpper().Contains(keyword)).ToList();
+        }
+
+        public IEnumerable<StudentExam> SearchByStudent(string keyword, int id)
+        {
+            keyword = keyword.ToUpper();
+
+            return _eevaContext.StudentExams
+                .Where(s => s.Exam.Course.CourseName.ToUpper().Contains(keyword)
+                || s.Exam.Teacher.LastName.ToUpper().Contains(keyword)
+                || s.Student.LastName.ToUpper().Contains(keyword))
+                .Where(s => s.Student.Id == id).ToList();
         }
 
         public void Update(StudentExam entity)
