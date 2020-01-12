@@ -63,5 +63,10 @@ namespace EEVA.Domain.DataManager
                 .OfType<StudentExamAnswerMultipleChoice>()
                 .FirstOrDefault();
         }
+
+        public void Update(StudentExamAnswer entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
