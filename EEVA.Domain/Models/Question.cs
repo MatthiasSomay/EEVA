@@ -18,6 +18,8 @@ namespace EEVA.Domain.Models
         [Required]
         public Course Course { get; set; }
 
+        public List<ExamQuestion> Exams { get; set; }
+
         public Question()
         {
                

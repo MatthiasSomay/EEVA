@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -36,6 +37,8 @@ namespace EEVA.Domain.Models
                 return LastName + " " + FirstName;
             }
         }
+
+       
 
         public Contact(int id, string firstName, string lastName, string email, string phoneNumber)
         {
