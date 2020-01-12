@@ -30,7 +30,7 @@ namespace EEVA.Web.Controllers
             _eevaContext = context;
         }
 
-        [Authorize(Roles = "Student")]
+        [AllowAnonymous]
         // GET: StudentExam
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
