@@ -196,6 +196,10 @@ namespace EEVA.Web.Controllers
             }
         }
 
+        public IActionResult SubmitExam(int? id)
+        {
+            return RedirectToAction("SubmitExam", "StudentExam", new { id });
+        }
 
         //New ExamQuestionViewModel
         private ExamQuestionViewModel NewExamQuestionViewModel(StudentExam studentExam, Question question, int questionNumber)

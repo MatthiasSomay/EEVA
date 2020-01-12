@@ -1,0 +1,45 @@
+﻿@model EEVA.Web.Models.StudentExamViewModel
+
+@{
+    ViewData["Title"] = "Submit";
+}
+
+<h1>Submit</h1>
+
+<br />
+<div>
+    <h4>Are you sure you want to submit this exam?</h4>
+    <br />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Exam.Course.CourseName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Exam.Course.CourseName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Student.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Student.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            Questions answered
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StudentExamAnswers.Count() of @Model.Exam.ExamQuestions.Count()
+        </dd>
+    </dl>
+
+    <form asp-action="SubmitExamDefinitive">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" name="submit" value="Submit" class="btn btn-warning my-2 my-sm-0 " /> |
+        <input type="submit" name="submit" value="Back to exam" class="btn btn-light my-2 my-sm-0" />
+    </form>
+</div>
