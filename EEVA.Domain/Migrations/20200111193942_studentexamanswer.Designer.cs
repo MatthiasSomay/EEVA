@@ -4,14 +4,16 @@ using EEVA.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EEVA.Domain.Migrations
 {
     [DbContext(typeof(EEVAContext))]
-    partial class EEVAContextModelSnapshot : ModelSnapshot
+    [Migration("20200111193942_studentexamanswer")]
+    partial class studentexamanswer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,9 +38,14 @@ namespace EEVA.Domain.Migrations
                     b.Property<int>("QuestionMultipleChoiceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StudentExamAnswerMultipleChoiceId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionMultipleChoiceId");
+
+                    b.HasIndex("StudentExamAnswerMultipleChoiceId");
 
                     b.ToTable("AnswersMultipleChoice");
                 });
@@ -263,11 +270,6 @@ namespace EEVA.Domain.Migrations
                 {
                     b.HasBaseType("EEVA.Domain.Models.StudentExamAnswer");
 
-                    b.Property<int?>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("AnswerId");
-
                     b.HasDiscriminator().HasValue("StudentExamAnswerMultipleChoice");
                 });
 
@@ -288,6 +290,10 @@ namespace EEVA.Domain.Migrations
                         .HasForeignKey("QuestionMultipleChoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("EEVA.Domain.Models.StudentExamAnswerMultipleChoice", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("StudentExamAnswerMultipleChoiceId");
                 });
 
             modelBuilder.Entity("EEVA.Domain.Models.AnswerOpen", b =>
@@ -348,16 +354,9 @@ namespace EEVA.Domain.Migrations
                         .WithMany()
                         .HasForeignKey("QuestionId");
 
-                    b.HasOne("EEVA.Domain.Models.StudentExam", "StudentExam")
+                    b.HasOne("EEVA.Domain.Models.StudentExam", null)
                         .WithMany("StudentExamAnswers")
                         .HasForeignKey("StudentExamId");
-                });
-
-            modelBuilder.Entity("EEVA.Domain.Models.StudentExamAnswerMultipleChoice", b =>
-                {
-                    b.HasOne("EEVA.Domain.Models.AnswerMultipleChoice", "Answer")
-                        .WithMany()
-                        .HasForeignKey("AnswerId");
                 });
 #pragma warning restore 612, 618
         }

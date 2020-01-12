@@ -31,6 +31,7 @@ namespace EEVA.Domain.DataManager
         {
             return _eevaContext.StudentExams
                 .Include(s => s.Exam).ThenInclude(e => e.ExamQuestions)
+                .Include(s => s.Exam).ThenInclude(e => e.Course)
                 .Include(s => s.Student)
                 .Include(s => s.StudentExamAnswers)
                 .FirstOrDefault(s => s.Id == id);
@@ -40,6 +41,7 @@ namespace EEVA.Domain.DataManager
         {
             return _eevaContext.StudentExams
                 .Include(s => s.Exam).ThenInclude(e => e.ExamQuestions)
+                .Include(s => s.Exam).ThenInclude(e => e.Course)
                 .Include(s => s.Student)
                 .Include(s => s.StudentExamAnswers)
                 .ToList();

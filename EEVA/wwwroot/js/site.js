@@ -4,3 +4,9 @@
 
     });
 });
+
+$(function () {
+    $('div.form-group .chkTrt').on('click', function () {
+        $('div.form-group .chkTrt').not(this).prop('checked', false);
+    });
+});

@@ -80,7 +80,7 @@ namespace EEVA.Web.Controllers
         {
             StudentExam studentExam = NewStudentExam(examId);
             TempData["studentExamId"] = studentExam.Id;
-            return RedirectToAction("ExamQuestion", "Question");
+            return RedirectToAction("Index", "ExamQuestion");
         }
 
 

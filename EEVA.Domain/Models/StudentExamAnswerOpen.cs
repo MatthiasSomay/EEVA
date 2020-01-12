@@ -14,7 +14,7 @@ namespace EEVA.Domain.Models
 
         }
 
-        public StudentExamAnswerOpen(int id, Question question, string answer) : base(id, question)
+        public StudentExamAnswerOpen(Question question, StudentExam studentExam, string answer) : base(question, studentExam)
         {
             Answer = answer;
         }

@@ -13,7 +13,7 @@ namespace EEVA.Domain.Models
 
         }
 
-        public StudentExamAnswerMultipleChoice(int id, Question question, AnswerMultipleChoice answer) : base (id, question)
+        public StudentExamAnswerMultipleChoice(Question question, StudentExam studentExam, AnswerMultipleChoice answer) : base (question, studentExam)
         {
             Answer = answer;
         }
