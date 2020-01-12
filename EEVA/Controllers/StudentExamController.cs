@@ -87,7 +87,6 @@ namespace EEVA.Web.Controllers
             return RedirectToAction("Index", "ExamQuestion");
         }
 
-
         // GET: StudentExam/Edit/5
         public IActionResult Edit(int? id)
         {
@@ -169,6 +168,43 @@ namespace EEVA.Web.Controllers
             _studentExamManager.Delete(studentExam);
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: StudentExam/SubmitExam
+        public IActionResult SubmitExam(int? id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            StudentExamViewModel studentExamViewModel = MapToStudentExamViewModel(_studentExamManager.Get(id));
+
+            if (studentExamViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(studentExamViewModel);
+        }
+
+        // POST: StudentExam/SubmitExam
+        [HttpPost, ActionName("SubmitExamDefinitive")]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitExamDefinitive(int id, string submit)
+        {
+            StudentExam studentExam = _studentExamManager.Get(id);
+            switch (submit)
+            {
+                case "Back to exam":
+                    TempData["studentExamId"] = id;
+                    return RedirectToAction("Index", "ExamQuestion");
+                case "Submit":
+                    return RedirectToAction(nameof(Index));
+                default:
+                    return NotFound();
+            }
+        }
+
+
 
         private bool StudentExamExists(int id)
         {

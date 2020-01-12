@@ -26,6 +26,10 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model[0].EndTime)
         </dd>
+        <dd class="col-sm-10">
+            <a asp-action="SubmitExam" asp-route-id="@Model[0].StudentExam.Id" class="btn btn-warning my-2 my-sm-0 ">Submit Exam</a>
+        </dd>
+
     </dl>
 </div>
 
