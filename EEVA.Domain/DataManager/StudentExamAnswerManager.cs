@@ -41,10 +41,27 @@ namespace EEVA.Domain.DataManager
             throw new NotImplementedException();
         }
 
-        public void Update(StudentExamAnswer entity)
+        public void Update(StudentExamAnswer entity, StudentExamAnswer dbEntity)
         {
-            throw new NotImplementedException();
+            dbEntity.Question = entity.Question;
+            dbEntity.StudentExam = entity.StudentExam;
+            _eevaContext.SaveChanges();
         }
 
+        public StudentExamAnswerOpen GetByStudentExamAndQuestionOpen(int studentExamId, int questionId)
+        {
+            return _eevaContext.StudentExamAnswers
+                .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
+                .OfType<StudentExamAnswerOpen>()
+                .FirstOrDefault();
+        }
+
+        public StudentExamAnswerMultipleChoice GetByStudentExamAndQuestionMultiple(int studentExamId, int questionId)
+        {
+            return _eevaContext.StudentExamAnswers
+                .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
+                .OfType<StudentExamAnswerMultipleChoice>()
+                .FirstOrDefault();
+        }
     }
 }

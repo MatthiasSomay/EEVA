@@ -68,111 +68,6 @@ namespace EEVA.Web.Controllers
             }
         }
 
-        // GET: Question/Details/5
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Question question = _questionManager.Get(id);
-
-            if (question == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                switch (question.GetType().Name.ToString())
-                {
-                    case "QuestionOpen":
-                        return RedirectToAction("Details", "QuestionOpen", new { id });
-                    case "QuestionMultipleChoice":
-                        return RedirectToAction("Details", "QuestionMultipleChoice", new { id });
-                    default:
-                        return NotFound();
-                }
-            }
-        }
-
-        // GET: Question/Create
-        public IActionResult Create()
-        {
-            return View(NewQuestionViewModel());
-        }
-
-        // POST: Question/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,QuestionPhrase,CourseId")] QuestionViewModel QuestionViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                Question Question = MapToQuestion(QuestionViewModel);
-                _questionManager.Add(Question);
-                return RedirectToAction(nameof(Index), new { questionCreated = true });
-            }
-            return View();
-        }
-
-        // GET: Question/Edit/5
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Question Question = _questionManager.Get(id);
-            if (Question == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                QuestionViewModel QuestionViewModel = MapToQuestionViewModel(Question);
-                return View(QuestionViewModel);
-            }
-        }
-
-        // POST: Question/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,QuestionPhrase")] QuestionViewModel QuestionViewModel)
-        {
-            if (id != QuestionViewModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    Question Question = MapToQuestion(QuestionViewModel);
-                    _questionManager.Update(Question);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!QuestionExists(QuestionViewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View();
-        }
-
         //Add a StudentExamAnswer
         public IActionResult Answer(int id)
         {
@@ -185,14 +80,32 @@ namespace EEVA.Web.Controllers
 
                 ExamQuestionViewModel examQuestionViewModel = NewExamQuestionViewModel(studentExam, question, id);
 
-
+                
+                //Checking which type of question it is
                 if (question is QuestionOpen)
                 {
                     examQuestionViewModel.QuestionOpen = _questionManager.GetOpen(question.Id);
+                    try
+                    {
+                        examQuestionViewModel.Answer = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExam.Id, question.Id).Answer;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
                 else if (question is QuestionMultipleChoice)
                 {
                     examQuestionViewModel.QuestionMultipleChoice = _questionManager.GetMultipleChoice(question.Id);
+                    try
+                    {
+                       // examQuestionViewModel.Answers =_studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExam.Id, question.Id).Answer;
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
                 }
                 else
                 {
@@ -208,6 +121,7 @@ namespace EEVA.Web.Controllers
             }
         }
 
+        //Add a StudentExamAnswer
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Answer(int id, string submit, [Bind("Question,Answer,Answers")] ExamQuestionViewModel examQuestionViewModel)
@@ -219,6 +133,8 @@ namespace EEVA.Web.Controllers
                 StudentExam studentExam = _studentExamManager.Get(studentExamId);
                 Question question = studentExam.Exam.ExamQuestions.ElementAt(id - 1);
 
+
+                //Checking which type of question it is
                 if (question is QuestionOpen)
                 {
                     StudentExamAnswerOpen studentExamAnswerOpen = new StudentExamAnswerOpen(
@@ -226,7 +142,17 @@ namespace EEVA.Web.Controllers
                         studentExam,
                         examQuestionViewModel.Answer
                         );
-                    _studentExamAnswerManager.Add(studentExamAnswerOpen);
+
+                    if(examQuestionViewModel.Answer == null)
+                    {
+                        _studentExamAnswerManager.Add(studentExamAnswerOpen);
+                    }
+                    else
+                    {
+                        StudentExamAnswerOpen so = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExamId, question.Id);
+                        _studentExamAnswerManager.Update(studentExamAnswerOpen, so);
+                    }
+
                 }
                 else if (question is QuestionMultipleChoice)
                 {                  
@@ -235,14 +161,25 @@ namespace EEVA.Web.Controllers
                         studentExam,
                         _answerMultipleChoiceManager.Get(examQuestionViewModel.Answers.FirstOrDefault())
                         );
+                    if (examQuestionViewModel.Answer == null)
+                    {
+                        _studentExamAnswerManager.Add(studentExamAnswerMultipleChoice);
+                    }
+                    else
+                    {
+                        StudentExamAnswerMultipleChoice sc = _studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExamId, question.Id);
+                        _studentExamAnswerManager.Update(studentExamAnswerMultipleChoice, sc);
+                    }
                     _studentExamAnswerManager.Add(studentExamAnswerMultipleChoice);
                 }
                 else
                 {
                     return NotFound();
                 }
+
                 TempData["studentExamId"] = studentExam.Id;
 
+                //Checking which type of submit button is used
                 switch (submit)
                 {
                     case "Save and back to list":
@@ -263,23 +200,7 @@ namespace EEVA.Web.Controllers
             }
         }
 
-
-        //Review a StudentExamAnswer
-        public IActionResult Review(int? id)
-        {
-            return RedirectToAction("ExamQuestionReview", "Question", new { id });
-        }
-
-
-        private bool QuestionExists(int id)
-        {
-            if (_questionManager.Get(id) != null)
-            {
-                return true;
-            }
-            else return false;
-        }
-
+                          
         //New ExamQuestionViewModel
         private ExamQuestionViewModel NewExamQuestionViewModel(StudentExam studentExam, Question question, int questionNumber)
         {
@@ -288,34 +209,6 @@ namespace EEVA.Web.Controllers
                 question,
                 questionNumber
                 );
-        }
-
-
-        //Setting ExamQuestion
-        private QuestionViewModel MapToQuestionViewModel(Question question)
-        {
-            return new QuestionViewModel(
-                    question.Id,
-                    question.QuestionPhrase,
-                    question.Course,
-                    _courseManager.GetAll()
-            );
-        }
-
-        //Mapping Question to QuestionViewModel
-        private Question MapToQuestion(QuestionViewModel questionViewModel)
-        {
-            return new Question(
-                questionViewModel.Id,
-                questionViewModel.QuestionPhrase,
-                _courseManager.Get(questionViewModel.CourseId)
-                );
-        }
-
-        //Creating blank QuestionViewModel
-        private QuestionViewModel NewQuestionViewModel()
-        {
-            return new QuestionViewModel(_courseManager.GetAll());
         }
     }
 }

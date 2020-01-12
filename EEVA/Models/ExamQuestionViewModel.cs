@@ -31,7 +31,6 @@ namespace EEVA.Web.Models
         [Required]
         public string Answer { get; set; }
 
-        [Required]
         [BindProperty]
         public List<int> Answers { get; set; }
 
