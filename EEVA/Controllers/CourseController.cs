@@ -13,6 +13,7 @@ using EEVA.Web.Models;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class CourseController : Controller
     {
         private readonly ExamManager _examManager;
@@ -30,9 +31,9 @@ namespace EEVA.Web.Controllers
 
         // GET: Course
         
-        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, bool courseCreated)
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
-            ViewBag.Message = courseCreated;
+            ViewBag.Message = message;
 
             if (searchString != null)
             {
@@ -80,7 +81,7 @@ namespace EEVA.Web.Controllers
             return View(courseViewModel);
         }
 
-        [Authorize(Roles = "Teacher, Admin")]
+        
         // GET: Course/Create
         public IActionResult Create()
         {
@@ -98,7 +99,7 @@ namespace EEVA.Web.Controllers
             {
                 Course course = MapToCourse(courseViewModel);
                 _courseManager.Add(course);
-                return RedirectToAction(nameof(Index), new { courseCreated = true});
+                return RedirectToAction(nameof(Index), new { message = "create"});
             }
             return View(courseViewModel);
         }
@@ -154,7 +155,7 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "edit"});
             }
             return View();
         }
@@ -184,7 +185,7 @@ namespace EEVA.Web.Controllers
         {
             Course course = _courseManager.Get(id);
             _courseManager.Delete(course);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = "delete" });
         }
 
         // Redirect to the related details of a Question

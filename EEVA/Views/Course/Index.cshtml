@@ -4,14 +4,35 @@
     ViewData["Title"] = "Index";
 }
 
-@if (ViewBag.Message)
+
+@if (ViewBag.Message == "create")
 {
-    <div class="col-lg-12" id="success-alert">
+    <div class="col-lg-12" id="alert-success">
         <div class="alert alert-success alert-dismissable">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <label>Course created!</label>
         </div>
     </div>
+}
+else if (ViewBag.Message == "delete")
+{
+    <div class="col-lg-12" id="alert-delete">
+        <div class="alert alert-danger alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Course deleted!</label>
+        </div>
+    </div>
+
+}
+else if (ViewBag.Message == "edit")
+{
+    <div class="col-lg-12" id="alert-delete">
+        <div class="alert alert-warning alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Course edited!</label>
+        </div>
+    </div>
+
 }
 
 <h1>List of Courses</h1>

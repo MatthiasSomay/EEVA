@@ -10,21 +10,27 @@ using EEVA.Domain.Models;
 using EEVA.Domain.DataManager;
 using Microsoft.AspNetCore.Authorization;
 using EEVA.Web.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class StudentController : Controller
     {
         private readonly ContactManager _contactManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public StudentController(EEVAContext context)
+        public StudentController(UserManager<IdentityUser> userManager, EEVAContext context)
         {
+            _userManager = userManager;
             _contactManager = new ContactManager(context);
         }
 
-        [Authorize(Roles = "Teacher, Admin")]
-        public ActionResult Index(string searchString, string currentFilter, int? pageNumber)
+
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
+            ViewBag.Message = message;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -61,7 +67,7 @@ namespace EEVA.Web.Controllers
         
 
         // GET: Student/Details/5
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == 0)
             {
@@ -95,13 +101,13 @@ namespace EEVA.Web.Controllers
             {
                 Student student = MapToStudent(studentViewModel);
                 _contactManager.Add(student);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "create"});
             }
             return View();
         }
 
         // GET: Student/Edit/5
-        public ActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == 0)
             {
@@ -125,7 +131,7 @@ namespace EEVA.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, StudentViewModel studentViewModel)
+        public IActionResult Edit(int id, StudentViewModel studentViewModel)
         {
             if (id != studentViewModel.Id)
             {
@@ -150,13 +156,13 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "edit"});
             }
             return View();
         }
 
         // GET: Student/Delete/5
-        public ActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == 0)
             {
@@ -175,12 +181,53 @@ namespace EEVA.Web.Controllers
         // POST: Student/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id, string email)
         {
+            
             Student student = (Student)_contactManager.Get(id);
             _contactManager.Delete(student);
-            return RedirectToAction(nameof(Index));
+
+
+
+            //delete user and his roles from AspUsers
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var logins = await _userManager.GetLoginsAsync(user);
+                var rolesForUser = await _userManager.GetRolesAsync(user);
+
+                using (var transaction = _contactManager._eevaContext.Database.BeginTransaction())
+                {
+                    IdentityResult result = IdentityResult.Success;
+                    foreach (var login in logins)
+                    {
+                        result = await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+                        if (result != IdentityResult.Success)
+                            break;
+                    }
+                    if (result == IdentityResult.Success)
+                    {
+                        foreach (var item in rolesForUser)
+                        {
+                            result = await _userManager.RemoveFromRoleAsync(user, item);
+                            if (result != IdentityResult.Success)
+                                break;
+                        }
+                    }
+                    if (result == IdentityResult.Success)
+                    {
+                        result = await _userManager.DeleteAsync(user);
+                        if (result == IdentityResult.Success)
+                            transaction.Commit(); //only commit if user and all his logins/roles have been deleted  
+                    }
+                }
+
+            }
+            
+
+            return RedirectToAction(nameof(Index), new { message = "delete"});
         }
+
 
         private bool StudentExists(int id)
         {

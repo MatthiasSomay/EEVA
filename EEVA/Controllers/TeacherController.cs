@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class TeacherController : Controller
     {
         private readonly ContactManager _contactManager;
@@ -26,9 +27,10 @@ namespace EEVA.Web.Controllers
         }
 
 
-        [Authorize(Roles = "Teacher, Admin")]
-        public ActionResult Index(string searchString, string currentFilter, int? pageNumber)
+       
+        public ActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
+            ViewBag.Message = message;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -95,7 +97,7 @@ namespace EEVA.Web.Controllers
             {
                 Teacher teacher = MapToTeacher(teacherViewModel);
                 _contactManager.Add(teacher);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "create"});
             }
             
                 return View();
@@ -150,7 +152,7 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "edit"});
             }
             return View();
         }
@@ -179,7 +181,7 @@ namespace EEVA.Web.Controllers
         {
             Teacher teacher = (Teacher) _contactManager.Get(id);
             _contactManager.Delete(teacher);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = "delete"});
         }
 
         private bool TeacherExists(int id)

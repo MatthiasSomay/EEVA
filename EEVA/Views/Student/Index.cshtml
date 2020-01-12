@@ -5,6 +5,37 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+@if (ViewBag.Message == "create")
+{
+    <div class="col-lg-12" id="alert-success">
+        <div class="alert alert-success alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Student created!</label>
+        </div>
+    </div>
+}
+else if (ViewBag.Message == "delete")
+{
+    <div class="col-lg-12" id="alert-delete">
+        <div class="alert alert-danger alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Student deleted!</label>
+        </div>
+    </div>
+
+}
+else if (ViewBag.Message == "edit")
+{
+    <div class="col-lg-12" id="alert-delete">
+        <div class="alert alert-warning alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <label>Student edited!</label>
+        </div>
+    </div>
+
+}
+
 <h1>List of Students</h1>
 
 <p>

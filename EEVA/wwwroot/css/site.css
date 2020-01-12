@@ -7,8 +7,23 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-.alert {
-    display: none;
+.headertext {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 48px;
+    text-align: center;
+   
+}
+
+.subheadertext {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+#images {
+    position: fixed;
+    bottom: 70px;
+   
 }
 
 /* Provide sufficient contrast against white background */

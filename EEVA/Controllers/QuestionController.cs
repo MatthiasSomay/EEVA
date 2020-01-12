@@ -9,9 +9,11 @@ using EEVA.Domain;
 using EEVA.Domain.Models;
 using EEVA.Domain.DataManager;
 using EEVA.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EEVA.Web.Controllers
 {
+    [Authorize(Roles = "Teacher, Admin")]
     public class QuestionController : Controller
     {
         private readonly QuestionManager _questionManager;
@@ -24,9 +26,10 @@ namespace EEVA.Web.Controllers
         }
 
         // GET: Question
-        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, bool questionCreated)
+        public IActionResult Index(string searchString, string currentFilter, int? pageNumber, string message)
         {
-            ViewBag.Message = questionCreated;
+            
+            ViewBag.Message = message;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -100,7 +103,7 @@ namespace EEVA.Web.Controllers
             {
                 Question Question = MapToQuestion(QuestionViewModel);
                 _questionManager.Add(Question);
-                return RedirectToAction(nameof(Index), new { questionCreated = true });
+                return RedirectToAction(nameof(Index), new { message = "create" });
             }
             return View();
         }
@@ -155,7 +158,7 @@ namespace EEVA.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "edit" });
             }
             return View();
         }
@@ -185,7 +188,7 @@ namespace EEVA.Web.Controllers
         {
             Question question = _questionManager.Get(id);
             _questionManager.Delete(question);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = "delete"});
         }
 
         private bool QuestionExists(int id)
