@@ -5,6 +5,14 @@
     ViewData["Title"] = "Create";
 }
 
+<style>
+    .error {
+    
+    display: none;
+}
+</style>
+
+   
 <h1>Exam - @Html.DisplayFor(model => model.CourseName)</h1>
 <br />
 <div>
@@ -37,7 +45,7 @@
         <form asp-action="Answer">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
+                <label asp-for="QuestionPhrase" class="control-label" style="font-weight: bold"></label>
                 <p>@Html.DisplayFor(model => model.QuestionPhrase)</p>
             </div>
             <br />
@@ -51,39 +59,26 @@
             }
             @if (Model.QuestionMultipleChoice != null)
             {
-        <div class="form-group">
-            <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
-            <br />
-            @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
-                @foreach (var item in Model.QuestionMultipleChoice.Answers)
-                {
-                    if (Model.Answers != null)
-                    {
-                        if (Model.Answers.Contains(item.Id))
-                        {
-                            <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" checked/> @item.Answer<br />
-                        }
-                        else
+                <div class="form-group" id="answers">
+                    <label asp-for="QuestionPhrase" class="control-label" style="font-weight:bold"></label>
+                    <br />
+                    @if (Model.QuestionMultipleChoice.Answers.Count() > 0)
+                        @foreach (var item in Model.QuestionMultipleChoice.Answers)
                         {
                             <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
                         }
-                    }
-                    else
-                    {
-                        <input name="Answers" type="checkbox" value="@item.Id.ToString()" class="chkTrt" /> @item.Answer<br />
-                    }
-                }
-        </div>
+                </div>
+                <span class="error alert-danger">Please select at least one Answer</span>
             }
             <br />
             <div class="form-group">
                 <table>
                     <tr>
                         <td>
-                            <input type="submit" name="submit" value="Save and back to list" class="btn btn-primary" onclick="valthisform" />
+                            <input type="submit" name="submit" value="Save and back to list" class="btn btn-primary btnSubmit" />
                         </td>
                         <td>
-                            <input type="submit" value="Submit Exam" class="btn btn-outline-success my-2 my-sm-0" onclick="valthisform"/>
+                            <input type="submit" value="Submit Exam" class="btn btn-outline-success my-2 my-sm-0 btnSubmit" />
                         </td>
                     </tr>
                 </table>
