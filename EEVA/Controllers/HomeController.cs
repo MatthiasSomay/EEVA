@@ -21,6 +21,7 @@ namespace EEVA.Controllers
 
         private readonly CourseManager _courseManager;
         private readonly ContactManager _contactManager;
+        private readonly StudentExamManager _studentExamManager;
         
 
         public List<Course> courses;
@@ -29,6 +30,7 @@ namespace EEVA.Controllers
         {
             _courseManager = new CourseManager(context);
             _contactManager = new ContactManager(context);
+            _studentExamManager = new StudentExamManager(context);
             _logger = logger;
         }
 
@@ -37,9 +39,11 @@ namespace EEVA.Controllers
 
             Chart questionsCourseBarChart = GenerateQuestionsCourseBarChart();
             Chart numberOfCoursesBarChart = GenerateNumberOfCoursesBarChart();
+            Chart pointsOfStudentsBarChart = GeneratePointsOfStudentsBarChart();
 
             ViewData["questionsCourseBarChart"] = questionsCourseBarChart;
             ViewData["numberOfCoursesBarChart"] = numberOfCoursesBarChart;
+            ViewData["pointsOfStudentsBarChart"] = pointsOfStudentsBarChart;
 
 
             return View();
@@ -151,6 +155,7 @@ namespace EEVA.Controllers
             chart.Type = Enums.ChartType.Bar;
 
             Data data = new Data();
+
             List<Course> courses = _courseManager.GetAll().ToList();
             List<string> courseNames = new List<string>();
 
@@ -249,7 +254,115 @@ namespace EEVA.Controllers
             return chart;
 
         }
-       
+
+        public Chart GeneratePointsOfStudentsBarChart()
+        {
+            Chart chart = new Chart();
+            chart.Type = Enums.ChartType.Bar;
+
+            Data data = new Data();
+            List<StudentExam> studentExams = _studentExamManager.GetAll().ToList();
+
+            List<string> studentNames = new List<string>();
+
+            foreach (var item in studentExams)
+            {
+               
+                studentNames.Add(item.Student.FullName);
+            }
+
+            data.Labels = studentNames;
+
+            List<double> scores = new List<double>();
+
+            foreach (var item in studentExams)
+            {
+                scores.Add(item.Points);
+            }
+
+            BarDataset dataset = new BarDataset()
+            {
+                Label = "Score",
+                Data = scores,
+                BackgroundColor = new List<ChartColor>
+                {
+                    ChartColor.FromRgba(255, 99, 132, 0.2),
+                    ChartColor.FromRgba(54, 162, 235, 0.2),
+                    ChartColor.FromRgba(255, 206, 86, 0.2),
+                    ChartColor.FromRgba(75, 192, 192, 0.2),
+                    ChartColor.FromRgba(153, 102, 255, 0.2),
+                    ChartColor.FromRgba(255, 159, 64, 0.2)
+                },
+                BorderColor = new List<ChartColor>
+                {
+                    ChartColor.FromRgb(255, 99, 132),
+                    ChartColor.FromRgb(54, 162, 235),
+                    ChartColor.FromRgb(255, 206, 86),
+                    ChartColor.FromRgb(75, 192, 192),
+                    ChartColor.FromRgb(153, 102, 255),
+                    ChartColor.FromRgb(255, 159, 64)
+                },
+                BorderWidth = new List<int>() { 1 }
+            };
+
+            data.Datasets = new List<Dataset>();
+            data.Datasets.Add(dataset);
+
+            chart.Data = data;
+
+            var options = new Options
+            {
+                Scales = new Scales()
+            };
+
+            var scales = new Scales
+            {
+                YAxes = new List<Scale>
+                {
+                    new CartesianScale
+                    {
+                        Ticks = new CartesianLinearTick
+                        {
+                            BeginAtZero = true
+                        }
+                    }
+                },
+                XAxes = new List<Scale>
+                {
+                    new BarScale
+                    {
+                        BarPercentage = 0.5,
+                        BarThickness = 6,
+                        MaxBarThickness = 8,
+                        MinBarLength = 2,
+                        GridLines = new GridLine()
+                        {
+                            OffsetGridLines = true
+                        }
+                    }
+                }
+            };
+
+            options.Scales = scales;
+
+            chart.Options = options;
+
+            chart.Options.Layout = new Layout
+            {
+                Padding = new Padding
+                {
+                    PaddingObject = new PaddingObject
+                    {
+                        Left = 10,
+                        Right = 12
+                    }
+                }
+            };
+
+            return chart;
+
+        }
+
         public IActionResult Exam()
         {
             return View();

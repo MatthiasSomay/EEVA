@@ -3,6 +3,12 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    h5 {
+        text-align: center;
+    }
+</style>
+
 @if (User.IsInRole("Admin") || User.IsInRole("Teacher"))
 {
 
@@ -28,8 +34,24 @@
             </div>
         </div>
 
-
     </div>
+
+    <div class="row">
+        <div class="col">
+            &nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="card col-md-12">
+            <div class="card-body">
+                <h5>Score of Students</h5>
+                <canvas id="pointsOfStudentsBarChart"></canvas>
+                @{ChartJSCore.Models.Chart chart3 = (ChartJSCore.Models.Chart)ViewData["pointsOfStudentsBarChart"]; }
+            </div>
+        </div>
+       
+    </div>
+
 
 
 
@@ -39,6 +61,7 @@
         <script>
         @Html.Raw(chart.CreateChartCode("questionsCourseBarChart"));
         @Html.Raw(chart2.CreateChartCode("numberOfCoursesBarChart"));
+        @Html.Raw(chart3.CreateChartCode("pointsOfStudentsBarChart"));
         </script>
     }
 
@@ -50,7 +73,7 @@ else
     <br />
     <br />
     <h1 class="headertext">Welcome to the <br />Online Examination Tool of UCLL</h1>
-    <h2 class="subheadertext">Make sure you are logged in and head to the "Student Exams" section to start an Exam assigned to you.</h2>
+    <h2 class="subheadertext">Make sure you are logged in and head to the "My Exams" section to start an Exam assigned to you.</h2>
 
     <div class="row" id="images">
         <div class=" col-md-4">

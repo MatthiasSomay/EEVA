@@ -58,15 +58,17 @@ namespace EEVA
             */
 
 
-            IdentityUser user = await UserManager.FindByEmailAsync("kennethvdb@live.be");
+            IdentityUser user = await UserManager.FindByEmailAsync("kaat.dewachter@student.ucll.be");
+            IdentityUser user2 = await UserManager.FindByEmailAsync("tom.janssen@student.ucll.be");
+
             if (user != null)
             {
-                foreach (string role in ROLES)
-                {
-                    await UserManager.AddToRoleAsync(user, role);
+                
+                    await UserManager.AddToRoleAsync(user, "Student");
+                    await UserManager.AddToRoleAsync(user2, "Student");
 
 
-                }
+
             }
         }
 

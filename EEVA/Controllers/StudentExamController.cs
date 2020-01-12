@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EEVA.Web.Controllers
 {
-    [Authorize(Roles = "Teacher, Admin")]
+    [Authorize(Roles = "Teacher")]
     public class StudentExamController : Controller
     {
         private readonly StudentExamManager _studentExamManager;
@@ -30,7 +30,7 @@ namespace EEVA.Web.Controllers
             _eevaContext = context;
         }
 
-        [Authorize(Roles = "Teacher, Admin, Student")]
+        [Authorize(Roles = "Student")]
         // GET: StudentExam
         public IActionResult Index(string searchString, string currentFilter, int? pageNumber)
         {
