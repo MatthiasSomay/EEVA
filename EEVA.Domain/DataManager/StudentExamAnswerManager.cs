@@ -41,10 +41,19 @@ namespace EEVA.Domain.DataManager
             throw new NotImplementedException();
         }
 
-        public void Update(StudentExamAnswer entity, StudentExamAnswer dbEntity)
+        public void UpdateOpen(StudentExamAnswerOpen entity, StudentExamAnswerOpen dbEntity)
         {
             dbEntity.Question = entity.Question;
             dbEntity.StudentExam = entity.StudentExam;
+            dbEntity.Answer = entity.Answer;
+            _eevaContext.SaveChanges();
+        }
+
+        public void UpdateMultiple(StudentExamAnswerMultipleChoice entity, StudentExamAnswerMultipleChoice dbEntity)
+        {
+            dbEntity.Question = entity.Question;
+            dbEntity.StudentExam = entity.StudentExam;
+            dbEntity.Answer = entity.Answer;
             _eevaContext.SaveChanges();
         }
 
@@ -62,6 +71,11 @@ namespace EEVA.Domain.DataManager
                 .Where(a => a.StudentExam.Id == studentExamId && a.Question.Id == questionId)
                 .OfType<StudentExamAnswerMultipleChoice>()
                 .FirstOrDefault();
+        }
+
+        public void Update(StudentExamAnswer entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

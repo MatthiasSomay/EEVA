@@ -80,7 +80,7 @@ namespace EEVA.Web.Controllers
 
                 ExamQuestionViewModel examQuestionViewModel = NewExamQuestionViewModel(studentExam, question, id);
 
-                
+
                 //Checking which type of question it is
                 if (question is QuestionOpen)
                 {
@@ -99,7 +99,7 @@ namespace EEVA.Web.Controllers
                     examQuestionViewModel.QuestionMultipleChoice = _questionManager.GetMultipleChoice(question.Id);
                     try
                     {
-                       // examQuestionViewModel.Answers =_studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExam.Id, question.Id).Answer;
+                        // examQuestionViewModel.Answers =_studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExam.Id, question.Id).Answer;
                     }
                     catch (Exception)
                     {
@@ -137,40 +137,42 @@ namespace EEVA.Web.Controllers
                 //Checking which type of question it is
                 if (question is QuestionOpen)
                 {
-                    StudentExamAnswerOpen studentExamAnswerOpen = new StudentExamAnswerOpen(
-                        question,
-                        studentExam,
-                        examQuestionViewModel.Answer
-                        );
-
-                    if(examQuestionViewModel.Answer == null)
+                    StudentExamAnswerOpen so = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExamId, question.Id);
+                    StudentExamAnswerOpen studentExamAnswerOpen =
+                                    new StudentExamAnswerOpen(
+                                question,
+                                studentExam,
+                                examQuestionViewModel.Answer
+                                );
+                    if (so == null)
                     {
                         _studentExamAnswerManager.Add(studentExamAnswerOpen);
                     }
                     else
                     {
-                        StudentExamAnswerOpen so = _studentExamAnswerManager.GetByStudentExamAndQuestionOpen(studentExamId, question.Id);
-                        _studentExamAnswerManager.Update(studentExamAnswerOpen, so);
+                        _studentExamAnswerManager.UpdateOpen(studentExamAnswerOpen, so);
                     }
 
                 }
                 else if (question is QuestionMultipleChoice)
-                {                  
-                   StudentExamAnswerMultipleChoice studentExamAnswerMultipleChoice = new StudentExamAnswerMultipleChoice(
-                        question,
-                        studentExam,
-                        _answerMultipleChoiceManager.Get(examQuestionViewModel.Answers.FirstOrDefault())
-                        );
-                    if (examQuestionViewModel.Answer == null)
+                {
+                    StudentExamAnswerMultipleChoice sc = _studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExamId, question.Id);
+
+                    StudentExamAnswerMultipleChoice studentExamAnswerMultipleChoice =
+                            new StudentExamAnswerMultipleChoice(
+                         question,
+                         studentExam,
+                         _answerMultipleChoiceManager.Get(examQuestionViewModel.Answers.FirstOrDefault())
+                         );
+
+                    if (sc == null)
                     {
                         _studentExamAnswerManager.Add(studentExamAnswerMultipleChoice);
                     }
                     else
                     {
-                        StudentExamAnswerMultipleChoice sc = _studentExamAnswerManager.GetByStudentExamAndQuestionMultiple(studentExamId, question.Id);
-                        _studentExamAnswerManager.Update(studentExamAnswerMultipleChoice, sc);
+                        _studentExamAnswerManager.UpdateMultiple(studentExamAnswerMultipleChoice, sc);
                     }
-                    _studentExamAnswerManager.Add(studentExamAnswerMultipleChoice);
                 }
                 else
                 {
@@ -186,7 +188,7 @@ namespace EEVA.Web.Controllers
                         return RedirectToAction(nameof(Index));
                     case "Next":
                         int increase = id + 1;
-                        return RedirectToAction("Answer", "ExamQuestion", new { id = increase});
+                        return RedirectToAction("Answer", "ExamQuestion", new { id = increase });
                     case "Previous":
                         int decrease = id - 1;
                         return RedirectToAction("Answer", "ExamQuestion", new { id = decrease });
@@ -200,7 +202,7 @@ namespace EEVA.Web.Controllers
             }
         }
 
-                          
+
         //New ExamQuestionViewModel
         private ExamQuestionViewModel NewExamQuestionViewModel(StudentExam studentExam, Question question, int questionNumber)
         {
