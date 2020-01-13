@@ -24,53 +24,53 @@ namespace EEVA
             Configuration = configuration;
         }
 
-        readonly string[] ROLES = new string[] { "Admin", "Teacher", "Student" };
-        // Gebaseerd op https://dotnetdetail.net/role-based-authorization-in-asp-net-core-3-0/
-        private async Task CreateRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        //readonly string[] ROLES = new string[] { "Admin", "Teacher", "Student" };
+        //// Gebaseerd op https://dotnetdetail.net/role-based-authorization-in-asp-net-core-3-0/
+        //private async Task CreateRoles(IServiceProvider serviceProvider)
+        //{
+        //    var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        //    var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            IdentityResult roleResult;
-            //here in this line we are adding the Roles
-            foreach (string role in ROLES)
-            {
-                var roleCheck = await RoleManager.RoleExistsAsync(role);
-                if (!roleCheck)
-                {
-                    //here in this line we are creating admin role and seed it to the database
-                    roleResult = await RoleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
+        //    IdentityResult roleResult;
+        //    //here in this line we are adding the Roles
+        //    foreach (string role in ROLES)
+        //    {
+        //        var roleCheck = await RoleManager.RoleExistsAsync(role);
+        //        if (!roleCheck)
+        //        {
+        //            //here in this line we are creating admin role and seed it to the database
+        //            roleResult = await RoleManager.CreateAsync(new IdentityRole(role));
+        //        }
+        //    }
 
-            //here we are assigning the Admin role to the User that we have registered above 
-            //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
-            //be assigned to that user.
-            /*
-            IdentityUser user1 = await UserManager.FindByEmailAsync("kennethvdb@live.be");
-            IdentityUser user2 = await UserManager.FindByEmailAsync("somay_2@hotmail.com");
-            IdentityUser user3 = await UserManager.FindByEmailAsync("jens.vanbever@student.ucll.be");
-
-
-            await UserManager.AddToRoleAsync(user1, "Student");
-            await UserManager.AddToRoleAsync(user2, "Student");
-            await UserManager.AddToRoleAsync(user3, "Student");
-            */
+        //    //here we are assigning the Admin role to the User that we have registered above 
+        //    //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
+        //    //be assigned to that user.
+        //    /*
+        //    IdentityUser user1 = await UserManager.FindByEmailAsync("kennethvdb@live.be");
+        //    IdentityUser user2 = await UserManager.FindByEmailAsync("somay_2@hotmail.com");
+        //    IdentityUser user3 = await UserManager.FindByEmailAsync("jens.vanbever@student.ucll.be");
 
 
-            IdentityUser user = await UserManager.FindByEmailAsync("kaat.dewachter@student.ucll.be");
-            IdentityUser user2 = await UserManager.FindByEmailAsync("tom.janssen@student.ucll.be");
+        //    await UserManager.AddToRoleAsync(user1, "Student");
+        //    await UserManager.AddToRoleAsync(user2, "Student");
+        //    await UserManager.AddToRoleAsync(user3, "Student");
+        //    */
 
-            if (user != null)
-            {
+
+        //    IdentityUser user = await UserManager.FindByEmailAsync("somay_2@hotmail.com");
+            
+
+        //    if (user != null)
+        //    {
                 
-                    await UserManager.AddToRoleAsync(user, "Student");
-                    await UserManager.AddToRoleAsync(user2, "Student");
+        //            await UserManager.RemoveFromRoleAsync(user, "Student");
+                    
 
 
 
-            }
-        }
+        //    }
+        //}
 
         public IConfiguration Configuration { get; }
 
@@ -113,7 +113,7 @@ namespace EEVA
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            CreateRoles(serviceProvider).Wait();
+            //CreateRoles(serviceProvider).Wait();
         }
     }
 }
